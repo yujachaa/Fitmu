@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace = "com.ssafy.fitmu.dao.UserDao">
+	<select id="selectOne" parameterType = "int" resultType = "User">
+		SELECT * FROM user 
+		WHERE id = #{id}
+	</select>
+	
+	<select id="selectOneByEmail" parameterType = "String" resultType = "User">
+		SELECT * FROM user
+		WHERE email = #{email}
+	</select>
+	
+	<select id="selectAll" resultType = "User">
+		SELECT * FROM user
+	</select>
+	
+	<insert id="insertUser" parameterType = "User">
+		INSERT INTO user
+		VALUES (0, #{email}, #{password}, null, #{nickname}, #{agreeTOS}, #{agreePICU}, #{agreePromotion}, #{gender}, #{role}, now(), now())
+	</insert>
+	
+	<delete id="deleteUser" parameterType = "int">
+		DELETE FROM user
+		WHERE id = #{id}
+	</delete>
+	
+	<insert id="insertFollow" parameterType = "Map">
+		INSERT INTO follow
+		VALUES (#{userId}, #{followingId}, now())
+	</insert>
+	
+	<delete id="deleteFollow" parameterType = "Map">
+		DELETE FROM follow
+		WHERE follower_id = #{userId} AND following_id = #{following_id}
+	</delete>
+	
+	<select id="getFollowerOfUser" parameterType = "int" resultType = "int">
+		SELECT following_id FROM follow
+		WHERE follower_id = #{id}
+	</select>
+	
+	<select id="getFolloweeOfUser" parameterType = "int" resultType = "int">
+		SELECT follower_id FROM follow
+		WHERE following_id = #{id}
+	</select>
+	
+	<update id="updateUser" parameterType = "User">
+		UPDATE user
+		SET nickname = #{nickname}, birth = #{birth}, gender = #{gender}
+		WHERE user_id = #{userId}
+	</update>
+	
+	<select id = "searchByCondition" resultType = "User" parameterType = "SearchCondition">
+		SELECT * FROM user
+		<!-- 동적쿼리(검색 조건) -->
+		<if test = "key != null">
+			WHERE ${key} LIKE concat('%', #{word}, '%')
+		</if>
+		<!-- 동적쿼리(정렬 조건) -->
+		<if test = "orderBy != null">
+			ORDER BY ${orderBy} ${orderByDir}
+		</if>        
+	</select>
+</mapper>

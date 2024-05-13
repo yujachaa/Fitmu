@@ -1,5 +1,8 @@
 package com.ssafy.fitmu.controller;
 
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,78 +22,161 @@ import com.ssafy.fitmu.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
 
-
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/user-api")
 @Tag(name = "123")
 public class UserController {
 	private final UserService userService;
-	
+
 	public UserController(UserService userService) {
 		this.userService = userService;
 	}
-	
+
 	// 로그인
 	@PostMapping("/login")
-	public ResponseEntity<?> login(HttpSession session, @RequestBody User loginUser){
+	public ResponseEntity<?> login(HttpSession session, @RequestBody User loginUser) {
 		User DBuser = userService.selectOneByEmail(loginUser.getEmail());
+
+		if (DBuser == null || DBuser.getPassword() != loginUser.getPassword()) {
+			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+		} else {
+			session.setAttribute("loginUser", loginUser);
+			return new ResponseEntity<User>(loginUser, HttpStatus.OK);
+		}
+
 	}
-	
+
 	// 회원가입
 	@PostMapping("/regist")
-	public ResponseEntity<?> regist(@RequestBody User registUser){
-		
+	public ResponseEntity<?> regist(@RequestBody User registUser) {
+		List<User> allUsers = userService.selectAll();
+
+		for (User user : allUsers) {
+			if (user.getEmail() == registUser.getEmail()) {
+				return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+			}
+		}
+		int result = userService.insertUser(registUser);
+
+		if (result == 0) {
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		} else {
+			return new ResponseEntity<Void>(HttpStatus.OK);
+		}
 	}
-	
+
 	// 로그아웃
 	@GetMapping("/logout")
-	public ResponseEntity<?> logout(){
+	public ResponseEntity<?> logout(HttpSession session) {
 		// 그냥 session 지우기?
+		session.invalidate();
+
+		return new ResponseEntity<Void>(HttpStatus.OK);
 	}
-	
+
 	// 회원탈퇴
 	@DeleteMapping("/withdrawal")
-	public ResponseEntity<?> withdrawal(){
+	public ResponseEntity<?> withdrawal(HttpSession session) {
 		// session에 정보 사용해서 탈퇴하고 session 비우기
+		User loginUser = (User) session.getAttribute("loginUser");
+		int result = userService.deleteUser(loginUser.getUserId());
+
+		if (result == 0) {
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		} else {
+			return new ResponseEntity<Void>(HttpStatus.OK);
+		}
 	}
-	
-	// 유저 검색을 그냥 프론트에서 다 하면..? 이게 더 편할거같기도하고..
+
+	// 유저 검색
 	@GetMapping("/search")
-	public ResponseEntity<?> searchByCondition(@ModelAttribute SearchCondition condition){
-		
+	public ResponseEntity<?> searchByCondition(@ModelAttribute SearchCondition condition) {
+		List<User> userList = userService.searchByCondition(condition);
+
+		if (userList == null || userList.size() == 0) {
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		} else {
+			return new ResponseEntity<List<User>>(userList, HttpStatus.OK);
+		}
 	}
-	
+
 	// 설정변경
 	@PutMapping("/update")
-	public ResponseEntity<?> update(@RequestBody User user){
-		
+	public ResponseEntity<?> update(HttpSession session, @RequestBody User user) {
+		User loginUser = (User) session.getAttribute("loginUser");
+		int loginUserId = loginUser.getUserId();
+
+		user.setUserId(loginUserId);
+
+		int result = userService.insertUser(user);
+
+		if (result == 0) {
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		} else {
+			return new ResponseEntity<Void>(HttpStatus.OK);
+		}
 	}
-	
-	// 팔로우 등록
+
+	// 팔로워 등록
 	@PostMapping("/follow/{followingId}")
-	public ResponseEntity<?> registFollow(@PathVariable("followingId") int followingId){
-		// 여기를 이렇게 해야되나..? 세션에서 userId 가져와도 되나?
+	public ResponseEntity<?> registFollower(HttpSession session, @PathVariable("followingId") int followingId) {
+		User loginUser = (User) session.getAttribute("loginUser");
+		int loginUserId = loginUser.getUserId();
+
+		int result = userService.insertFollow(loginUserId, followingId);
+
+		if (result == 0) {
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		} else {
+			return new ResponseEntity<Void>(HttpStatus.OK);
+		}
 	}
-	
-	// 팔로우 삭제
+
+	// 팔로워 삭제
 	@DeleteMapping("/follow/{followingId}")
-	public ResponseEntity<?> deleteFollow(@PathVariable("followingId") int followingId){
-		
+	public ResponseEntity<?> deleteFollower(HttpSession session, @PathVariable("followingId") int followingId) {
+		User loginUser = (User) session.getAttribute("loginUser");
+		int loginUserId = loginUser.getUserId();
+
+		int result = userService.deleteFollow(loginUserId, followingId);
+
+		if (result == 0) {
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		} else {
+			return new ResponseEntity<Void>(HttpStatus.OK);
+		}
 	}
-	
-	// 팔로우 조회
+
+	// 팔로워 조회(유저가 팔로우 하고 있는 사람들)
 	@GetMapping("/follower")
-	public  ResponseEntity<?> getFollower(){
+	public ResponseEntity<?> getFollower(HttpSession session) {
 		// session에 있는 user정보 가지고 잘 가져오면 될거같기도 하고..
-	}
-	
-	// 팔로잉 조회
-	@GetMapping("/followee")
-	public  ResponseEntity<?> getFollowee(){
+		User loginUser = (User)session.getAttribute("loginUser");
+		int loginUserId = loginUser.getUserId();
 		
+		List<Integer> followerList = userService.getFollowerOfUser(loginUserId);
+		
+		if(followerList == null || followerList.size() == 0) {
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		}else {
+			return new ResponseEntity<List<Integer>>(followerList, HttpStatus.OK);
+		}
 	}
-	
-	
+
+	// 팔로잉 조회(유저를 팔로우 하고 있는 사람들)
+	@GetMapping("/followee")
+	public ResponseEntity<?> getFollowee(HttpSession session) {
+		User loginUser = (User)session.getAttribute("loginUser");
+		int loginUserId = loginUser.getUserId();
+		
+		List<Integer> followeeList = userService.getFolloweeOfUser(loginUserId);
+		
+		if(followeeList == null || followeeList.size() == 0) {
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		}else {
+			return new ResponseEntity<List<Integer>>(followeeList, HttpStatus.OK);
+		}
+	}
 
 }
