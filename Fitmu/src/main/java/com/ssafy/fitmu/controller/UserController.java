@@ -17,6 +17,7 @@ import com.ssafy.fitmu.dto.User;
 import com.ssafy.fitmu.service.UserService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpSession;
 
 
 @RestController
@@ -32,8 +33,8 @@ public class UserController {
 	
 	// 로그인
 	@PostMapping("/login")
-	public ResponseEntity<?> login(@RequestBody User loginUser){
-		// DB에서 로그인 정보 확인하고 확인 됐으면 Session에 등록?
+	public ResponseEntity<?> login(HttpSession session, @RequestBody User loginUser){
+		User DBuser = userService.selectOneByEmail(loginUser.getEmail());
 	}
 	
 	// 회원가입
