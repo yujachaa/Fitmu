@@ -17,6 +17,11 @@ public class UserServiceImpl implements UserService {
 	public User selectOne(int id) {
 		return userDao.selectOne(id);
 	}
+	
+	@Override
+	public User selectOneByEmail(String email) {
+		return userDao.selectOneByEmail(email);
+	}
 
 	@Override
 	public List<User> selectAll() {
@@ -47,5 +52,6 @@ public class UserServiceImpl implements UserService {
 	public List<Integer> getUserFollowee(int id) {
 		return userDao.getUserFollowee(id);
 	}
+
 
 }

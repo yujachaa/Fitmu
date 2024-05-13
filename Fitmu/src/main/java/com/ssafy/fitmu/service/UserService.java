@@ -6,6 +6,7 @@ import com.ssafy.fitmu.dto.User;
 
 public interface UserService {
 	public User selectOne(int id);
+	public User selectOneByEmail(String email);
 	public List<User> selectAll();
 	public int insertUser(User user);
 	public int deleteUser(User user);
