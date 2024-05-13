@@ -4,10 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Service;
+
 import com.ssafy.fitmu.dao.UserDao;
 import com.ssafy.fitmu.dto.SearchCondition;
 import com.ssafy.fitmu.dto.User;
 
+@Service
 public class UserServiceImpl implements UserService {
 	
 	private UserDao userDao;
