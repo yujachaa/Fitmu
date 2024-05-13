@@ -25,7 +25,7 @@
 	
 	<delete id="deleteUser" parameterType = "int">
 		DELETE FROM user
-		WHERE id = #{id}
+		WHERE user_id = #{userId}
 	</delete>
 	
 	<insert id="insertFollow" parameterType = "Map">

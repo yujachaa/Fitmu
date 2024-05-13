@@ -25,24 +25,31 @@ import jakarta.servlet.http.HttpSession;
 @RestController
 @CrossOrigin("*")
 @RequestMapping("/user-api")
-@Tag(name = "123")
+@Tag(name = "유저 컨트롤러")
 public class UserController {
 	private final UserService userService;
 
 	public UserController(UserService userService) {
 		this.userService = userService;
 	}
+	
+	// 전체 유저 조회
+	@GetMapping("/")
+	public ResponseEntity<?> getAllUsers(){
+		List<User> list = userService.selectAll();
+		return new ResponseEntity<List<User>>(list, HttpStatus.OK);
+	}
 
 	// 로그인
 	@PostMapping("/login")
 	public ResponseEntity<?> login(HttpSession session, @RequestBody User loginUser) {
 		User DBuser = userService.selectOneByEmail(loginUser.getEmail());
-
-		if (DBuser == null || DBuser.getPassword() != loginUser.getPassword()) {
-			return new ResponseEntity<Void>(HttpStatus.NOT_FOUND);
+		
+		if (DBuser == null || !DBuser.getPassword().equals(loginUser.getPassword())) {
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		} else {
-			session.setAttribute("loginUser", loginUser);
-			return new ResponseEntity<User>(loginUser, HttpStatus.OK);
+			session.setAttribute("loginUser", DBuser);
+			return new ResponseEntity<User>(DBuser, HttpStatus.OK);
 		}
 
 	}
@@ -80,6 +87,7 @@ public class UserController {
 	public ResponseEntity<?> withdrawal(HttpSession session) {
 		// session에 정보 사용해서 탈퇴하고 session 비우기
 		User loginUser = (User) session.getAttribute("loginUser");
+		System.out.println(loginUser.toString());
 		int result = userService.deleteUser(loginUser.getUserId());
 
 		if (result == 0) {
