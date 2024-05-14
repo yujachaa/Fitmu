@@ -13,8 +13,9 @@ public interface StoryDao {
 	public List<Story> selectAll();
 	public List<Story> searchStory(SearchCondition condition); // 카테고리, 제목, 작성자, 내용, 조회수, 좋아요 >> 오름차순, 내림차순
 	public List<Story> selectByUserId(int userId);
-	public List<Story> popularStroy();
-	public List<Story> latestStroy();
+	public List<Story> popularStory();
+	public List<Story> likeStory();
+	public List<Story> latestStory();
 	public Story selectOne(int storyId);
 	public int updateViewCnt(int storyId);
 	public int increaseLikeCnt(int storyId);

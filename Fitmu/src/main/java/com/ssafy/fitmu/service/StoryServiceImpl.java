@@ -49,13 +49,13 @@ public class StoryServiceImpl implements StoryService{
 	}
 
 	@Override
-	public List<Story> popularStroy() {
-		return storyDao.popularStroy();
+	public List<Story> popularStory() {
+		return storyDao.popularStory();
 	}
 
 	@Override
-	public List<Story> latestStroy() {
-		return storyDao.latestStroy();
+	public List<Story> latestStory() {
+		return storyDao.latestStory();
 	}
 
 	@Override
@@ -88,6 +88,11 @@ public class StoryServiceImpl implements StoryService{
 		map.put("userId", userId);
 		map.put("storyId", storyId);
 		return storyDao.deleteScrapBook(map);
+	}
+
+	@Override
+	public List<Story> likeStory() {
+		return storyDao.likeStory();
 	}
 
 }

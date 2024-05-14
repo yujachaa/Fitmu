@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace = "com.ssafy.fitmu.dao.StoryDao">
+	<insert id="insertStory" parameterType = "Story">
+		INSERT INTO story
+		VALUES (0, #{userId}, #{title}, #{image}, #{content}, #{productLink}, 0, #{category}, now(), now(), 0)
+	</insert>
+	
+	<update id="updateStory" parameterType = "Story">
+		UPDATE story
+		SET title = #{title}, content = #{content}, category = #{category}, modifiedDate = now()
+		WHERE story_id = #{storyId}
+	</update>
+	
+	<delete id="deleteStory" parameterType = "int">
+		DELETE FROM story
+		WHERE story_id = #{storyId}
+	</delete>
+	
+	<select id="selectAll" resultType="Story">
+		SELECT * FROM story
+	</select>
+	
+	<select id = "searchStory" resultType = "Story" parameterType = "SearchCondition">
+		SELECT * FROM story
+		<!-- 동적쿼리(검색 조건) -->
+		<if test = "key != null">
+			WHERE ${key} LIKE concat('%', #{word}, '%')
+		</if>
+		<!-- 동적쿼리(정렬 조건) -->
+		<if test = "orderBy != null">
+			ORDER BY ${orderBy} ${orderByDir}
+		</if>        
+	</select>
+	
+	<select id="selectByUserId" resultType = "Story" parameterType = "int">
+		SELECT * FROM story
+		WHERE user_id = #{userId}
+	</select>
+	
+	<select id="popularStory" resultType = "Story">
+		SELECT * FROM story
+		ORDER BY view_cnt DESC
+	</select>
+	
+	<select id="likeStory" resultType = "Story">
+		SELECT * FROM story
+		ORDER BY liked DESC
+	</select>
+	
+	<select id="latestStory" resultType = "Story">
+		SELECT * FROM story
+		ORDER BY created_date DESC
+	</select>
+	
+	<select id="selectOne" resultType = "Story" parameterType = "int">
+		SELECT * FROM story
+		WHERE story_id = #{storyId}
+	</select>
+	
+	<update id="updateViewCnt" parameterType = "int">
+		UPDATE story
+		SET view_cnt = view_cnt + 1
+		WHERE story_id = #{storyId}
+	</update>
+	
+	<update id="increaseLikeCnt" parameterType = "int">
+		UPDATE story
+		SET liked = liked + 1
+		WHERE story_id = #{storyId}
+	</update>
+	
+	<update id="decreaseLikeCnt" parameterType = "int">
+		UPDATE story
+		SET liked = liked - 1
+		WHERE story_id = #{storyId}
+	</update>
+	
+	<insert id="insertScrapBook" parameterType = "Map">
+		INSERT INTO story
+		VALUES (#{userId}, #{storyId})
+	</insert>
+	
+	<delete id="deleteScrapBook" parameterType = "Map">
+		DELETE FROM story
+		WHERE user_id = #{userId} and story_id = #{storyId}
+	</delete>
+	
+</mapper>
