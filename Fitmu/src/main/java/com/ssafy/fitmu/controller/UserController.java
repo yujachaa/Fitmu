@@ -1,6 +1,8 @@
 package com.ssafy.fitmu.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.fitmu.dto.SearchCondition;
 import com.ssafy.fitmu.dto.User;
 import com.ssafy.fitmu.service.UserService;
+import com.ssafy.fitmu.util.JwtUtil;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
@@ -28,9 +31,11 @@ import jakarta.servlet.http.HttpSession;
 @Tag(name = "유저 컨트롤러")
 public class UserController {
 	private final UserService userService;
+	private final JwtUtil jwtUtil;
 
-	public UserController(UserService userService) {
+	public UserController(UserService userService, JwtUtil jwtUtil) {
 		this.userService = userService;
+		this.jwtUtil = jwtUtil;
 	}
 	
 	// 전체 유저 조회
@@ -40,18 +45,27 @@ public class UserController {
 		return new ResponseEntity<List<User>>(list, HttpStatus.OK);
 	}
 
-	// 로그인
+	// 로그인 (프론트 sessionstorage에 로그인 된 유저의 userId 넣기, 데이터 가져올 수 있게)
 	@PostMapping("/login")
 	public ResponseEntity<?> login(HttpSession session, @RequestBody User loginUser) {
 		User DBuser = userService.selectOneByEmail(loginUser.getEmail());
 		
-		if (DBuser == null || !DBuser.getPassword().equals(loginUser.getPassword())) {
-			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
-		} else {
+		HttpStatus status = null;
+		Map<String,Object> result = new HashMap<>();
+		
+		if(DBuser != null && DBuser.getPassword().equals(jwtUtil.createToken(loginUser.getPassword()))) {			
+			// 토큰 만들어서 줘야돼
+			result.put("message", "성공");
+			result.put("access-token", jwtUtil.createToken(loginUser.getPassword()));
+			result.put("userId", DBuser.getUserId());
 			session.setAttribute("loginUser", DBuser);
-			return new ResponseEntity<User>(DBuser, HttpStatus.OK);
+			status = HttpStatus.OK;
+		}else {
+			result.put("message", "실패");
+			status = HttpStatus.BAD_REQUEST;
 		}
-
+		
+		return new ResponseEntity<Map<String, Object>>(result, status);
 	}
 
 	// 회원가입
@@ -64,6 +78,9 @@ public class UserController {
 				return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 			}
 		}
+		String token = jwtUtil.createToken(registUser.getPassword());
+		registUser.setPassword(token);
+		
 		int result = userService.insertUser(registUser);
 
 		if (result == 0) {
@@ -73,7 +90,7 @@ public class UserController {
 		}
 	}
 
-	// 로그아웃
+	// 로그아웃 (여기서도 지우고, sessionstorage에서도 지우기)
 	@GetMapping("/logout")
 	public ResponseEntity<?> logout(HttpSession session) {
 		// 그냥 session 지우기?
@@ -87,7 +104,6 @@ public class UserController {
 	public ResponseEntity<?> withdrawal(HttpSession session) {
 		// session에 정보 사용해서 탈퇴하고 session 비우기
 		User loginUser = (User) session.getAttribute("loginUser");
-		System.out.println(loginUser.toString());
 		int result = userService.deleteUser(loginUser.getUserId());
 
 		if (result == 0) {
