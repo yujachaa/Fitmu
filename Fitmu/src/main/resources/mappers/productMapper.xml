@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace = "com.ssafy.fitmu.dao.ProductDao">
+	<select id="selectOne" parameterType = "int" resultType = "Product">
+		SELECT * FROM product 
+		WHERE id = #{productId}
+	</select>
+	
+	<select id="selectAll" resultType = "Product">
+		SELECT * FROM product
+	</select>
+	
+	<select id = "searchByCondition" resultType = "Product" parameterType = "SearchCondition">
+		SELECT * FROM product
+		<!-- 동적쿼리(검색 조건) -->
+		<if test = "key != null">
+			WHERE ${key} = #{word}
+		</if>     
+	</select>
+	
+	<insert id="insertProductScrap" parameterType="Map">
+		INSERT INTO product_scrapbook
+		VALUES( #{userId}, #{productId})
+	</insert>
+	
+	<delete id="deleteProductScrap" parameterType="Map">
+		DELETE FROM product_scrapbook
+		WHERE user_id = #{userId} AND product_id = #{productId}
+	</delete>
+</mapper>
