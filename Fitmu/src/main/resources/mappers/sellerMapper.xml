@@ -23,8 +23,8 @@
 	
 	<update id="deleteAnswer" parameterType="Map">
 		UPDATE inquiry
-		SET answer = #{answer}
-		WHERE inquiry_id = null
+		SET answer = null
+		WHERE inquiry_id = #{inquiryId}
 	</update>
 	
 </mapper>
