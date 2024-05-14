@@ -109,6 +109,7 @@ public class UserController {
 		if (result == 0) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		} else {
+			session.invalidate();
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		}
 	}
@@ -143,12 +144,10 @@ public class UserController {
 	}
 
 	// 팔로워 등록
-	@PostMapping("/follow/{followingId}")
-	public ResponseEntity<?> registFollower(HttpSession session, @PathVariable("followingId") int followingId) {
-		User loginUser = (User) session.getAttribute("loginUser");
-		int loginUserId = loginUser.getUserId();
+	@PostMapping("/user/{userId}/follow/{followingId}")
+	public ResponseEntity<?> registFollower(HttpSession session, @PathVariable("userId") int userId, @PathVariable("followingId") int followingId) {
 
-		int result = userService.insertFollow(loginUserId, followingId);
+		int result = userService.insertFollow(userId, followingId);
 
 		if (result == 0) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
@@ -158,12 +157,10 @@ public class UserController {
 	}
 
 	// 팔로워 삭제
-	@DeleteMapping("/follow/{followingId}")
-	public ResponseEntity<?> deleteFollower(HttpSession session, @PathVariable("followingId") int followingId) {
-		User loginUser = (User) session.getAttribute("loginUser");
-		int loginUserId = loginUser.getUserId();
+	@DeleteMapping("/user/{userId}/follow/{followingId}")
+	public ResponseEntity<?> deleteFollower(HttpSession session, @PathVariable("userId") int userId, @PathVariable("followingId") int followingId) {
 
-		int result = userService.deleteFollow(loginUserId, followingId);
+		int result = userService.deleteFollow(userId, followingId);
 
 		if (result == 0) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
@@ -173,13 +170,11 @@ public class UserController {
 	}
 
 	// 팔로워 조회(유저가 팔로우 하고 있는 사람들)
-	@GetMapping("/follower")
-	public ResponseEntity<?> getFollower(HttpSession session) {
+	@GetMapping("/user/{userId}/follower")
+	public ResponseEntity<?> getFollower(HttpSession session, @PathVariable("userId") int id) {
 		// session에 있는 user정보 가지고 잘 가져오면 될거같기도 하고..
-		User loginUser = (User)session.getAttribute("loginUser");
-		int loginUserId = loginUser.getUserId();
 		
-		List<Integer> followerList = userService.getFollowerOfUser(loginUserId);
+		List<Integer> followerList = userService.getFollowerOfUser(id);
 		
 		if(followerList == null || followerList.size() == 0) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
@@ -189,12 +184,10 @@ public class UserController {
 	}
 
 	// 팔로잉 조회(유저를 팔로우 하고 있는 사람들)
-	@GetMapping("/followee")
-	public ResponseEntity<?> getFollowee(HttpSession session) {
-		User loginUser = (User)session.getAttribute("loginUser");
-		int loginUserId = loginUser.getUserId();
+	@GetMapping("/user/{userId}/followee")
+	public ResponseEntity<?> getFollowee(HttpSession session, @PathVariable("userId") int id) {
 		
-		List<Integer> followeeList = userService.getFolloweeOfUser(loginUserId);
+		List<Integer> followeeList = userService.getFolloweeOfUser(id);
 		
 		if(followeeList == null || followeeList.size() == 0) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
