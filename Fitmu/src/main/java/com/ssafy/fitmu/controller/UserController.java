@@ -1,5 +1,6 @@
 package com.ssafy.fitmu.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +44,18 @@ public class UserController {
 	public ResponseEntity<?> getAllUsers(){
 		List<User> list = userService.selectAll();
 		return new ResponseEntity<List<User>>(list, HttpStatus.OK);
+	}
+	
+	//유저 1명 조회
+	@GetMapping("/{userId}")
+	public ResponseEntity<?> getUser(@PathVariable("userId") int userId){
+		User user = userService.selectOne(userId);
+		
+		if(user == null) {
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		}else {
+			return new ResponseEntity<User>(user, HttpStatus.OK);
+		}
 	}
 
 	// 로그인 (프론트 sessionstorage에 로그인 된 유저의 userId 넣기, 데이터 가져올 수 있게)
@@ -134,7 +147,7 @@ public class UserController {
 
 		user.setUserId(loginUserId);
 
-		int result = userService.insertUser(user);
+		int result = userService.updateUser(user);
 
 		if (result == 0) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
@@ -172,14 +185,20 @@ public class UserController {
 	// 팔로워 조회(유저가 팔로우 하고 있는 사람들)
 	@GetMapping("/user/{userId}/follower")
 	public ResponseEntity<?> getFollower(HttpSession session, @PathVariable("userId") int id) {
-		// session에 있는 user정보 가지고 잘 가져오면 될거같기도 하고..
+		// session에 있는 user정보 가지고 잘 가져오면 될거같기도 하고..-> 다른 유저의 팔로잉, 팔로워 보기 위해서 그냥 경로에 유저아이디 넣어주는 걸로!!
 		
 		List<Integer> followerList = userService.getFollowerOfUser(id);
 		
 		if(followerList == null || followerList.size() == 0) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		}else {
-			return new ResponseEntity<List<Integer>>(followerList, HttpStatus.OK);
+			List<User> list = new ArrayList<>();
+			
+			for(int i = 0 ;i < followerList.size(); i++) {
+				int userId = followerList.get(i);
+				list.add(userService.selectOne(userId));
+			}
+			return new ResponseEntity<List<User>>(list, HttpStatus.OK);
 		}
 	}
 
@@ -192,7 +211,13 @@ public class UserController {
 		if(followeeList == null || followeeList.size() == 0) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		}else {
-			return new ResponseEntity<List<Integer>>(followeeList, HttpStatus.OK);
+			List<User> list = new ArrayList<>();
+			
+			for(int i = 0 ;i < followeeList.size(); i++) {
+				int userId = followeeList.get(i);
+				list.add(userService.selectOne(userId));
+			}
+			return new ResponseEntity<List<User>>(list, HttpStatus.OK);
 		}
 	}
 

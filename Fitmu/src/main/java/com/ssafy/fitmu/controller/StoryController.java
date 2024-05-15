@@ -83,7 +83,7 @@ public class StoryController {
 	}
 
 	// 게시글 전체 조회
-	@GetMapping("/stroy")
+	@GetMapping("/story")
 	public ResponseEntity<?> storyAll() {
 		List<Story> storyList = storyService.selectAll();
 
