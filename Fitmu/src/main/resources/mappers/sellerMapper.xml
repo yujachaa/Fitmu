@@ -21,7 +21,7 @@
 		WHERE inquiry_id = #{inquiryId}
 	</update>
 	
-	<update id="deleteAnswer" parameterType="Map">
+	<update id="deleteAnswer" parameterType="int">
 		UPDATE inquiry
 		SET answer = null
 		WHERE inquiry_id = #{inquiryId}

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace = "com.ssafy.fitmu.dao.CommentDao">
+	<insert id="insertComment" parameterType = "Comment">
+		INSERT INTO comment
+		VALUES (0, #{storyId}, #{userId}, #{content}, now(), now())
+	</insert>
+	
+	<delete id="deleteComment" parameterType = "int">
+		DELETE FROM comment
+		WHERE comment_id = #{commentId}
+	</delete>
+	
+	<select id="selectAllByStory" resultType="Comment">
+		SELECT * FROM comment
+		ORDER BY created_at DESC
+		WHERE story_id = #{storyId}
+	</select>
+	
+	<select id="selectOne" resultType = "Comment" parameterType = "int">
+		SELECT * FROM comment
+		WHERE comment_id = #{commentId}
+	</select>
+
+</mapper>
