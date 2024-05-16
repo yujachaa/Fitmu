@@ -17,8 +17,12 @@
 		SELECT * FROM product
 		<!-- 동적쿼리(검색 조건) -->
 		<if test = "key != null">
-			WHERE ${key} = #{word}
-		</if>     
+			WHERE ${key} LIKE concat('%', #{word}, '%')
+		</if>
+		<!-- 동적쿼리(정렬 조건) -->
+		<if test = "orderBy != null">
+			ORDER BY ${orderBy} ${orderByDir}
+		</if>        
 	</select>
 	
 	<insert id="insertProductScrap" parameterType="Map">

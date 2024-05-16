@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.fitmu.dto.Order;
 import com.ssafy.fitmu.service.OrderService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
@@ -31,6 +32,7 @@ public class OrderController {
 	}
 
 	@GetMapping("/order")
+	@Operation(summary = "주문 전체 조회")
 	public ResponseEntity<?> getOrderList() {
 		List<Order> orderList = orderService.getOrderList();
 
@@ -41,6 +43,7 @@ public class OrderController {
 	}
 
 	@PostMapping("/order")
+	@Operation(summary = "주문 등록")
 	public ResponseEntity<?> registOrder(@RequestBody Order order){
 		int result = orderService.registOrder(order);
 		
@@ -51,6 +54,7 @@ public class OrderController {
 	}
 	
 	@GetMapping("/order/user/{userId}")
+	@Operation(summary = "주문 조회(사용자)")
 	public ResponseEntity<?> getOrderListByUserId(@PathVariable("userId") int userId) {
 		List<Order> orderList = orderService.getOrderListByUserId(userId);
 
@@ -61,6 +65,7 @@ public class OrderController {
 	}
 
 	@GetMapping("/order/seller/{sellerId}")
+	@Operation(summary = "주문 조회(판매자)")
 	public ResponseEntity<?> getOrderListBySellerId(@PathVariable("sellerId") int sellerId) {
 		List<Order> orderList = orderService.getOrderListBySellerId(sellerId);
 
@@ -71,6 +76,7 @@ public class OrderController {
 	}
 	
 	@GetMapping("/order/{orderId}")
+	@Operation(summary = "주문 상세 조회")
 	public ResponseEntity<?> getOrderDetail(@PathVariable("orderId") int orderId) {
 		Order order = orderService.getOrderDetail(orderId);
 
@@ -82,6 +88,7 @@ public class OrderController {
 	}
 	
 	@PutMapping("/order/{orderId}")
+	@Operation(summary = "주문 상태 수정")
 	public ResponseEntity<?> updateStatus(@PathVariable("orderId") int orderId, @RequestBody Order order){
 		order.setOrderId(orderId);
 		
@@ -94,6 +101,7 @@ public class OrderController {
 	}
 	
 	@DeleteMapping("/order/{orderId}")
+	@Operation(summary = "주문 삭제")
 	public ResponseEntity<?> deleteOrder(@PathVariable("orderId") int orderId){
 		int result = orderService.deleteOrder(orderId);
 		

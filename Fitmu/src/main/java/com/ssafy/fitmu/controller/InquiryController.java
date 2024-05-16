@@ -18,6 +18,7 @@ import com.ssafy.fitmu.dto.Inquiry;
 import com.ssafy.fitmu.dto.Review;
 import com.ssafy.fitmu.service.InquiryService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
@@ -33,6 +34,7 @@ public class InquiryController {
 
 	// 문의 상세 조회
 	@GetMapping("/{inquiryId}")
+	@Operation(summary = "문의 상세 조회")
 	public ResponseEntity<?> inquiryDetail(@PathVariable("inquiryId") int id) {
 		Inquiry inquiry = inquiryService.inquiryDetail(id);
 
@@ -45,6 +47,7 @@ public class InquiryController {
 
 	// 문의 전체 조회 -> 사용자 기준
 	@GetMapping("/user/{userId}")
+	@Operation(summary = "문의 조회 (사용자)")
 	public ResponseEntity<?> getInquiryByUser(@PathVariable("userId") int id){
 		List<Inquiry> list = inquiryService.selectAllByUser(id);
 		
@@ -57,6 +60,7 @@ public class InquiryController {
 	
 	//문의 전체 조회 -> 상품 기준
 	@GetMapping("/product/{productId}")
+	@Operation(summary = "문의 조회 (상품)")
 	public ResponseEntity<?> getInquiryByProduct(@PathVariable("productId") int id){
 		List<Inquiry> list = inquiryService.selectAllByProduct(id);
 		
@@ -69,6 +73,7 @@ public class InquiryController {
 	
 	// 문의 등록
 	@PostMapping("/regist")
+	@Operation(summary = "문의 등록")
 	public ResponseEntity<?> inquiryRegist(@RequestBody Inquiry inquiry) {
 		int result = inquiryService.registInquiry(inquiry);
 
@@ -82,6 +87,7 @@ public class InquiryController {
 
 	// 리뷰 삭제
 	@DeleteMapping("/{inquiryId}")
+	@Operation(summary = "문의 삭제")
 	public ResponseEntity<?> inquiryDelete(@PathVariable("inquiryId") int id) {
 		
 		int result = inquiryService.deleteInquiry(id);
@@ -92,5 +98,4 @@ public class InquiryController {
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		}
 	}
-
 }
