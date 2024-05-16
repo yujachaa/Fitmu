@@ -2,9 +2,12 @@ package com.ssafy.fitmu.service;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.ssafy.fitmu.dao.ProductTagDao;
 import com.ssafy.fitmu.dto.ProductTag;
 
+@Service
 public class ProductTagServiceImpl implements ProductTagService {
 	
 	private ProductTagDao productTagDao;
