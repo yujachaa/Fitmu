@@ -103,10 +103,10 @@ public class ReviewController {
 	}
 
 	// 리뷰 전체 조회 -> 최신순
-	@GetMapping("/review")
-	@Operation(summary = "리뷰 전체 조회(최신순)")
-	public ResponseEntity<?> reviewAll() {
-		List<Review> list = reviewService.seletAll();
+	@GetMapping("/review/{productId}")
+	@Operation(summary = "리뷰 상품기준 전체 조회(최신순)")
+	public ResponseEntity<?> reviewAll(@PathVariable("productId") int id) {
+		List<Review> list = reviewService.seletAll(id);
 
 		if (list == null || list.size() == 0) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
@@ -116,10 +116,10 @@ public class ReviewController {
 	}
 	
 	// 리뷰 전체 조회 -> 좋아요 순
-	@GetMapping("/review/like")
-	@Operation(summary = "리뷰 전체 조회(좋아요순)")
-	public ResponseEntity<?> reviewAllOrderByLike() {
-		List<Review> list = reviewService.selectAllOrderByLike();
+	@GetMapping("/review/{productId}/like")
+	@Operation(summary = "리뷰 상품기준 전체 조회(좋아요순)")
+	public ResponseEntity<?> reviewAllOrderByLike(@PathVariable("productId") int id) {
+		List<Review> list = reviewService.selectAllOrderByLike(id);
 		
 		if (list == null || list.size() == 0) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);

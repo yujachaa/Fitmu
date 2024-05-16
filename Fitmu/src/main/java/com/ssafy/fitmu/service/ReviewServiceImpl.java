@@ -24,8 +24,8 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public List<Review> seletAll() {
-		return reviewDao.selectAll();
+	public List<Review> seletAll(int productId) {
+		return reviewDao.selectAll(productId);
 	}
 
 	@Override
@@ -54,8 +54,8 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public List<Review> selectAllOrderByLike() {
-		return reviewDao.selectAllOrderByLike();
+	public List<Review> selectAllOrderByLike(int productId) {
+		return reviewDao.selectAllOrderByLike(productId);
 	}
 
 	@Override
@@ -71,7 +71,7 @@ public class ReviewServiceImpl implements ReviewService {
 		Map<String, Integer> map = new HashMap<>();
 		map.put("productId", productId);
 		map.put("rating", rating);
-		return reviewDao.cancleProductRating(map);
+		return reviewDao.cancelProductRating(map);
 	}
 
 }
