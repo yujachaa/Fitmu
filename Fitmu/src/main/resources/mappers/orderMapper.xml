@@ -5,37 +5,37 @@
 
 <mapper namespace = "com.ssafy.fitmu.dao.OrderDao">
 	<select id="getOrderList" resultType = "Order">
-		SELECT * FROM order
+		SELECT * FROM `order`
 	</select>
 	
 	<select id="getOrderListBySellerId" parameterType = "int" resultType = "Order">
-		SELECT * FROM order
+		SELECT * FROM `order`
 		WHERE seller_id = #{sellerId}
 	</select>
 	
 	<select id="getOrderListByUserId" parameterType = "int" resultType = "Order">
-		SELECT * FROM order
+		SELECT * FROM `order`
 		WHERE user_id = #{userId}
 	</select>
 	
 	<select id="getOrderDetail" parameterType = "int" resultType = "Order">
-		SELECT * FROM order
+		SELECT * FROM `order`
 		WHERE order_id = #{orderId}
 	</select>
 	
-	<update id="updateStatus" parameterType = "int">
-		UPDATE order
+	<update id="updateStatus" parameterType = "Order">
+		UPDATE `order`
 		SET status = #{status}
 		WHERE order_id = #{orderId}
 	</update>
 	
 	<insert id="registOrder" parameterType = "Order">
-		INSERT INTO order
-		VALUES (0, #{productId}, #{userId}, #{sellerId}, #{quantity}, #{status}, null, now(), #{memo})
+		INSERT INTO `order`
+		VALUES (0, #{productId}, #{userId}, #{sellerId}, #{quantity},'구매 완료', null, now(), #{memo})
 	</insert>
 	
 	<delete id="deleteOrder" parameterType = "int">
-		DELETE FROM order
+		DELETE FROM `order`
 		WHERE order_id = #{orderId}
 	</delete>
 </mapper>

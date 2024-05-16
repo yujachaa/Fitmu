@@ -91,7 +91,7 @@ public class AddressController {
 		return new ResponseEntity<List<Address>>(addressList, HttpStatus.OK);
 	}
 	
-	@GetMapping("/address/{userId}")
+	@GetMapping("/address/default/{userId}")
 	@Operation(summary = "기본 배송지 조회")
 	public ResponseEntity<?> getDefaultAddress(@PathVariable("userId") int userId){
 		List<Address> addressList = addressService.getAddressByUserId(userId);

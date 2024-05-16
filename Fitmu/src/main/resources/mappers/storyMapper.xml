@@ -11,7 +11,7 @@
 	
 	<update id="updateStory" parameterType = "Story">
 		UPDATE story
-		SET title = #{title}, content = #{content}, category = #{category}, modifiedDate = now()
+		SET title = #{title}, content = #{content}, category = #{category}, modified_date = now()
 		WHERE story_id = #{storyId}
 	</update>
 	
@@ -80,12 +80,12 @@
 	</update>
 	
 	<insert id="insertScrapBook" parameterType = "Map">
-		INSERT INTO story
+		INSERT INTO story_scrapbook
 		VALUES (#{userId}, #{storyId})
 	</insert>
 	
 	<delete id="deleteScrapBook" parameterType = "Map">
-		DELETE FROM story
+		DELETE FROM story_scrapbook
 		WHERE user_id = #{userId} and story_id = #{storyId}
 	</delete>
 	
