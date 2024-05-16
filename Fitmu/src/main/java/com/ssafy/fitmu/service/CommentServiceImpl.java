@@ -12,6 +12,10 @@ public class CommentServiceImpl implements CommentService {
 
 	private CommentDao commentDao;
 	
+	public CommentServiceImpl(CommentDao commentDao) {
+		this.commentDao = commentDao;
+	}
+	
 	@Override
 	public Comment commentDetail(int id) {
 		return commentDao.selectOne(id);

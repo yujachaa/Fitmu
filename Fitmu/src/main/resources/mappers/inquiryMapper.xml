@@ -16,14 +16,14 @@
 	
 	<select id="selectAllByUser" resultType="Inquiry">
 		SELECT * FROM inquiry
-		ORDER BY created_at DESC
 		WHERE user_id = #{userId}
+		ORDER BY created_at DESC
 	</select>
 	
 	<select id="selectAllByProduct" resultType="Inquiry">
 		SELECT * FROM inquiry
-		ORDER BY created_at DESC
 		WHERE product_id = #{productId}
+		ORDER BY created_at DESC
 	</select>
 	
 	<select id="selectOne" resultType = "Inquiry" parameterType = "int">
