@@ -9,9 +9,9 @@ public interface ReviewDao {
 	//리뷰 상세 조회
 	public Review selectOne(int reviewId);
 	//리뷰 전체 조회 -> 최신순정렬
-	public List<Review> selectAll();
+	public List<Review> selectAll(int productId);
 	//리뷰 전체 조회 -> 좋아요 순 조회
-	public List<Review> selectAllOrderByLike();
+	public List<Review> selectAllOrderByLike(int productId);
 	//리뷰 등록
 	public int insertReview(Review review);
 	//리뷰 수정
@@ -25,6 +25,6 @@ public interface ReviewDao {
 	//상품 별점(rating) 추가
 	public int addProductRating(Map<String, Integer> map);
 	//상품 별점(rating) 삭제
-	public int cancleProductRating(Map<String, Integer> map);
+	public int cancelProductRating(Map<String, Integer> map);
 	
 }

@@ -8,9 +8,9 @@ public interface ReviewService {
 	//리뷰상세조회
 	public Review reviewDetail(int id);
 	//리뷰전체조회 -> 최신순정렬
-	public List<Review> seletAll();
+	public List<Review> seletAll(int productId);
 	//리뷰 전체 조회 -> 좋아요 순 조회
-	public List<Review> selectAllOrderByLike();
+	public List<Review> selectAllOrderByLike(int productId);
 	//리뷰 등록
 	public int registReview(Review review);
 	//리뷰 수정

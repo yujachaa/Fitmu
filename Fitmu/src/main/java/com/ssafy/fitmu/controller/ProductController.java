@@ -112,6 +112,7 @@ public class ProductController {
 	@PostMapping("/scrap/{productId}/user/{userId}")
 	@Operation(summary = "상품 스크랩 등록")
 	public ResponseEntity<?> addProductScrap(@PathVariable("productId") int productId, @PathVariable("userId") int userId){
+		System.out.println(userId);
 		int result = productService.insertProductScrap(userId, productId);
 		
 		if(result == 0) {
@@ -155,8 +156,8 @@ public class ProductController {
 	}
 	
 	@GetMapping("/image/{productId}")
-	@Operation(summary = "상품 이미지 조회(스토리)")
-	public ResponseEntity<?> getProductImageByStoryId(@PathVariable("productId") int productId){
+	@Operation(summary = "상품 이미지 조회(상품 id 기준)")
+	public ResponseEntity<?> getProductImageByProductId(@PathVariable("productId") int productId){
 		List<ProductImage> productImageList = productService.getImageByProductId(productId);
 		
 		if(productImageList == null || productImageList.size() == 0) {

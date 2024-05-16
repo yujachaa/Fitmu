@@ -27,7 +27,7 @@
 	
 	<insert id="insertProductScrap" parameterType="Map">
 		INSERT INTO product_scrapbook
-		VALUES( #{userId}, #{productId})
+		VALUES(#{userId}, #{productId})
 	</insert>
 	
 	<delete id="deleteProductScrap" parameterType="Map">
@@ -43,5 +43,11 @@
 	<select id="getImageByProductId" parameterType = "int" resultType = "ProductImage">
 		SELECT * FROM product_image
 		WHERE product_id = #{productId}
+	</select>
+	
+	<select id="getDiscountList" parameterType="int">
+		SELECT * FROM product
+		WHERE discount_rate >= #{dicount}
+		ORDER BY discount_rate DESC
 	</select>
 </mapper>

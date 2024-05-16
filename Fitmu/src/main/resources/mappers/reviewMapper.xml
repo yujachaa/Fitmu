@@ -11,7 +11,7 @@
 	
 	<update id="updateReview" parameterType = "Review">
 		UPDATE review
-		SET rating = #{rating}, review_image = #{reviewImage}, content = #{content}
+		SET rating = #{rating}, content = #{content}
 		WHERE review_id = #{reviewId}
 	</update>
 	
@@ -20,13 +20,16 @@
 		WHERE review_id = #{reviewId}
 	</delete>
 	
-	<select id="selectAll" resultType="Review">
+	<!-- 상품 기준 전체 리뷰 조회 (최신순) -->
+	<select id="selectAll" parameterType="int" resultType="Review">
 		SELECT * FROM review
+		WHERE product_id = #{productId}
 		ORDER BY created_at DESC
 	</select>
 	
-	<select id="selectAllOrderByLike" resultType="Review">
+	<select id="selectAllOrderByLike" parameterType="int" resultType="Review">
 		SELECT * FROM review
+		WHERE product_id = #{productId}
 		ORDER BY liked DESC
 	</select>
 	
@@ -50,12 +53,12 @@
 	<update id="addProductRating" parameterType="Map">
 		UPDATE product
 		SET rating_sum = rating_sum + ${rating}, rating_cnt = rating_cnt + 1
-		WHRER product_id = #{productId}
+		WHERE product_id = #{productId}
 	</update>
 	
 	<update id="cancelProductRating" parameterType="Map">
 		UPDATE product
 		SET rating_sum = rating_sum - ${rating}, rating_cnt = rating_cnt - 1
-		WHRER product_id = #{productId}
+		WHERE product_id = #{productId}
 	</update>
 </mapper>

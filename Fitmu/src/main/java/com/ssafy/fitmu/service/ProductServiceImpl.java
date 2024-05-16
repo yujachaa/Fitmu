@@ -43,16 +43,17 @@ public class ProductServiceImpl implements ProductService {
 	@Override
 	public int insertProductScrap(int userId, int productId) {
 		Map<String, Integer> map = new HashMap<>();
-		map.put("user_id", userId);
-		map.put("product_id", productId);
+		System.out.println(userId);
+		map.put("userId", userId);
+		map.put("productId", productId);
 		return productDao.insertProductScrap(map);
 	}
 
 	@Override
 	public int deleteProductScrap(int userId, int productId) {
 		Map<String, Integer> map = new HashMap<>();
-		map.put("user_id", userId);
-		map.put("product_id", productId);
+		map.put("userId", userId);
+		map.put("productId", productId);
 		return productDao.deleteProductScrap(map);
 	}
 
