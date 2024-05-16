@@ -1,6 +1,8 @@
 package com.ssafy.fitmu.controller;
 
+import java.io.File;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,11 +11,16 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.fitmu.dto.Product;
+import com.ssafy.fitmu.dto.ProductImage;
 import com.ssafy.fitmu.dto.SearchCondition;
+import com.ssafy.fitmu.dto.StoryImage;
 import com.ssafy.fitmu.service.ProductService;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -119,5 +126,33 @@ public class ProductController {
 		}
 	}
 	
+	@PostMapping("/upload")
+	public ResponseEntity<?> uploadProdcutImage(@RequestParam("file") MultipartFile file, @RequestBody ProductImage productImage) {
+
+		UUID uuid = UUID.randomUUID();
+		String originalFilename = file.getOriginalFilename(); // 원본 파일 이름
+		String extension = originalFilename.substring(originalFilename.lastIndexOf(".")); // 파일 확장자 추출
+		String newFilename = uuid.toString() + extension; // UUID를 파일 이름에 추가
+		productImage.setFileName(newFilename);
+		
+		try {
+			int result = productService.insertProductImage(productImage);
+			// 파일 경로 재설정 필요!!!!!해요. (나도 재설정 해야함..)
+			file.transferTo(new File("C:/testproject/SSAFIT-Project/src/assets/image/product",newFilename));
+		} catch (Exception e) {
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<String>(newFilename, HttpStatus.OK);
+	}
 	
+	@GetMapping("/image/{productId}")
+	public ResponseEntity<?> getProductImageByStoryId(@PathVariable("productId") int productId){
+		List<ProductImage> productImageList = productService.getImageByProductId(productId);
+		
+		if(productImageList == null || productImageList.size() == 0) {
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		} else {
+			return new ResponseEntity<List<ProductImage>>(productImageList, HttpStatus.OK);
+		}
+	}
 }

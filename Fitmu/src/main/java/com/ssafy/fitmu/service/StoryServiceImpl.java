@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.ssafy.fitmu.dao.StoryDao;
 import com.ssafy.fitmu.dto.SearchCondition;
 import com.ssafy.fitmu.dto.Story;
+import com.ssafy.fitmu.dto.StoryImage;
 
 @Service
 public class StoryServiceImpl implements StoryService{
@@ -93,6 +94,16 @@ public class StoryServiceImpl implements StoryService{
 	@Override
 	public List<Story> likeStory() {
 		return storyDao.likeStory();
+	}
+
+	@Override
+	public int insertStoryImage(StoryImage storyImage) {
+		return storyDao.insertStoryImage(storyImage);
+	}
+
+	@Override
+	public List<StoryImage> getImageByStoryId(int storyId) {
+		return storyDao.getImageByStoryId(storyId);
 	}
 
 }

@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.ssafy.fitmu.dto.Product;
+import com.ssafy.fitmu.dto.ProductImage;
 import com.ssafy.fitmu.dto.SearchCondition;
 
 public interface ProductDao {
@@ -19,4 +20,8 @@ public interface ProductDao {
 	public int insertProductScrap(Map<String, Integer> map);
 	//제품 스크랩 삭제
 	public int deleteProductScrap(Map<String, Integer> map);
+	//상품 사진 등록
+	public int insertProductImage(ProductImage productImage);
+	
+	public List<ProductImage> getImageByProductId(int productId);
 }

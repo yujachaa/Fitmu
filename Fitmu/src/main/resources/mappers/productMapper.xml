@@ -30,4 +30,14 @@
 		DELETE FROM product_scrapbook
 		WHERE user_id = #{userId} AND product_id = #{productId}
 	</delete>
+	
+	<insert id="insertProductImage" parameterType = "ProductImage">
+		INSERT INTO product_image
+		VALUES (0, #{productId}, #{sellerId}, #{fileName}, now(), now())
+	</insert>
+	
+	<select id="getImageByProductId" parameterType = "int" resultType = "ProductImage">
+		SELECT * FROM product_image
+		WHERE product_id = #{productId}
+	</select>
 </mapper>

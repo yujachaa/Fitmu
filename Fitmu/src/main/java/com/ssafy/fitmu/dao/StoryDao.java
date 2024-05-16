@@ -3,8 +3,10 @@ package com.ssafy.fitmu.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.ssafy.fitmu.dto.ProductImage;
 import com.ssafy.fitmu.dto.SearchCondition;
 import com.ssafy.fitmu.dto.Story;
+import com.ssafy.fitmu.dto.StoryImage;
 
 public interface StoryDao {
 	public int insertStory(Story story);
@@ -22,4 +24,6 @@ public interface StoryDao {
 	public int decreaseLikeCnt(int storyId);
 	public int insertScrapBook(Map<String,Integer> map);
 	public int deleteScrapBook(Map<String,Integer> map);
+	public int insertStoryImage(StoryImage storyImage);
+	public List<StoryImage> getImageByStoryId(int storyId);
 }

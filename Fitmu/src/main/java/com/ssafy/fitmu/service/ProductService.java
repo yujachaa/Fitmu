@@ -3,6 +3,7 @@ package com.ssafy.fitmu.service;
 import java.util.List;
 
 import com.ssafy.fitmu.dto.Product;
+import com.ssafy.fitmu.dto.ProductImage;
 import com.ssafy.fitmu.dto.SearchCondition;
 
 public interface ProductService {
@@ -18,4 +19,8 @@ public interface ProductService {
 	public int insertProductScrap(int userId, int productId);
 	//제품 스크랩 삭제
 	public int deleteProductScrap(int userId, int productId);
+	//제품 사진 등록
+	public int insertProductImage(ProductImage productImage);
+	
+	public List<ProductImage> getImageByProductId(int productId);
 }

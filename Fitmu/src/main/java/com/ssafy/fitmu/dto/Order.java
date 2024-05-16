@@ -9,8 +9,8 @@ public class Order {
 	private int sellerId;
 	private int quantity;
 	private String status; // 구매완료, 배송중, 배송완료, 구매확정
-	private String confirmedAt; //구매확정날짜
-	private String createdAt; //주문일자
+	private String confirmedAt; // 구매확정날짜
+	private String createdAt; // 주문일자
 	private String memo;
 	
 	public Order() {

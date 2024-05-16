@@ -89,4 +89,13 @@
 		WHERE user_id = #{userId} and story_id = #{storyId}
 	</delete>
 	
+	<insert id="insertStoryImage" parameterType = "StoryImage">
+		INSERT INTO story_image
+		VALUES (0, #{storyId}, #{fileName}, now(), now())
+	</insert>
+	
+	<select id="getImageByStoryId" parameterType = "int" resultType = "StoryImage">
+		SELECT * FROM story_image
+		WHERE story_id = #{storyId}
+	</select>
 </mapper>

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.ssafy.fitmu.dao.ProductDao;
 import com.ssafy.fitmu.dto.Product;
+import com.ssafy.fitmu.dto.ProductImage;
 import com.ssafy.fitmu.dto.SearchCondition;
 
 @Service
@@ -53,6 +54,16 @@ public class ProductServiceImpl implements ProductService {
 		map.put("user_id", userId);
 		map.put("product_id", productId);
 		return productDao.deleteProductScrap(map);
+	}
+
+	@Override
+	public int insertProductImage(ProductImage productImage) {
+		return productDao.insertProductImage(productImage);
+	}
+
+	@Override
+	public List<ProductImage> getImageByProductId(int productId) {
+		return productDao.getImageByProductId(productId);
 	}
 
 }
