@@ -9,6 +9,12 @@
 		VALUES (0, #{userId}, #{companyName}, #{representative}, #{address}, #{customerCenter}, #{email}, #{registrationNum})
 	</insert>
 	
+	<update id="updateRole" parameterType="int">
+		UPDATE user
+		SET role = "s"
+		WHERE user_id = #{userId}
+	</update>
+	
 	<insert id="insertProduct" parameterType= "Product">
 		INSERT INTO product
 		VALUES (0, #{sellerId}, #{categoryId}, #{brand}, #{name}, #{price}, #{discountRate}, #{deliveryFee}, #{specialPrice}, now(), now(), 0, 0, #{productDetail})
