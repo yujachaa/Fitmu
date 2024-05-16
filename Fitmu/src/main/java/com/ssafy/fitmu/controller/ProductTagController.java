@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.fitmu.dto.ProductTag;
 import com.ssafy.fitmu.service.ProductTagService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
@@ -31,6 +32,7 @@ public class ProductTagController {
 
 	// 게시글에 달린 태그 전체 조회
 	@GetMapping("/story/{stroyId}")
+	@Operation(summary = "태그 조회(게시글)")
 	public ResponseEntity<?> getAllTagOfStory(@PathVariable("stroyId") int id) {
 		List<ProductTag> list = productTagService.seletAllByStroy(id);
 
@@ -43,6 +45,7 @@ public class ProductTagController {
 	
 	//태그 1개 조회
 	@GetMapping("/tag/{tagId}")
+	@Operation(summary = "태그 상세 조회")
 	public ResponseEntity<?> getTag(@PathVariable("tagId") int id) {
 		ProductTag tag = productTagService.selectOne(id);
 
@@ -55,6 +58,7 @@ public class ProductTagController {
 	
 	//태그 등록
 	@PostMapping("/regist")
+	@Operation(summary = "태그 등록")
 	public ResponseEntity<?> registTag(@RequestBody ProductTag tag){
 		int result = productTagService.insertTag(tag);
 		
@@ -67,6 +71,7 @@ public class ProductTagController {
 	
 	//게시글에 달린 태그 전체 삭제 
 	@DeleteMapping("/story/{storyId}")
+	@Operation(summary = "태그 삭제(게시글)")
 	public ResponseEntity<?> deleteAllTagOfStory(@PathVariable("storyId") int id){
 		int result = productTagService.deleteAllTagOfStory(id);
 		if(result == 0) {

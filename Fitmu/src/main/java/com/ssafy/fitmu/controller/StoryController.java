@@ -25,6 +25,7 @@ import com.ssafy.fitmu.dto.Story;
 import com.ssafy.fitmu.dto.StoryImage;
 import com.ssafy.fitmu.service.StoryService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
@@ -40,6 +41,7 @@ public class StoryController {
 
 	// 게시글 1개 조회
 	@GetMapping("/{storyId}")
+	@Operation(summary = "게시글 상세 조회")
 	public ResponseEntity<?> storyDetail(@PathVariable("storyId") int id) {
 		Story story = storyService.selectOne(id);
 
@@ -52,6 +54,7 @@ public class StoryController {
 
 	// 게시글 등록
 	@PostMapping("/regist")
+	@Operation(summary = "게시글 등록")
 	public ResponseEntity<?> storyRegist(@RequestBody Story story) {
 		int result = storyService.insertStory(story);
 
@@ -64,6 +67,7 @@ public class StoryController {
 
 	// 게시글 수정
 	@PutMapping("/{storyId}")
+	@Operation(summary = "게시글 수정")
 	public ResponseEntity<?> storyUpdate(@PathVariable("storyId") int id, @RequestBody Story story) {
 		story.setStoryId(id);
 
@@ -78,6 +82,7 @@ public class StoryController {
 
 	// 게시글 삭제
 	@DeleteMapping("/{storyId}")
+	@Operation(summary = "게시글 삭제")
 	public ResponseEntity<?> storyDelete(@PathVariable("storyId") int id) {
 		int result = storyService.deleteStory(id);
 
@@ -90,6 +95,7 @@ public class StoryController {
 
 	// 게시글 전체 조회
 	@GetMapping("/story")
+	@Operation(summary = "게시글 전체 조회")
 	public ResponseEntity<?> storyAll() {
 		List<Story> storyList = storyService.selectAll();
 
@@ -102,6 +108,7 @@ public class StoryController {
 
 	// 게시글 검색
 	@GetMapping("/search")
+	@Operation(summary = "게시글 검색")
 	public ResponseEntity<?> search(@ModelAttribute SearchCondition condition) {
 		List<Story> storyList = storyService.searchStory(condition);
 
@@ -114,6 +121,7 @@ public class StoryController {
 
 	// 해당 유저가 쓴 게시글
 	@GetMapping("/user/{userId}")
+	@Operation(summary = "게시글 조회(사용자)")
 	public ResponseEntity<?> searchByUserId(@PathVariable("userId") int id) {
 		List<Story> storyList = storyService.selectByUserId(id);
 
@@ -126,6 +134,7 @@ public class StoryController {
 
 	// 게시글 좋아요 증가
 	@PutMapping("/like/{storyId}")
+	@Operation(summary = "게시글 좋아요 증가")
 	public ResponseEntity<?> likeStory(@PathVariable("storyId") int id) {
 		int result = storyService.increaseLikeCnt(id);
 
@@ -138,6 +147,7 @@ public class StoryController {
 
 	// 게시글 좋아요 감소
 	@PutMapping("/dislike/{storyId}")
+	@Operation(summary = "게시글 좋아요 감소")
 	public ResponseEntity<?> disLikeStory(@PathVariable("storyId") int id) {
 		int result = storyService.decreaseLikeCnt(id);
 
@@ -150,6 +160,7 @@ public class StoryController {
 
 	// 게시글 스크랩북 등록
 	@PostMapping("/story/{storyId}/user/{userId}")
+	@Operation(summary = "게시글 스크랩북 등록")
 	public ResponseEntity<?> registScrapBook(@PathVariable("storyId") int storyId, @PathVariable("userId") int userId) {
 		int result = storyService.insertScrapBook(userId, storyId);
 
@@ -162,6 +173,7 @@ public class StoryController {
 
 	// 게시글 스크랩북 삭제
 	@DeleteMapping("/story/{storyId}/user/{userId}")
+	@Operation(summary = "게시글 스크랩북 삭제")
 	public ResponseEntity<?> removeScrapBook(@PathVariable("storyId") int storyId, @PathVariable("userId") int userId) {
 		int result = storyService.deleteScrapBook(userId, storyId);
 
@@ -173,6 +185,7 @@ public class StoryController {
 	}
 
 	@GetMapping("/story/popular")
+	@Operation(summary = "게시글 조회수 순으로 조회")
 	public ResponseEntity<?> popularStory() {
 		List<Story> storyList = storyService.popularStory();
 
@@ -184,6 +197,7 @@ public class StoryController {
 	}
 	
 	@GetMapping("/story/like")
+	@Operation(summary = "게시글 좋아요 순으로 조회")
 	public ResponseEntity<?> likeStory() {
 		List<Story> storyList = storyService.likeStory();
 
@@ -195,6 +209,7 @@ public class StoryController {
 	}
 	
 	@PostMapping("/upload")
+	@Operation(summary = "게시글 이미지 업로드")
 	public ResponseEntity<?> uploadStoryImage(@RequestParam("file") MultipartFile file, @RequestBody StoryImage storyImage) {
 
 		UUID uuid = UUID.randomUUID();
@@ -214,6 +229,7 @@ public class StoryController {
 	}
 	
 	@GetMapping("/image/{storyId}")
+	@Operation(summary = "게시글 이미지 조회(게시글)")
 	public ResponseEntity<?> getProductImageByStoryId(@PathVariable("storyId") int storyId){
 		List<StoryImage> storyImageList = storyService.getImageByStoryId(storyId);
 		

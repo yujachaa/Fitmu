@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.ssafy.fitmu.dto.Review;
 import com.ssafy.fitmu.service.ReviewService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
@@ -33,6 +34,7 @@ public class ReviewController {
 
 	// 리뷰 상세 조회
 	@GetMapping("/{reviewId}")
+	@Operation(summary = "리뷰 상세 조회")
 	public ResponseEntity<?> reviewDetail(@PathVariable("reviewId") int id) {
 		Review review = reviewService.reviewDetail(id);
 
@@ -45,6 +47,7 @@ public class ReviewController {
 
 	// 리뷰 등록
 	@PostMapping("/regist")
+	@Operation(summary = "리뷰 등록")
 	public ResponseEntity<?> reviewRegist(@RequestBody Review review) {
 		int result = reviewService.registReview(review);
 
@@ -58,6 +61,7 @@ public class ReviewController {
 
 	// 리뷰 수정
 	@PutMapping("/{reviewId}")
+	@Operation(summary = "리뷰 수정")
 	@Transactional
 	public ResponseEntity<?> reviewUpdate(@PathVariable("reviewId") int id, @RequestBody Review review) {
 		//수정 전 리뷰의 rating 저장
@@ -82,6 +86,7 @@ public class ReviewController {
 
 	// 리뷰 삭제
 	@DeleteMapping("/{reviewId}")
+	@Operation(summary = "리뷰 삭제")
 	@Transactional
 	public ResponseEntity<?> reviewDelete(@PathVariable("reviewId") int id) {
 		//삭제 전 리뷰의 rating 삭제
@@ -99,6 +104,7 @@ public class ReviewController {
 
 	// 리뷰 전체 조회 -> 최신순
 	@GetMapping("/review")
+	@Operation(summary = "리뷰 전체 조회(최신순)")
 	public ResponseEntity<?> reviewAll() {
 		List<Review> list = reviewService.seletAll();
 
@@ -111,6 +117,7 @@ public class ReviewController {
 	
 	// 리뷰 전체 조회 -> 좋아요 순
 	@GetMapping("/review/like")
+	@Operation(summary = "리뷰 전체 조회(좋아요순)")
 	public ResponseEntity<?> reviewAllOrderByLike() {
 		List<Review> list = reviewService.selectAllOrderByLike();
 		
@@ -123,6 +130,7 @@ public class ReviewController {
 
 	// 리뷰 좋아요 증가
 	@PutMapping("/like/{reviewId}")
+	@Operation(summary = "리뷰 좋아요 증가")
 	public ResponseEntity<?> likeReview(@PathVariable("reviewId") int id) {
 		int result = reviewService.addLike(id);
 
@@ -135,6 +143,7 @@ public class ReviewController {
 
 	// 리뷰 좋아요 감소
 	@PutMapping("/dislike/{reviewId}")
+	@Operation(summary = "리뷰 좋아요 감소")
 	public ResponseEntity<?> dislikeReview(@PathVariable("reviewId") int id) {
 		int result = reviewService.cancelLike(id);
 

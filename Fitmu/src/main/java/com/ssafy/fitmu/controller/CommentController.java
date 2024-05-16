@@ -17,6 +17,7 @@ import com.ssafy.fitmu.dto.Comment;
 import com.ssafy.fitmu.dto.Inquiry;
 import com.ssafy.fitmu.service.CommentService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
@@ -32,6 +33,7 @@ public class CommentController {
 
 	// 댓글 상세 조회 -> 테스트용
 	@GetMapping("/{commentId}")
+	@Operation(summary = "댓글 상세 조회")
 	public ResponseEntity<?> commentDetail(@PathVariable("commentId") int id) {
 		Comment comment= commentService.commentDetail(id);
 
@@ -44,6 +46,7 @@ public class CommentController {
 
 	// 댓글 전체 조회 -> 게시글 기준
 	@GetMapping("/story/{storyId}")
+	@Operation(summary = "댓글 전체 조회(게시글 기준)")
 	public ResponseEntity<?> getCommentByStory(@PathVariable("storyId") int id){
 		List<Comment> list = commentService.selectAllByStory(id);
 		
@@ -57,6 +60,7 @@ public class CommentController {
 	
 	// 댓글 등록
 	@PostMapping("/regist")
+	@Operation(summary = "댓글 등록")
 	public ResponseEntity<?> commentRegist(@RequestBody Comment comment) {
 		int result = commentService.registComment(comment);
 
@@ -70,6 +74,7 @@ public class CommentController {
 
 	// 댓글 삭제
 	@DeleteMapping("/{commentId}")
+	@Operation(summary = "댓글 삭제")
 	public ResponseEntity<?> commentDelete(@PathVariable("commentId") int id) {
 		
 		int result = commentService.deleteComment(id);

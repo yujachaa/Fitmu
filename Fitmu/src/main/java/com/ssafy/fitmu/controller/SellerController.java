@@ -15,6 +15,7 @@ import com.ssafy.fitmu.dto.Product;
 import com.ssafy.fitmu.dto.Seller;
 import com.ssafy.fitmu.service.SellerService;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
@@ -31,6 +32,7 @@ public class SellerController {
 	
 	//판매자 등록
 	@PostMapping("/regist")
+	@Operation(summary = "판매자 등록")
 	public ResponseEntity<?> registSeller(@RequestBody Seller seller){
 		int result = sellerService.insertSeller(seller);
 		
@@ -43,6 +45,7 @@ public class SellerController {
 	
 	//상품 등록
 	@PostMapping("/product-regist")
+	@Operation(summary = "상품 등록")
 	public ResponseEntity<?> registProduct(@RequestBody Product product){
 		int result = sellerService.insertProduct(product);
 		
@@ -55,6 +58,7 @@ public class SellerController {
 	
 	//문의 답변 등록 + 수정
 	@PutMapping("/answer/{inquiryId}")
+	@Operation(summary = "문의 답변 등록 및 수정")
 	public ResponseEntity<?> registAnswer(@RequestBody String answer, @PathVariable("inquiryId") int inquiryId){
 		int result = sellerService.insertAnswer(inquiryId, answer);
 		
@@ -67,6 +71,7 @@ public class SellerController {
 	
 	//문의 답변 삭제
 	@DeleteMapping("/answer/{inquiryId}")
+	@Operation(summary = "문의 답변 삭제")
 	public ResponseEntity<?> deleteAnswer(@PathVariable("inquiryId") int inquiryId){
 		int result = sellerService.deleteAnswer(inquiryId);
 		

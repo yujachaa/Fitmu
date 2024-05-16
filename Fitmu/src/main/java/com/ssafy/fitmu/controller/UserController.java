@@ -23,6 +23,7 @@ import com.ssafy.fitmu.dto.User;
 import com.ssafy.fitmu.service.UserService;
 import com.ssafy.fitmu.util.JwtUtil;
 
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
 
@@ -41,6 +42,7 @@ public class UserController {
 	
 	// 전체 유저 조회
 	@GetMapping("/")
+	@Operation(summary = "사용자 전체 조회")
 	public ResponseEntity<?> getAllUsers(){
 		List<User> list = userService.selectAll();
 		return new ResponseEntity<List<User>>(list, HttpStatus.OK);
@@ -48,6 +50,7 @@ public class UserController {
 	
 	//유저 1명 조회
 	@GetMapping("/{userId}")
+	@Operation(summary = "사용자 상세 조회")
 	public ResponseEntity<?> getUser(@PathVariable("userId") int userId){
 		User user = userService.selectOne(userId);
 		
@@ -60,6 +63,7 @@ public class UserController {
 
 	// 로그인 (프론트 sessionstorage에 로그인 된 유저의 userId 넣기, 데이터 가져올 수 있게)
 	@PostMapping("/login")
+	@Operation(summary = "로그인")
 	public ResponseEntity<?> login(HttpSession session, @RequestBody User loginUser) {
 		User DBuser = userService.selectOneByEmail(loginUser.getEmail());
 		
@@ -83,6 +87,7 @@ public class UserController {
 
 	// 회원가입
 	@PostMapping("/regist")
+	@Operation(summary = "회원가입")
 	public ResponseEntity<?> regist(@RequestBody User registUser) {
 		List<User> allUsers = userService.selectAll();
 
@@ -105,6 +110,7 @@ public class UserController {
 
 	// 로그아웃 (여기서도 지우고, sessionstorage에서도 지우기)
 	@GetMapping("/logout")
+	@Operation(summary = "로그아웃")
 	public ResponseEntity<?> logout(HttpSession session) {
 		// 그냥 session 지우기?
 		session.invalidate();
@@ -114,6 +120,7 @@ public class UserController {
 
 	// 회원탈퇴
 	@DeleteMapping("/withdrawal")
+	@Operation(summary = "회원탈퇴")
 	public ResponseEntity<?> withdrawal(HttpSession session) {
 		// session에 정보 사용해서 탈퇴하고 session 비우기
 		User loginUser = (User) session.getAttribute("loginUser");
@@ -129,6 +136,7 @@ public class UserController {
 
 	// 유저 검색
 	@GetMapping("/search")
+	@Operation(summary = "사용자 검색")
 	public ResponseEntity<?> searchByCondition(@ModelAttribute SearchCondition condition) {
 		List<User> userList = userService.searchByCondition(condition);
 
@@ -141,6 +149,7 @@ public class UserController {
 
 	// 설정변경
 	@PutMapping("/update")
+	@Operation(summary = "사용자 설정 변경")
 	public ResponseEntity<?> update(HttpSession session, @RequestBody User user) {
 		User loginUser = (User) session.getAttribute("loginUser");
 		int loginUserId = loginUser.getUserId();
@@ -158,6 +167,7 @@ public class UserController {
 
 	// 팔로워 등록
 	@PostMapping("/user/{userId}/follow/{followingId}")
+	@Operation(summary = "사용자 팔로워 등록(사용자가 등록)")
 	public ResponseEntity<?> registFollower(HttpSession session, @PathVariable("userId") int userId, @PathVariable("followingId") int followingId) {
 
 		int result = userService.insertFollow(userId, followingId);
@@ -171,6 +181,7 @@ public class UserController {
 
 	// 팔로워 삭제
 	@DeleteMapping("/user/{userId}/follow/{followingId}")
+	@Operation(summary = "사용자 팔로워 삭제")
 	public ResponseEntity<?> deleteFollower(HttpSession session, @PathVariable("userId") int userId, @PathVariable("followingId") int followingId) {
 
 		int result = userService.deleteFollow(userId, followingId);
@@ -184,6 +195,7 @@ public class UserController {
 
 	// 팔로워 조회(유저가 팔로우 하고 있는 사람들)
 	@GetMapping("/user/{userId}/follower")
+	@Operation(summary = "유저가 팔로우 하고 있는 사람들")
 	public ResponseEntity<?> getFollower(HttpSession session, @PathVariable("userId") int id) {
 		// session에 있는 user정보 가지고 잘 가져오면 될거같기도 하고..-> 다른 유저의 팔로잉, 팔로워 보기 위해서 그냥 경로에 유저아이디 넣어주는 걸로!!
 		
@@ -204,6 +216,7 @@ public class UserController {
 
 	// 팔로잉 조회(유저를 팔로우 하고 있는 사람들)
 	@GetMapping("/user/{userId}/followee")
+	@Operation(summary = "유저를 팔로우 하고 있는 사람들")
 	public ResponseEntity<?> getFollowee(HttpSession session, @PathVariable("userId") int id) {
 		
 		List<Integer> followeeList = userService.getFolloweeOfUser(id);

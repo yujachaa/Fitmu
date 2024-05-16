@@ -32,7 +32,7 @@ public class AddressController {
 		this.addressService = addressService;
 	}
 	@GetMapping("/address/{addressId}")
-	@Operation()
+	@Operation(summary = "주소 상세 조회")
 	public ResponseEntity<?> getAddressDetail(@PathVariable("addressId") int addressId){
 		Address address = addressService.getAddressDetail(addressId);
 		
@@ -43,6 +43,7 @@ public class AddressController {
 	}
 	
 	@DeleteMapping("/address/{addressId}")
+	@Operation(summary = "주소 삭제")
 	public ResponseEntity<?> deleteAddress(@PathVariable("addressId") int addressId){
 		int result = addressService.deleteAddress(addressId);
 		
@@ -53,6 +54,7 @@ public class AddressController {
 	}
 	
 	@PutMapping("/address/{addressId}")
+	@Operation(summary = "주소 수정")
 	public ResponseEntity<?> changeAddress(@PathVariable("addressId") int addressId, @RequestBody Address address){
 		address.setAddressId(addressId);
 		int result = addressService.updateAddress(address);
@@ -64,6 +66,7 @@ public class AddressController {
 	}
 	
 	@PostMapping("/address/{userId}")
+	@Operation(summary = "주소 등록")
 	public ResponseEntity<?> registAddress(@PathVariable("userId") int userId, @RequestBody Address address){
 		List<Address> addressList = addressService.getAddressByUserId(userId);
 		if(addressList.size() == 0) {
@@ -78,6 +81,7 @@ public class AddressController {
 	}
 	
 	@GetMapping("/address/user/{userId}")
+	@Operation(summary = "유저 주소 조회")
 	public ResponseEntity<?> getAddressListByUserId(@PathVariable("userId") int userId){
 		List<Address> addressList = addressService.getAddressByUserId(userId);
 		
@@ -88,6 +92,7 @@ public class AddressController {
 	}
 	
 	@GetMapping("/address/{userId}")
+	@Operation(summary = "기본 배송지 조회")
 	public ResponseEntity<?> getDefaultAddress(@PathVariable("userId") int userId){
 		List<Address> addressList = addressService.getAddressByUserId(userId);
 		Address returnAddress = null;
@@ -103,6 +108,7 @@ public class AddressController {
 	}
 	
 	@PutMapping("/address/{userId}/{addressId}")
+	@Operation(summary = "기본 배송지 변경")
 	@Transactional
 	public ResponseEntity<?> changeDefaultAddress(@PathVariable("userId") int userId, @PathVariable("addressId") int addressId){
 		List<Address> addressList = addressService.getAddressByUserId(userId);
