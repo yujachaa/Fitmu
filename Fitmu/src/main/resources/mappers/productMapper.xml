@@ -6,7 +6,7 @@
 <mapper namespace = "com.ssafy.fitmu.dao.ProductDao">
 	<select id="selectOne" parameterType = "int" resultType = "Product">
 		SELECT * FROM product 
-		WHERE id = #{productId}
+		WHERE product_id = #{productId}
 	</select>
 	
 	<select id="selectAll" resultType = "Product">
