@@ -8,6 +8,10 @@ public class ProductTag {
 	private int left;
 	private int storyId;
 	
+	public ProductTag() {
+		
+	}
+	
 	public ProductTag(int tagId, int imageId, int productId, int top, int left, int storyId) {
 		this.tagId = tagId;
 		this.imageId = imageId;

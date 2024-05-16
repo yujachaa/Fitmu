@@ -10,6 +10,10 @@ public class Comment {
 	private String createdDate;
 	private String modifiedDate;
 	
+	public Comment() {
+		
+	}
+	
 	public Comment(int commentId, int storyId, int userId, String content) {
 		this.commentId = commentId;
 		this.storyId = storyId;

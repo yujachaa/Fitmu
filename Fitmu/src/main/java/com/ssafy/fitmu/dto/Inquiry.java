@@ -14,6 +14,10 @@ public class Inquiry {
 	private String category;
 	private String context;
 	private String answer;
+	
+	public Inquiry() {
+		
+	}
 
 	public Inquiry(int inquiryId, int userId, int productId, int sellerId, int isBuy, int isPrivate, int isAnswered,
 			String category, String context, String answer) {
