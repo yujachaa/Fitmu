@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace = "com.ssafy.fitmu.dao.ProductTagDao">
+	<select id="seletAllByStroy" resultType = "ProductTag" parameterType = "int">
+		SELECT * FROM product_tag
+		WHERE story_id = #{storyId}
+	</select>
+
+	<select id="selectOne" resultType = "ProductTag" parameterType = "int">
+		SELECT * FROM product_tag
+		WHERE tag_id = #{tagId}
+	</select>
+
+	<insert id="insertTag" parameterType = "ProductTag">
+		INSERT INTO product_tag
+		VALUES (0, #{imageId}, #{productId}, #{top}, #{left}, #{storyId})
+	</insert>
+	
+	<delete id="deleteAllTagOfStory" parameterType = "int">
+		DELETE FROM product_tag
+		WHERE story_id = #{storyId}
+	</delete>
+</mapper>
