@@ -20,6 +20,9 @@ public class SellerSeriveImpl implements SellerService {
 	
 	@Override
 	public int insertSeller(Seller seller) {
+		int userId = seller.getUserId();
+		//유저정보에서 롤 변경
+		sellerDao.updateRole(userId);
 		return sellerDao.insertSeller(seller);
 	}
 

@@ -8,6 +8,8 @@ import com.ssafy.fitmu.dto.Seller;
 public interface SellerDao {
 	//판매자 등록
 	public int insertSeller(Seller seller);	
+	//유저테이블에서 롤 변경
+	public int updateRole(int userId);
 	//상품 등록
 	public int insertProduct(Product product);
 	//문의 답변 등록 + 수정 -> put으로 Inquiry.answer 만 수정
