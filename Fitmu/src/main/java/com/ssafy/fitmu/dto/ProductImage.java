@@ -10,6 +10,10 @@ public class ProductImage {
 	private String createdAt;
 	private String updatedAt;
 	
+	public ProductImage() {
+		
+	}
+	
 	public ProductImage(int imageId, int productId, int sellerId, String fileName, String createdAt, String updatedAt) {
 		this.imageId = imageId;
 		this.productId = productId;

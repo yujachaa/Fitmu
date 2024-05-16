@@ -10,6 +10,10 @@ public class Seller {
 	private String email;
 	private int registrationNum;
 	
+	public Seller () {
+		
+	}
+	
 	public Seller(int sellerId, int userId, String companyName, String representative, String address,
 			String customerCenter, String email, int registrationNum) {
 		this.sellerId = sellerId;

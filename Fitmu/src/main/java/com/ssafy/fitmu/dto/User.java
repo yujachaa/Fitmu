@@ -16,6 +16,10 @@ public class User {
 	private String createdAt;
 	private String updatedAt;
 	
+	public User() {
+		
+	}
+	
 	public User(int userId, String email, String password, String birth, String nickname, int agreeTOS, int agreePICU,
 			int agreePromotion, String gender, String role) {
 		this.userId = userId;
