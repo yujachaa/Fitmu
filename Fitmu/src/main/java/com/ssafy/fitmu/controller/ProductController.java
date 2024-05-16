@@ -46,7 +46,7 @@ public class ProductController {
 		if(product == null) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		}else {
-			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+			return new ResponseEntity<Product>(product, HttpStatus.OK);
 		}
 	}
 	
