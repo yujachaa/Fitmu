@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -57,6 +58,7 @@ public class ReviewController {
 
 	// 리뷰 수정
 	@PutMapping("/{reviewId}")
+	@Transactional
 	public ResponseEntity<?> reviewUpdate(@PathVariable("reviewId") int id, @RequestBody Review review) {
 		//수정 전 리뷰의 rating 저장
 		Review before = reviewService.reviewDetail(id);
@@ -80,6 +82,7 @@ public class ReviewController {
 
 	// 리뷰 삭제
 	@DeleteMapping("/{reviewId}")
+	@Transactional
 	public ResponseEntity<?> reviewDelete(@PathVariable("reviewId") int id) {
 		//삭제 전 리뷰의 rating 삭제
 		Review review = reviewService.reviewDetail(id);
