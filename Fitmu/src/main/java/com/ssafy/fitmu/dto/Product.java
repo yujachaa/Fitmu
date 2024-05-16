@@ -18,6 +18,8 @@ public class Product {
 	private int ratingCnt;
 	private String productDetail;
 	
+	public Product() {}
+	
 	public Product(int productId, int sellerId, int categoryId, String brand, String name, int price, int discountRate,
 			int deliveryFee, int specialPrice, int ratingSum, int ratingCnt,
 			String productDetail) {
