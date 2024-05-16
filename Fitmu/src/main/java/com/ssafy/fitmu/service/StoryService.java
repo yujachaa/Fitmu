@@ -2,8 +2,10 @@ package com.ssafy.fitmu.service;
 
 import java.util.List;
 
+import com.ssafy.fitmu.dto.ProductImage;
 import com.ssafy.fitmu.dto.SearchCondition;
 import com.ssafy.fitmu.dto.Story;
+import com.ssafy.fitmu.dto.StoryImage;
 
 public interface StoryService {
 	public int insertStory(Story story);
@@ -20,4 +22,6 @@ public interface StoryService {
 	public int decreaseLikeCnt(int storyId);
 	public int insertScrapBook(int userId, int storyId);
 	public int deleteScrapBook(int userId, int storyId);
+	public int insertStoryImage(StoryImage storyImage);
+	public List<StoryImage> getImageByStoryId(int storyId);
 }

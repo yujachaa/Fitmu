@@ -2,9 +2,12 @@ package com.ssafy.fitmu.service;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
 import com.ssafy.fitmu.dao.CommentDao;
 import com.ssafy.fitmu.dto.Comment;
 
+@Service
 public class CommentServiceImpl implements CommentService {
 
 	private CommentDao commentDao;

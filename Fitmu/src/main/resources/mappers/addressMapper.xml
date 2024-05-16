@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace = "com.ssafy.fitmu.dao.AddressDao">
+	<select id="getAddressByUserId" parameterType = "int" resultType = "Address">
+		SELECT * FROM address
+		WHERE user_id = #{userId}
+	</select>
+	
+	<delete id="deleteAddress" parameterType = "int">
+		DELETE FROM address
+		WHERE address_id = #{addressId}
+	</delete>
+	
+	<insert id="insertAddress" parameterType = "Address">
+		INSERT INTO address
+		VALUES (0, #{userId}, #{addressName}, #{receiver}, #{phoneNumber}, #{address1}, #{address2}, #{isDefault})
+	</insert>
+	
+	<update id="updateAddress" parameterType = "Address">
+		UPDATE address
+		SET address_name = #{addressName}, receiver = #{receiver}, phone_number = #{phoneNumber}, address1 = #{address1}, address2 = #{address2}, is_default = #{isDefault} 
+		WHERE address_id = #{addressId}
+	</update>
+	
+	<select id="getAddressDetail" parameterType = "int" resultType = "Address">
+		SELECT * FROM address
+		WHERE address_id = #{addressId}
+	</select>
+</mapper>
