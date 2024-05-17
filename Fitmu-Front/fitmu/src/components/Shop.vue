@@ -30,7 +30,9 @@
                 <carousel v-bind="settings" :breakpoints="breakpoints" :mouseDrag="false" :touchDrag="false">
                     <slide v-for="slide in 7" :key="slide">
                         <div class="product_carousel__item">
-                            <img class="product_carousel_pic" :src="`src/assets/image/product/${slide}.jpg`" alt="이미지">
+                            <div class="sale-pic">
+                                <img class="pic " :src="`src/assets/image/product/${slide}.jpg`" alt="이미지">
+                            </div>
                             <div class="product-info ">
                                 <div class="brand">
                                     삼성전자
@@ -77,7 +79,9 @@
             <div class="popular d-flex justify-content-between">
                 <!-- v-for 넣기 -->
                 <div v-for ="num in 12" :key="num">
-                    <img class="popular-image" :src="`src/assets/image/product/${num + 6}.jpg`" alt="이미지">
+                    <div class="popular-pic">
+                        <img class="pic" :src="`src/assets/image/product/${num + 6}.jpg`" alt="이미지">
+                    </div>
                     <div class="product-info">
                         <div class="brand">
                             삼성전자
@@ -160,6 +164,52 @@ hr {
     margin: 0;
 }
 
+.popular-pic{
+    width: 270px;
+    height: 270px;
+    border-radius: 8px;
+    object-fit: cover;
+    object-fit: cover;
+    overflow: hidden;
+}
+.popular-pic>.pic{
+    border-radius: 8px;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    transition: all 0.2s linear;
+}
+.popular-pic:hover .pic{
+    width: 100%;
+    height: 100%;
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+.sale-pic{
+    width: 220px;
+    height: 220px;
+    border-radius: 8px;
+    /* height: 400px; */
+    object-fit: cover;
+    overflow: hidden;
+    /* border-radius: 5px; */
+}
+
+.sale-pic>.pic{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    transition: all 0.1s linear;
+}
+.sale-pic:hover .pic{
+    width: 100%;
+    height: 100%;
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
 .product-info{
     margin-top: 5px;
     margin-bottom: 15px;
@@ -210,12 +260,7 @@ hr {
     width: 100%;
 }
 
-.popular-image{
-    width: 270px;
-    height: 270px;
-    border-radius: 8px;
-    object-fit: cover;
-}
+
 .container {
     width: 100%;
     display: flex;
@@ -245,21 +290,14 @@ hr {
     align-items: start;
 }
 
-/* .product-info{    
-    flex-direction: column;
-    justify-content: start;
-    align-items: start;
-
-} */
-
-.product_carousel_pic {
+/* .product_carousel_pic {
+    width: 100%;
+    height: 100%;
     width: 220px;
     height: 220px;
     object-fit: cover;
     border-radius: 8px;
-}
-
-
+} */
 
 .section-title {
     width: 100%;
