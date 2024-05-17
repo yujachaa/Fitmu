@@ -16,15 +16,15 @@
                     <div class="row justify-content-center">
                         <div class="input-group col-sm-1">
                             <div class="col-sm-5">
-                                <input type="text" class="form-control" placeholder="이메일">
+                                <input type="text" class="form-control" value = "" placeholder="이메일" v-model = "prevEmail">
                             </div>
                             <div class="input-group-text">@</div>
                             <div class="col-sm">
-                                <select class="form-select" name="">
+                                <select class="form-select" name="" v-model = "afterEmail">
                                     <option value="">선택해주세요</option>
-                                    <option value="">naver.com</option>
-                                    <option value="">daum.net</option>
-                                    <option value="">직접입력은 죄송</option>
+                                    <option value="naver.com">naver.com</option>
+                                    <option value="daum.net">daum.net</option>
+                                    <option value="sorry.com">직접입력은 죄송</option>
                                 </select>
                             </div>
                             <div class="invalid-feedback">필수 입력 항목입니다.</div>
@@ -70,24 +70,29 @@
                     <label class="form-label">
                         <h5 class="label">약관동의</h5>
                     </label>
-                    <div>
+                    <div class="checkbox1">
+                        <div class ="form-check">
+                            <input id = "totalAgree" class="form-check-input" type="checkbox" value="" v-model="totalAgree">
+                            <label for="totalAgree"> 전체동의</label>
+                        </div>
+                        <hr>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
-                            <label class="form-check-label" for="invalidCheck">
+                            <input v-model = "agree1" class="form-check-input" type="checkbox" value="false" id="invalidCheck1" required>
+                            <label class="form-check-label" for="invalidCheck1">
                                 이용약관 <span>(필수)</span>  
                             </label>
                             <div class="invalid-feedback">필수 항목에 동의해주세요.</div>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
-                            <label class="form-check-label" for="invalidCheck">
+                            <input v-model = "agree2" class="form-check-input" type="checkbox" value="false" id="invalidCheck2" required>
+                            <label class="form-check-label" for="invalidCheck2">
                                 개인정보수집 및 이용동의 <span>(필수)</span>  
                             </label>
                             <div class="invalid-feedback">필수 항목에 동의해주세요.</div>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
-                            <label class="form-check-label" for="invalidCheck">
+                            <input v-model = "agree3" class="form-check-input" type="checkbox" value="false" id="invalidCheck3" required>
+                            <label class="form-check-label" for="invalidCheck3">
                                 개인정보 마케팅 활용 동의 <span>(선택)</span>  
                             </label>
                         </div>
@@ -105,9 +110,38 @@
 </template>
 
 <script setup>
-// import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 // import { useUserStore } from '../stores/user'
 
+const agree1 = ref(false)
+const agree2 = ref(false)
+const agree3 = ref(false)
+
+const totalAgree = ref(false)
+
+watch((totalAgree),(newValue, oldVaue)=>{
+    if(totalAgree.value){
+        if(!agree1.value){
+            agree1.value = true
+        }
+        if(!agree2.value){
+            agree2.value = true
+        }
+        if(!agree3.value){
+            agree3.value = true
+        }
+    }else{
+        if(agree1.value){
+            agree1.value = false
+        }
+        if(agree2.value){
+            agree2.value = false
+        }
+        if(agree3.value){
+            agree3.value = false
+        }
+    }
+})
 
 
 // const store = useUserStore()
@@ -127,6 +161,16 @@
 </script>
 
 <style scoped>
+.checkbox1{
+    width : 100%;
+    height : 170px;
+    padding : 15px;
+    border : 1px solid #EAEDEF;
+}
+
+hr{
+    color : #EAEDEF;
+}
 .label {
     font-weight: 600;
 }
@@ -152,17 +196,14 @@
 .btn-email {
     margin-top: 10px;
     height: 40px;
-    background-color: rgb(246, 246, 246);
-    color: rgb(168, 168, 168);
-    border: solid 1px rgb(218, 218, 218);
-    font-weight: bold;
-    border-radius: 5px;
-}
-
-.btn-email:active {
     background-color: #34C5F0;
     color: white;
     border: none;
+    font-weight: bold;
+    border-radius: 5px;
+}
+.btn-email:hover {
+    background-color: #26768e;
 }
 
 .btn-regist {
@@ -176,7 +217,7 @@
 }
 
 .btn-regist:hover {
-    background-color: #2990b0;
+    background-color: #26768e;
 }
 
 h1 {
