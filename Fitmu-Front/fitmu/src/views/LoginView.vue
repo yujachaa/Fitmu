@@ -1,11 +1,11 @@
 <template>
     <div class="login">
         <h1>
-            <RouterLink class = "logo" :to="{ name: 'home' }">핏뮤<span class="fitmu">Fitmu</span></RouterLink>
+            <RouterLink class = "logo" :to="{ name: 'commu' }">핏뮤<span class="fitmu">Fitmu</span></RouterLink>
         </h1>
         <div class="input">
-            <input class="id" type="text" placeholder="아이디" v-model="user.id" />
-            <input class="pw" type="password" placeholder="비밀번호" v-model="user.password" />
+            <input class="id" type="text" placeholder="아이디" />
+            <input class="pw" type="password" placeholder="비밀번호" />
         </div>
         <button id="btn-login" @click="login">로그인</button>
         <RouterLink class = "regist" :to="{ name: 'regist' }">회원가입</RouterLink>
@@ -14,26 +14,25 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { useUserStore } from '../stores/user'
+// import { ref, computed, onMounted } from 'vue'
+// import { useUserStore } from '../stores/user'
 
-const user = ref({
-    id: "",
-    password: ""
-})
+// const user = ref({
+//     id: "",
+//     password: ""
+// })
 
-const login = function () {
-    store.login(user.value)
-}
+// const login = function () {
+//     store.login(user.value)
+// }
 
-const store = useUserStore()
-onMounted(() => {
-    store.getUserList()
-})
+// const store = useUserStore()
+// onMounted(() => {
+//     store.getUserList()
+// })
 </script>
 
 <style scoped>
-
 .fitmu {
     color: #34C5F0;
     font-size: smaller;
@@ -83,6 +82,12 @@ onMounted(() => {
     border: 1px solid rgb(219, 213, 213);
 }
 
+.id:focus {
+    outline: 2px solid rgb(114, 202, 230, 0.5);
+    border-color: #72cae6;
+    z-index: 999;
+}
+
 .pw {
     width : 270px;
     height : 50px;
@@ -90,6 +95,12 @@ onMounted(() => {
     border-end-end-radius: 5px;
     border-end-start-radius: 5px;
     border: 1px solid rgb(219, 213, 213);
+}
+
+.pw:focus {
+    outline: 2px solid rgb(114, 202, 230, 0.5);
+    border-color: #72cae6;
+    z-index: 999;
 }
 
 .login {
