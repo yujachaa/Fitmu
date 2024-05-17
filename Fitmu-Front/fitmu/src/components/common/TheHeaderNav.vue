@@ -3,7 +3,7 @@
         <div class="top">
             <div>
                 <RouterLink class="logo" :to="{ name: 'commu' }">
-                    <h1>핏뮤<span class="fitmu">Fitmu</span></h1>
+                    <h1 class="jua-regular">핏뮤<span class="fitmu">Fitmu</span></h1>
                 </RouterLink>
             </div>
             <div class="category">
@@ -15,8 +15,8 @@
                 </RouterLink>
             </div>
             <div class="search">
-                <input type="text">
                 <i class="bi bi-search"></i>
+                <input type="text" class="form-control" placeholder="검색어를 입력하세요.">
             </div>
             <div class="users">
                 <span>로그인</span>
@@ -44,6 +44,9 @@
         </div>
         <div class="top">
             <div class="shop-category-first">
+                <RouterLink :to="{ name: 'shop' }">
+                    <h5>쇼핑홈</h5>
+                </RouterLink>
                 <h5>단백질/보충제</h5>
                 <h5>다이어트식단</h5>
                 <h5>의류</h5>
@@ -58,6 +61,8 @@ import { RouterLink, RouterView } from "vue-router";
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
 .btn {
     width: 80px;
     border: 1px solid #34C5F0;
@@ -85,8 +90,8 @@ import { RouterLink, RouterView } from "vue-router";
 }
 
 .category {
-    padding-right : 100px;
-    display : flex;
+    padding-right: 100px;
+    display: flex;
     justify-content: start;
 }
 
@@ -140,6 +145,10 @@ import { RouterLink, RouterView } from "vue-router";
     color: black;
 }
 
+/* .logo h1{
+    font-weight: bolder;
+} */
+
 .fitmu {
     color: #34C5F0;
     font-size: smaller;
@@ -165,5 +174,11 @@ import { RouterLink, RouterView } from "vue-router";
 
 h4 {
     font-weight: bold;
+}
+
+.jua-regular {
+    font-family: "Jua", sans-serif;
+    font-weight: 100;
+    font-style: normal;
 }
 </style>
