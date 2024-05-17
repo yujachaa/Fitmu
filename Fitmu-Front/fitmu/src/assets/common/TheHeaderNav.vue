@@ -5,12 +5,12 @@
                 <h1>핏뮤<span class="fitmu">Fitmu</span></h1>
             </a>
         </div>
-        <div class="category col col-lg-5">
+        <div class="category col col-lg-4">
             <h3>커뮤니티</h3>
             <h3>쇼핑</h3>
         </div>
         <div class="search col col-lg-3">
-            <h2>search</h2>
+            <input type="text">
         </div>
         <div class="users">
             <h3>users</h3>
@@ -47,7 +47,7 @@
     display: flex;
     padding-top: 10px;
     justify-content: start;
-    padding-left : 50px;
+    padding-left: 50px;
 }
 
 h3 {
