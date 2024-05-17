@@ -44,7 +44,8 @@
                                 <img class="mini-img2" src="@/assets/2.jpg" alt="하이루">
                                 <p>닉네임인것</p>
                                 <div class="bookmark">
-                                    <i class="bi bi-bookmark-star"></i>
+                                    <i id = "book" class="bi bi-bookmark-fill"></i>
+                                    <i id = "book2"class="bi bi-bookmark"></i>
                                 </div>
                             </div>
                         </div>
@@ -71,7 +72,8 @@
                     <div class="sub-img">
                         <img class="subimg" :src="`src/assets/${index}.jpg`" alt="">
                         <div class="main-img-info3">
-                            <i class="bi bi-bookmark-star"></i>
+                            <i id = "book" class="bi bi-bookmark-fill"></i>
+                            <i id = "book2"class="bi bi-bookmark"></i>
                         </div>
                     </div>
                     <div class="infoo">
@@ -134,9 +136,14 @@ export default defineComponent({
         },
     }),
 })
+
 </script>
 
 <style scoped>
+#book{
+    position : absolute;
+    opacity: 0.5;
+}
 .toptop {
     margin-top: 20px;
 }
