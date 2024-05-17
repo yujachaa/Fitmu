@@ -1,5 +1,5 @@
 <template>
-    <div class="container">
+    <div id = "toptoptop" class="container">
         <div class="top">
             <div>
                 <RouterLink class="logo" :to="{ name: 'commu' }">
@@ -8,10 +8,10 @@
             </div>
             <div class="category">
                 <RouterLink class="commu-nav" :to="{ name: 'commu' }">
-                    <h4>커뮤니티</h4>
+                    <span :class = "{blue : flag}">커뮤니티</span>
                 </RouterLink>
                 <RouterLink class="shop-nav" :to="{ name: 'shop' }">
-                    <h4>쇼핑</h4>
+                    <span :class = "{blue : !flag}">쇼핑</span>
                 </RouterLink>
             </div>
             <div class="search">
@@ -19,37 +19,37 @@
                 <input type="text" class="form-control" placeholder="검색어를 입력하세요.">
             </div>
             <div class="users">
-                <span>로그인</span>
+                <RouterLink class = "unline" :to="{name : 'login'}"><span>로그인</span></RouterLink>
                 <span>|</span>
-                <span>회원가입</span>
+                <RouterLink class = "unline" :to="{name : 'regist'}"><span>회원가입</span></RouterLink>
                 <span>|</span>
-                <span>고객센터</span>
+                <span class = "unline">고객센터</span>
                 <button class="btn">글쓰기</button>
             </div>
         </div>
     </div>
     <hr>
     <div class="container">
-        <div class="top">
+        <div v-if = "flag" class="top">
             <div class="commu-category-first">
                 <RouterLink :to="{ name: 'commu' }">
-                    <h5>홈</h5>
+                    <scan :class = "selected">홈</scan>
                 </RouterLink>
-                <h5>홈트레이닝</h5>
-                <h5>오운완</h5>
-                <h5>3대몇</h5>
-                <h5>운동팁</h5>
-                <h5>러닝</h5>
+                <scan :class = "selected1">홈트레이닝</scan>
+                <scan :class = "selected2">오운완</scan>
+                <scan :class = "selected3">3대몇</scan>
+                <scan :class = "selected4">운동팁</scan>
+                <scan :class = "selected5">러닝</scan>
             </div>
         </div>
-        <div class="top">
+        <div v-else class="top">
             <div class="shop-category-first">
                 <RouterLink :to="{ name: 'shop' }">
-                    <h5>쇼핑홈</h5>
+                    <scan :class = "selected9">쇼핑홈</scan>
                 </RouterLink>
-                <h5>단백질/보충제</h5>
-                <h5>다이어트식단</h5>
-                <h5>의류</h5>
+                <scan :class = "selected6">단백질/보충제</scan>
+                <scan :class = "selected7">다이어트식단</scan>
+                <scan :class = "selected8">의류</scan>
             </div>
         </div>
     </div>
@@ -57,11 +57,89 @@
 </template>
 
 <script setup>
-import { RouterLink, RouterView } from "vue-router";
+import { RouterLink, RouterView, useRoute, useRouter } from "vue-router";
+import {ref, computed} from "vue";
+
+const route = useRoute();
+
+const selected = computed(()=>{
+    if(route.name === "commu"){
+        return {blue : true}
+    }
+})
+// const selected1 = computed(()=>{
+//     if(route.name === "commu"){
+//         return {blue : true}
+//     }
+// })
+// const selected2 = computed(()=>{
+//     if(route.name === "commu"){
+//         return {blue : true}
+//     }
+// })
+// const selected3 = computed(()=>{
+//     if(route.name === "commu"){
+//         return {blue : true}
+//     }
+// })
+// const selected4 = computed(()=>{
+//     if(route.name === "commu"){
+//         return {blue : true}
+//     }
+// })
+// const selected5 = computed(()=>{
+//     if(route.name === "commu"){
+//         return {blue : true}
+//     }
+// })
+const selected9 = computed(()=>{
+    if(route.name === "shop"){
+        return {blue : true}
+    }
+})
+// const selected6 = computed(()=>{
+//     if(route.name === "shop"){
+//         return {blue : true}
+//     }
+// })
+// const selected7 = computed(()=>{
+//     if(route.name === "commu"){
+//         return {blue : true}
+//     }
+// })
+// const selected8 = computed(()=>{
+//     if(route.name === "commu"){
+//         return {blue : true}
+//     }
+// })
+
+console.log(route.fullPath);
+const flag = computed(()=>{
+    return route.fullPath == "/" ? true : false;
+})
+
+
 </script>
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
+#toptoptop{
+    margin-top : 20px;
+}
+
+.blue{
+    color : #34C5F0;
+}
+
+.unline{
+    text-decoration: none;
+    color : black;
+}
+
+.unline:hover{
+    color : #34C5F0;
+}
 
 .btn {
     width: 80px;
@@ -74,10 +152,6 @@ import { RouterLink, RouterView } from "vue-router";
 .btn:hover {
     background-color: #257f9b;
     border: 1px solid #257f9b;
-}
-
-.container {
-    margin-top: 20px;
 }
 
 .top {
@@ -93,6 +167,13 @@ import { RouterLink, RouterView } from "vue-router";
     padding-right: 100px;
     display: flex;
     justify-content: start;
+    align-items: end;
+    padding-bottom : 10px;
+}
+
+.category span{
+    font-weight: bold;
+    font-size: 19px;
 }
 
 .search {
@@ -112,15 +193,33 @@ import { RouterLink, RouterView } from "vue-router";
 
 .commu-category-first {
     display: flex;
+    gap : 30px;
+    font-weight: bold;
+}
+
+.commu-category-first a{
+    text-decoration: none;
+    color : black;
 }
 
 .shop-category-first {
     display: flex;
+    gap : 30px;
+    font-weight: bold;
+}
+
+.shop-category-first a{
+    text-decoration: none;
+    color : black;
 }
 
 .commu-nav {
     text-decoration: none;
     color: black;
+}
+
+.commu-nav p{
+    font-weight: 200;
 }
 
 .commu-nav:hover {
@@ -172,7 +271,7 @@ import { RouterLink, RouterView } from "vue-router";
     font-size: 14px;
 }
 
-h4 {
+.category p {
     font-weight: bold;
 }
 

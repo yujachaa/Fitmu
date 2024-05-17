@@ -1,6 +1,9 @@
 import HomeView from '@/views/HomeView.vue'
 import Commu from '@/components/Commu.vue'
 import Shop from '@/components/Shop.vue'
+import LoginView from '@/views/LoginView.vue'
+import RegistView from '@/views/RegistView.vue'
+
 import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
@@ -12,7 +15,7 @@ const router = createRouter({
       component : HomeView,
       children : [
         {
-          path : '',
+          path : '/',
           name : 'commu',
           component : Commu
         },
@@ -22,6 +25,16 @@ const router = createRouter({
           component : Shop
         } 
       ]
+    },
+    {
+      path : "/login",
+      name : "login",
+      component : LoginView
+    },
+    {
+      path : "/regist",
+      name : "regist",
+      component : RegistView
     }
   ]
 })

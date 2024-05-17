@@ -2,7 +2,7 @@
     <div class='regist'>
         <div class="total">
             <h1 class="title">
-                <RouterLink class="logo" :to="{ name: 'home' }">핏뮤<span class="fitmu">Fitmu</span></RouterLink>
+                <RouterLink class="logo" :to="{ name: 'commu' }">핏뮤<span class="fitmu">Fitmu</span></RouterLink>
             </h1>
             <div>
                 <h4 class="label">회원가입</h4>
@@ -16,11 +16,11 @@
                     <div class="row justify-content-center">
                         <div class="input-group col-sm-1">
                             <div class="col-sm-5">
-                                <input type="text" class="form-control" placeholder="이메일" v-model="prevemail">
+                                <input type="text" class="form-control" placeholder="이메일">
                             </div>
                             <div class="input-group-text">@</div>
                             <div class="col-sm">
-                                <select class="form-select" name="" id="" v-model="afteremail">
+                                <select class="form-select" name="">
                                     <option value="">선택해주세요</option>
                                     <option value="">naver.com</option>
                                     <option value="">daum.net</option>
@@ -42,7 +42,7 @@
                         영문,숫자를 포함한 8자 이상의 비밀번호를 입력해주세요.
                     </div>
                     <input type="password" id="pw" class="form-control" aria-describedby="passwordHelpBlock"
-                        placeholder="비밀번호" v-model="user.password">
+                        placeholder="비밀번호">
                     <div class="invalid-feedback">필수 입력 항목입니다.</div>
                 </div>
     
@@ -61,8 +61,7 @@
                     <div id="idHelp" class="form-text">
                         다른 유저와 겹치지 않도록 입력해주세요.(2~20자)
                     </div>
-                    <input type="text" id="id" class="form-control" aria-describedby="idHelp" placeholder="아이디를 입력하세요."
-                        v-model="user.id">
+                    <input type="text" id="id" class="form-control" aria-describedby="idHelp" placeholder="아이디를 입력하세요.">
                     <div class="invalid-feedback">필수 입력 항목입니다.</div>
                 </div>
     
@@ -106,30 +105,25 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { useUserStore } from '../stores/user'
+// import { ref, computed, onMounted } from 'vue'
+// import { useUserStore } from '../stores/user'
 
 
 
-const store = useUserStore()
-const prevemail = ref("")
-const afteremail = ref("")
+// const store = useUserStore()
+// const prevemail = ref("")
+// const afteremail = ref("")
 
-const user = ref({
-    id: "",
-    password: "",
-    name: "",
-    email: prevemail.value + "@" + afteremail.value
-})
+// const user = ref({
+//     id: "",
+//     password: "",
+//     name: "",
+//     email: prevemail.value + "@" + afteremail.value
+// })
 
-const registUser = function () {
-    store.registUser(user.value)
-}
-
-
-
-
-
+// const registUser = function () {
+//     store.registUser(user.value)
+// }
 </script>
 
 <style scoped>
