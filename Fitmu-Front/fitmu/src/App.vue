@@ -1,9 +1,10 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
+import TheHeaderNav from '@/assets/common/TheHeaderNav.vue'
 </script>
 
 <template>
- <h1>test</h1>
+    <TheHeaderNav/>
 </template>
 
 <style scoped>
