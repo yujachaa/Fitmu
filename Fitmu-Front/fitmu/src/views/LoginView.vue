@@ -4,8 +4,8 @@
             <RouterLink class = "logo" :to="{ name: 'commu' }">핏뮤<span class="fitmu">Fitmu</span></RouterLink>
         </h1>
         <div class="input">
-            <input class="id" type="text" placeholder="아이디" />
-            <input class="pw" type="password" placeholder="비밀번호" />
+            <input class="id" type="email" placeholder="이메일" v-model="user.email"/>
+            <input class="pw" type="password" placeholder="비밀번호" v-model="user.password" @keyup.enter="login"/>
         </div>
         <button id="btn-login" @click="login">로그인</button>
         <RouterLink class = "regist" :to="{ name: 'regist' }">회원가입</RouterLink>
@@ -14,19 +14,20 @@
 </template>
 
 <script setup>
-// import { ref, computed, onMounted } from 'vue'
-// import { useUserStore } from '../stores/user'
+import { ref, computed, onMounted } from 'vue'
+import { useUserStore } from '../stores/user'
 
-// const user = ref({
-//     id: "",
-//     password: ""
-// })
+const store = useUserStore()
 
-// const login = function () {
-//     store.login(user.value)
-// }
+const user = ref({
+    email: "",
+    password: ""
+})
 
-// const store = useUserStore()
+const login = function () {
+    store.login(user.value)
+}
+
 // onMounted(() => {
 //     store.getUserList()
 // })
@@ -83,7 +84,7 @@
 }
 
 .id:focus {
-    outline: 2px solid rgb(114, 202, 230, 0.5);
+    outline: 3px solid rgb(114, 202, 230, 0.5);
     border-color: #72cae6;
     z-index: 999;
 }
@@ -98,7 +99,7 @@
 }
 
 .pw:focus {
-    outline: 2px solid rgb(114, 202, 230, 0.5);
+    outline: 3px solid rgb(114, 202, 230, 0.5);
     border-color: #72cae6;
     z-index: 999;
 }

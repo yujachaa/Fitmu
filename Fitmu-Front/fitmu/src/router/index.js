@@ -5,6 +5,9 @@ import LoginView from '@/views/LoginView.vue'
 import RegistView from '@/views/RegistView.vue'
 
 import { createRouter, createWebHistory } from 'vue-router'
+import MypageView from '@/views/MypageView.vue'
+import Scrapbook from '@/components/Scrapbook.vue'
+import Zzim from '@/components/Zzim.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -35,6 +38,25 @@ const router = createRouter({
       path : "/regist",
       name : "regist",
       component : RegistView
+    },
+    {
+      path : "/mypage",
+      name : "mypage",
+      component : MypageView,
+      children:[
+        {
+          path:"/scrapbook",
+          name:"scrapbook",
+          component: Scrapbook
+        },
+        {
+          path:"/zzim",
+          name:"zzim",
+          component: Zzim
+        },
+
+      ]
+
     }
   ]
 })
