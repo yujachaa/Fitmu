@@ -1,49 +1,56 @@
 <template>
     <div class="container">
-        <div>
-            <RouterLink class="logo" :to="{ name: 'commu' }">
-                <h1>핏뮤<span class="fitmu">Fitmu</span></h1>
-            </RouterLink>
-        </div>
-        <div class="category col col-lg-4">
-            <RouterLink class="commu-nav" :to="{ name: 'commu' }">
-                <h4>커뮤니티</h4>
-            </RouterLink>
-            <RouterLink class="shop-nav" :to="{ name: 'shop' }">
-                <h4>쇼핑</h4>
-            </RouterLink>
-        </div>
-        <div class="search col col-lg-3">
-            <input type="text">
-        </div>
-        <div class="users">
-            <span>로그인</span>
-            <span>|</span>
-            <span>회원가입</span>
-            <span>|</span>
-            <span>고객센터</span>
-            <button>글쓰기</button>
+        <div class="top">
+            <div>
+                <RouterLink class="logo" :to="{ name: 'commu' }">
+                    <h1>핏뮤<span class="fitmu">Fitmu</span></h1>
+                </RouterLink>
+            </div>
+            <div class="category">
+                <RouterLink class="commu-nav" :to="{ name: 'commu' }">
+                    <h4>커뮤니티</h4>
+                </RouterLink>
+                <RouterLink class="shop-nav" :to="{ name: 'shop' }">
+                    <h4>쇼핑</h4>
+                </RouterLink>
+            </div>
+            <div class="search">
+                <input type="text">
+                <i class="bi bi-search"></i>
+            </div>
+            <div class="users">
+                <span>로그인</span>
+                <span>|</span>
+                <span>회원가입</span>
+                <span>|</span>
+                <span>고객센터</span>
+                <button class="btn">글쓰기</button>
+            </div>
         </div>
     </div>
     <hr>
     <div class="container">
-        <div class="commu-category-first">
-            <RouterLink :to = "{name : 'commu'}"><h5>홈</h5></RouterLink>
-            <h5>홈트레이닝</h5>
-            <h5>오운완</h5>
-            <h5>3대몇</h5>
-            <h5>운동팁</h5>
-            <h5>러닝</h5>
+        <div class="top">
+            <div class="commu-category-first">
+                <RouterLink :to="{ name: 'commu' }">
+                    <h5>홈</h5>
+                </RouterLink>
+                <h5>홈트레이닝</h5>
+                <h5>오운완</h5>
+                <h5>3대몇</h5>
+                <h5>운동팁</h5>
+                <h5>러닝</h5>
+            </div>
+        </div>
+        <div class="top">
+            <div class="shop-category-first">
+                <h5>단백질/보충제</h5>
+                <h5>다이어트식단</h5>
+                <h5>의류</h5>
+            </div>
         </div>
     </div>
-    <div class="container">
-        <div class="shop-category-first">
-            <h5>단백질/보충제</h5>
-            <h5>다이어트식단</h5>
-            <h5>의류</h5>
-        </div>
-    </div>
-    <hr>
+    <hr style="margin-bottom : 0px;">
 </template>
 
 <script setup>
@@ -51,11 +58,51 @@ import { RouterLink, RouterView } from "vue-router";
 </script>
 
 <style scoped>
+.btn {
+    width: 80px;
+    border: 1px solid #34C5F0;
+    color: white;
+    background-color: #34C5F0;
+    margin-left: 10px;
+}
+
+.btn:hover {
+    background-color: #257f9b;
+    border: 1px solid #257f9b;
+}
+
 .container {
+    margin-top: 20px;
+}
+
+.top {
     width: 100%;
-    margin-top: 10px;
     display: flex;
     align-items: center;
+    padding-left: 80px;
+    padding-right: 80px;
+    justify-content: space-between;
+}
+
+.category {
+    padding-right : 100px;
+    display : flex;
+    justify-content: start;
+}
+
+.search {
+    position: relative;
+    width: 200px;
+}
+
+.search>input {
+    width: 250px;
+}
+
+.search>i {
+    position: absolute;
+    left: 7%;
+    top: 1%;
 }
 
 .commu-category-first {
@@ -80,6 +127,7 @@ import { RouterLink, RouterView } from "vue-router";
     text-decoration: none;
     color: black;
 }
+
 .shop-nav:hover {
     text-decoration: none;
     color: #34C5F0;
@@ -87,6 +135,7 @@ import { RouterLink, RouterView } from "vue-router";
 
 
 .logo {
+    margin-right: auto;
     text-decoration: none;
     color: black;
 }
@@ -107,13 +156,14 @@ import { RouterLink, RouterView } from "vue-router";
 }
 
 .users {
+    margin-left: auto;
     align-items: center;
     display: flex;
-    gap: 15px;
+    gap: 8px;
+    font-size: 14px;
 }
 
 h4 {
     font-weight: bold;
 }
-
 </style>
