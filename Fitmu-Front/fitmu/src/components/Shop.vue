@@ -1,7 +1,7 @@
 <template>
     <div class="pic-carousel">
-        <!-- <carousel :autoplay="2000" :wrap-around="true"> -->
-        <carousel :wrap-around="true">
+        <carousel :autoplay="2000" :wrap-around="true">
+        <!--<carousel :wrap-around="true">-->
             <slide v-for="slide in 7" :key="slide">
                 <img class="pic_carousel__item row" :src="`src/assets/image/product/${slide}.jpg`" alt="이미지">
             </slide>

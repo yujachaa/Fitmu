@@ -2,7 +2,7 @@
     <div class='regist'>
         <div class="total">
             <h1 class="title">
-                <RouterLink class="logo" :to="{ name: 'commu' }">핏뮤<span class="fitmu">Fitmu</span></RouterLink>
+                <RouterLink class="logo jua-regular" :to="{ name: 'commu' }">핏뮤<span class="fitmu">Fitmu</span></RouterLink>
             </h1>
             <div>
                 <h4 class="label">회원가입</h4>
@@ -161,6 +161,14 @@ watch((totalAgree),(newValue, oldVaue)=>{
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
+.jua-regular {
+    font-family: "Jua", sans-serif;
+    font-weight: 100;
+    font-style: normal;
+}
+
 .checkbox1{
     width : 100%;
     height : 170px;

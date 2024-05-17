@@ -1,7 +1,7 @@
 <template>
     <div class="login">
         <h1>
-            <RouterLink class = "logo" :to="{ name: 'commu' }">핏뮤<span class="fitmu">Fitmu</span></RouterLink>
+            <RouterLink class = "logo jua-regular" :to="{ name: 'commu' }">핏뮤<span class="fitmu">Fitmu</span></RouterLink>
         </h1>
         <div class="input">
             <input class="id" type="email" placeholder="이메일" v-model="user.email"/>
@@ -34,6 +34,14 @@ const login = function () {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
+
+.jua-regular {
+    font-family: "Jua", sans-serif;
+    font-weight: 100;
+    font-style: normal;
+}
+
 .fitmu {
     color: #34C5F0;
     font-size: smaller;
@@ -117,7 +125,6 @@ const login = function () {
 .logo{
     text-decoration: none;
     color : black;
-    font-weight: bold;
 }
 
 body{
