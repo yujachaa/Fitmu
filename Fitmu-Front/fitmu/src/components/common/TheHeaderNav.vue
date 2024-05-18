@@ -11,7 +11,7 @@
                     <span :class="{ blue: flag }">커뮤니티</span>
                 </RouterLink>
                 <RouterLink class="shop-nav" :to="{ name: 'shop' }">
-                    <span :class="{ blue: !flag }">쇼핑</span>
+                    <span :class="{ blue: shopFlag }">쇼핑</span>
                 </RouterLink>
             </div>
             <div class="search">
@@ -23,7 +23,7 @@
                     <RouterLink class="unline icon" :to="{ name: 'scrapbook' }"> <i class="bi bi-bookmark"> </i>
                     </RouterLink>
                     <RouterLink class="unline icon" :to="{ name: 'zzim' }"> <i class="bi bi-heart"></i> </RouterLink>
-                    <div class="dropdown-center ">
+                    <div class="dropdown-center icon">
                         <a class="dropdown profile" data-bs-toggle="dropdown" aria-expanded="false">
                             <div class="profile-box">
                                 <img class="profile-image" src="@/assets/image/profile.png" alt="프로필">
@@ -31,13 +31,13 @@
                             </div>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">마이페이지</a></li>
+                            <li><RouterLink class="dropdown-item" :to="{name : 'mypage'}">마이페이지</RouterLink> </li>
                             <li><a class="dropdown-item" href="#">판매자 신청</a></li>
                             <li><a class="dropdown-item" href="#">고객센터</a></li>
-                            <li><a class="dropdown-item" href="#">로그아웃</a></li>
+                            <li><a class="dropdown-item" @click="logout">로그아웃</a></li>
                         </ul>
                     </div>
-                    <span class="unline" @click="logout">로그아웃</span>
+                    <!-- <span class="unline" @click="logout">로그아웃</span> -->
                 </div>
                 <div class="not-login-user" v-else>
                     <RouterLink class="unline" :to="{ name: 'login' }"><span>로그인</span></RouterLink>
@@ -64,7 +64,7 @@
                 <span :class="selected5">러닝</span>
             </div>
         </div>
-        <div v-else class="top">
+        <div v-else-if="shopFlag" class="top">
             <div class="shop-category-first">
                 <RouterLink :to="{ name: 'shop' }">
                     <span :class="selected9">쇼핑홈</span>
@@ -76,7 +76,7 @@
             </div>
         </div>
     </div>
-    <hr style="margin-bottom : 0px;">
+    <hr v-if="!mypageFlag" style="margin-bottom : 0px;">
 </template>
 
 <script setup>
@@ -86,7 +86,7 @@ import { useUserStore } from "@/stores/user"
 
 const router = useRouter();
 const route = useRoute();
-const userStore = useUserStore()
+const userStore = useUserStore();
 
 const role = ref(sessionStorage.getItem("role"))
 
@@ -156,6 +156,14 @@ const selected9 = computed(() => {
 
 const flag = computed(() => {
     return route.fullPath == "/" ? true : false;
+})
+
+const shopFlag = computed(()=>{
+    return route.fullPath == "/shop" ? true : false;
+})
+
+const mypageFlag = computed(()=>{
+    return route.fullPath == "/mypage" ? true : false;
 })
 
 const registForm = function(){
@@ -314,6 +322,11 @@ const registForm = function(){
     gap: 8px;
     font-size: 14px;
 }
+.login-users{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
 .not-login-user{
     align-items: center;
     display: flex;
@@ -332,7 +345,8 @@ const registForm = function(){
 }
 
 .icon {
-    font-size: 30px;
+    font-size: 27px;
+    margin-right: 10px;
 
 }
 
@@ -340,19 +354,25 @@ const registForm = function(){
     width: 100px;
     height: 100px;
     font-size: 40px;
-
 }
 
 .profile-image {
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
     border-radius: 70%;
+    padding: 0;
+    margin-bottom: 10px;
 }
 
-.profile-box:hover {
-    width: 45px;
-    height: 45px;
+/* .profile-box:hover {
+    width: 40px;
+    height: 40px;
+    border: 2px solid #34C5F0;
     border-radius: 70%;
-    border-color: #34C5F0;
+} */
+
+.profile-image:hover{
+    border: 3px solid #34C5F0;
+    border-radius: 70%;
 }
 </style>
