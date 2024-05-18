@@ -16,7 +16,7 @@
             </div>
             <div class="search">
                 <i class="bi bi-search"></i>
-                <input type="text" class="form-control" placeholder="검색어를 입력하세요.">
+                <input type="text" id="searchbar" class="form-control" placeholder="검색어를 입력하세요.">
             </div>
             <div class="users">
                 <div class="login-users" v-if="islogin">
@@ -31,7 +31,7 @@
                             </div>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><RouterLink class="dropdown-item" :to="{name : 'mypage'}">마이페이지</RouterLink> </li>
+                            <li><RouterLink class="dropdown-item" :to="{name : 'profile'}">마이페이지</RouterLink> </li>
                             <li><a class="dropdown-item" href="#">판매자 신청</a></li>
                             <li><a class="dropdown-item" href="#">고객센터</a></li>
                             <li><a class="dropdown-item" @click="logout">로그아웃</a></li>
@@ -55,7 +55,7 @@
         <div v-if="flag" class="top">
             <div class="commu-category-first">
                 <RouterLink :to="{ name: 'commu' }">
-                    <scan :class="selected">홈</scan>
+                    <span :class="selected">홈</span>
                 </RouterLink>
                 <span :class="selected1">홈트레이닝</span>
                 <span :class="selected2">오운완</span>
@@ -75,8 +75,20 @@
                 <RouterLink :to="{name : 'productRegist'}">상품등록</RouterLink>
             </div>
         </div>
+        <div v-else-if="mypageFlag" class="top">
+            <div class="mypage-category">
+                <RouterLink :to="{ name: 'profile' }">
+                    <span :class="selected10">프로필</span>
+                </RouterLink>
+                <span :class="selected11">나의 쇼핑</span>
+                <span :class="selected12">나의 리뷰</span>
+                <span :class="selected13">스크랩북</span>
+                <span :class="selected14">나의 문의</span>
+                <span :class="selected15">설정</span>
+            </div>
+        </div>
     </div>
-    <hr v-if="!mypageFlag" style="margin-bottom : 0px;">
+    <hr class="under-hr">
 </template>
 
 <script setup>
@@ -153,6 +165,36 @@ const selected9 = computed(() => {
 //         return {blue : true}
 //     }
 // })
+const selected10 = computed(()=>{
+    if(route.name === "profile"){
+        return {blue : true}
+    }
+})
+// const selected11 = computed(()=>{
+//     if(route.name === "commu"){
+//         return {blue : true}
+//     }
+// })
+// const selected12 = computed(()=>{
+//     if(route.name === "commu"){
+//         return {blue : true}
+//     }
+// })
+// const selected13 = computed(()=>{
+//     if(route.name === "commu"){
+//         return {blue : true}
+//     }
+// })
+// const selected14 = computed(()=>{
+//     if(route.name === "commu"){
+//         return {blue : true}
+//     }
+// })
+// const selected15 = computed(()=>{
+//     if(route.name === "commu"){
+//         return {blue : true}
+//     }
+// })
 
 const flag = computed(() => {
     return route.fullPath == "/" ? true : false;
@@ -178,6 +220,10 @@ const registForm = function(){
 
 #toptoptop {
     margin-top: 20px;
+}
+
+.under-hr{
+    margin-bottom : 0px;
 }
 
 .blue {
@@ -265,6 +311,19 @@ const registForm = function(){
     color: black;
 }
 
+.mypage-category{
+    display: flex;
+    width: 100%;
+    gap: 30px;
+    font-weight: bold;
+    justify-content: center;
+}
+
+.mypage-category a {
+    text-decoration: none;
+    color: black;
+}
+
 .commu-nav {
     text-decoration: none;
     color: black;
@@ -347,7 +406,6 @@ const registForm = function(){
 .icon {
     font-size: 27px;
     margin-right: 10px;
-
 }
 
 .profile {

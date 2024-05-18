@@ -10,6 +10,7 @@ import Scrapbook from '@/components/Scrapbook.vue'
 import Zzim from '@/components/Zzim.vue'
 import StoryRegistView from '@/views/StoryRegistView.vue'
 import ProductRegistView from '@/views/ProductRegistView.vue'
+import Profile from '@/components/Profile.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -42,10 +43,15 @@ const router = createRouter({
       component : RegistView
     },
     {
-      path : "/mypage",
+      path : '/mypage',
       name : "mypage",
       component : MypageView,
       children:[
+        {
+          path:'',
+          name:"profile",
+          component:Profile
+        },
         {
           path:"/scrapbook",
           name:"scrapbook",
