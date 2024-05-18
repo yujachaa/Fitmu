@@ -1,11 +1,13 @@
 package com.ssafy.fitmu.controller;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +23,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.ssafy.fitmu.dto.Product;
 import com.ssafy.fitmu.dto.ProductImage;
 import com.ssafy.fitmu.dto.SearchCondition;
+import com.ssafy.fitmu.dto.StoryImage;
 import com.ssafy.fitmu.service.ProductService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -137,22 +140,36 @@ public class ProductController {
 	
 	@PostMapping("/upload")
 	@Operation(summary = "상품 이미지 업로드")
-	public ResponseEntity<?> uploadProdcutImage(@RequestParam("file") MultipartFile file, @RequestBody ProductImage productImage) {
-
-		UUID uuid = UUID.randomUUID();
-		String originalFilename = file.getOriginalFilename(); // 원본 파일 이름
-		String extension = originalFilename.substring(originalFilename.lastIndexOf(".")); // 파일 확장자 추출
-		String newFilename = uuid.toString() + extension; // UUID를 파일 이름에 추가
-		productImage.setFileName(newFilename);
+	public ResponseEntity<?> uploadProdcutImage(@RequestParam("files") MultipartFile[] files) {
 		
-		try {
-			int result = productService.insertProductImage(productImage);
-			// 파일 경로 재설정 필요!!!!!해요. (나도 재설정 해야함..)
-			file.transferTo(new File("C:/testproject/SSAFIT-Project/src/assets/image/product",newFilename));
-		} catch (Exception e) {
-			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		List<String> filenames = new ArrayList<>();
+		for(MultipartFile file : files ) {
+			UUID uuid = UUID.randomUUID();
+			String originalFilename = file.getOriginalFilename(); // 원본 파일 이름
+			String extension = originalFilename.substring(originalFilename.lastIndexOf(".")); // 파일 확장자 추출
+			String newFilename = uuid.toString() + extension; // UUID를 파일 이름에 추가
+			
+			try {
+				filenames.add(newFilename);
+				file.transferTo(new File("C:/Fitmu/Fitmu/Fitmu-Front/fitmu/src/assets/image/story", newFilename));
+			}catch(Exception e) {
+				return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+			}
 		}
-		return new ResponseEntity<String>(newFilename, HttpStatus.OK);
+		return new ResponseEntity<List<String>>(filenames, HttpStatus.OK);
+	}
+	
+	@PostMapping("/imageUpload")
+	@Operation(summary = "상품 이미지 DB에 저장")
+	@Transactional
+	public ResponseEntity<?> insertProductImage(@RequestBody ProductImage productImage) {
+		int result = productService.insertProductImage(productImage);
+		
+		if(result == 0) {
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		}else {
+			return new ResponseEntity<Void>(HttpStatus.OK);
+		}
 	}
 	
 	@GetMapping("/image/{productId}")
@@ -176,6 +193,21 @@ public class ProductController {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		} else {
 			return new ResponseEntity<List<Product>>(productList, HttpStatus.OK);
+		}
+	}
+	
+	@PostMapping("/regist")
+	@Operation(summary = "상품 등록")
+	public ResponseEntity<?> registProduct(@RequestBody Product product){
+		int result = productService.insertProduct(product);
+		
+		List<Product> productList = productService.selectAll();
+		
+		if(result == 0) {
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		}else {
+			int ID = productList.get(productList.size()-1).getProductId();
+			return new ResponseEntity<Integer>(ID, HttpStatus.OK);
 		}
 	}
 }

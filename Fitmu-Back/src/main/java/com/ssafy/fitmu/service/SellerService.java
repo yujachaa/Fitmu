@@ -12,4 +12,6 @@ public interface SellerService {
 	public int insertAnswer(int inquiryId, String answer);
 	//문의 답변 삭제
 	public int deleteAnswer(int inquiryId);
+	
+	public Seller getSellerByUserId(int userId);
 }

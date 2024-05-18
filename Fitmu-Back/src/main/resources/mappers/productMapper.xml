@@ -50,4 +50,9 @@
 		WHERE discount_rate >= #{dicount}
 		ORDER BY discount_rate DESC
 	</select>
+	
+	<insert id="insertProduct" parameterType = "Product">
+		INSERT INTO product
+		VALUES (0, #{sellerId}, #{categoryId}, #{brand}, #{name}, #{price}, #{discountRate}, #{deliveryFee}, #{specialPrice}, now(), now(), 0, 0, #{productDetail})
+	</insert>
 </mapper>

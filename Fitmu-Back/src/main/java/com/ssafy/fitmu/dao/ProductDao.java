@@ -24,4 +24,6 @@ public interface ProductDao {
 	public int insertProductImage(ProductImage productImage);
 	
 	public List<ProductImage> getImageByProductId(int productId);
+	
+	public int insertProduct(Product product);
 }

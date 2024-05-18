@@ -4,6 +4,10 @@
   "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace = "com.ssafy.fitmu.dao.SellerDao">
+	<select id="getSellerByUserId" parameterType = "int" resultType = "Seller">
+		SELECT * FROM seller
+		WHERE user_id = #{userId}
+	</select>
 	<insert id="insertSeller" parameterType = "Seller">
 		INSERT INTO seller
 		VALUES (0, #{userId}, #{companyName}, #{representative}, #{address}, #{customerCenter}, #{email}, #{registrationNum})

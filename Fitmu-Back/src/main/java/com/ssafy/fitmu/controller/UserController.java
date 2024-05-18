@@ -76,6 +76,7 @@ public class UserController {
 			result.put("message", "성공");
 			result.put("access-token", jwtUtil.createToken(loginUser.getPassword()));
 			result.put("userId", DBuser.getUserId());
+			result.put("role", DBuser.getRole());
 			session.setAttribute("loginUser", DBuser);
 			status = HttpStatus.OK;
 		}else {

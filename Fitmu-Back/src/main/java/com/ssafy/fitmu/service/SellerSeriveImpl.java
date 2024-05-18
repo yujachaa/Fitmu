@@ -44,4 +44,9 @@ public class SellerSeriveImpl implements SellerService {
 		return sellerDao.deleteAnswer(inquiryId);
 	}
 
+	@Override
+	public Seller getSellerByUserId(int userId) {
+		return sellerDao.getSellerByUserId(userId);
+	}
+
 }
