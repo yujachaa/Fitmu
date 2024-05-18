@@ -11,7 +11,7 @@
 	
 	<update id="updateStory" parameterType = "Story">
 		UPDATE story
-		SET title = #{title}, content = #{content}, category = #{category}, modified_date = now()
+		SET title = #{title}, content = #{content}, category = #{category}, image = #{image}, modified_date = now()
 		WHERE story_id = #{storyId}
 	</update>
 	

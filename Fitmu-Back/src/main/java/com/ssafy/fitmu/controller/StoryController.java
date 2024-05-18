@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,11 +16,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.ssafy.fitmu.dto.ProductImage;
+import com.ssafy.fitmu.dto.FileAndStory;
 import com.ssafy.fitmu.dto.SearchCondition;
 import com.ssafy.fitmu.dto.Story;
 import com.ssafy.fitmu.dto.StoryImage;
@@ -57,11 +57,14 @@ public class StoryController {
 	@Operation(summary = "게시글 등록")
 	public ResponseEntity<?> storyRegist(@RequestBody Story story) {
 		int result = storyService.insertStory(story);
+		
+		List<Story> storyList = storyService.selectAll();
 
 		if (result == 0) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		} else {
-			return new ResponseEntity<Void>(HttpStatus.OK);
+			int ID = storyList.get(storyList.size()-1).getStoryId();
+			return new ResponseEntity<Integer>(ID, HttpStatus.OK);
 		}
 	}
 
@@ -208,24 +211,50 @@ public class StoryController {
 		}
 	}
 	
+	@PutMapping("/updateFileName/{storyId}/{fileName}")
+	@Operation(summary = "게시글 파일명 변경")
+	public ResponseEntity<?> updateStoryFileName(@PathVariable("storyId") int storyId, @PathVariable("fileName") String fileName){
+		Story story = storyService.selectOne(storyId);
+		story.setImage(fileName);
+		
+		int result = storyService.updateStory(story);
+		
+		if(result == 0) {
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		}else {
+			return new ResponseEntity<Void>(HttpStatus.OK);
+		}
+	}
+	@PostMapping("/imageUpload")
+	@Operation(summary = "게시글 이미지 DB에 저장")
+	@Transactional
+	public ResponseEntity<?> insertStoryImage(@RequestBody StoryImage storyImage) {
+		int result = storyService.insertStoryImage(storyImage);
+		
+		if(result == 0) {
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		}else {
+			return new ResponseEntity<Void>(HttpStatus.OK);
+		}
+	}
+	
+	
 	@PostMapping("/upload")
 	@Operation(summary = "게시글 이미지 업로드")
-	public ResponseEntity<?> uploadStoryImage(@RequestParam("file") MultipartFile file, @RequestBody StoryImage storyImage) {
-
+	@Transactional
+	public ResponseEntity<?> uploadStoryImage(MultipartFile file) {
 		UUID uuid = UUID.randomUUID();
 		String originalFilename = file.getOriginalFilename(); // 원본 파일 이름
 		String extension = originalFilename.substring(originalFilename.lastIndexOf(".")); // 파일 확장자 추출
 		String newFilename = uuid.toString() + extension; // UUID를 파일 이름에 추가
-		storyImage.setFileName(newFilename);
-		
+	
 		try {
-			int result = storyService.insertStoryImage(storyImage);
 			// 파일 경로 재설정 필요!!!!!해요. (나도 재설성 해야함..)
-			file.transferTo(new File("C:/testproject/SSAFIT-Project/src/assets/image/story",newFilename));
+			file.transferTo(new File("C:/Fitmu/Fitmu/Fitmu-Front/fitmu/src/assets/image/story", newFilename));
 		} catch (Exception e) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<String>(newFilename, HttpStatus.OK);
+		return new ResponseEntity<String>(newFilename,HttpStatus.OK);
 	}
 	
 	@GetMapping("/image/{storyId}")
