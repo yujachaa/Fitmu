@@ -140,8 +140,7 @@ public class ProductController {
 	
 	@PostMapping("/upload")
 	@Operation(summary = "상품 이미지 업로드")
-	public ResponseEntity<?> uploadProdcutImage(@RequestParam("files") MultipartFile[] files) {
-		
+	public ResponseEntity<?> uploadProdcutImage(@ModelAttribute("files") MultipartFile[] files) {
 		List<String> filenames = new ArrayList<>();
 		for(MultipartFile file : files ) {
 			UUID uuid = UUID.randomUUID();
@@ -151,7 +150,7 @@ public class ProductController {
 			
 			try {
 				filenames.add(newFilename);
-				file.transferTo(new File("C:/Fitmu/Fitmu/Fitmu-Front/fitmu/src/assets/image/story", newFilename));
+				file.transferTo(new File("C:/Fitmu/Fitmu/Fitmu-Front/fitmu/src/assets/image/product", newFilename));
 			}catch(Exception e) {
 				return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 			}
@@ -163,13 +162,13 @@ public class ProductController {
 	@Operation(summary = "상품 이미지 DB에 저장")
 	@Transactional
 	public ResponseEntity<?> insertProductImage(@RequestBody ProductImage productImage) {
-		int result = productService.insertProductImage(productImage);
-		
-		if(result == 0) {
-			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
-		}else {
-			return new ResponseEntity<Void>(HttpStatus.OK);
-		}
+			int result = productService.insertProductImage(productImage);
+			
+			if(result == 0) {
+				return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+			}else {
+				return new ResponseEntity<Void>(HttpStatus.OK);
+			}
 	}
 	
 	@GetMapping("/image/{productId}")
