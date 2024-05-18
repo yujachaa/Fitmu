@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.ssafy.fitmu.dto.SearchCondition;
@@ -89,13 +90,7 @@ public class UserController {
 	@PostMapping("/regist")
 	@Operation(summary = "회원가입")
 	public ResponseEntity<?> regist(@RequestBody User registUser) {
-		List<User> allUsers = userService.selectAll();
 
-		for (User user : allUsers) {
-			if (user.getEmail() == registUser.getEmail()) {
-				return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
-			}
-		}
 		String token = jwtUtil.createToken(registUser.getPassword());
 		registUser.setPassword(token);
 		
@@ -107,6 +102,24 @@ public class UserController {
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		}
 	}
+	
+	//이메일 중복확인
+	@PostMapping("/email")
+	@Operation(summary = "이메일 중복확인")
+	public ResponseEntity<?> emailCheck(@RequestParam("email") String email){
+				
+		List<User> allUsers = userService.selectAll();
+		
+		for (User user : allUsers) {
+			System.out.println(user.getEmail());
+			if (user.getEmail().equals(email)) {
+				return new ResponseEntity<Void>(HttpStatus.IM_USED);
+			}
+		}
+		
+		return new ResponseEntity<Void>(HttpStatus.OK);
+	}
+	
 
 	// 로그아웃 (여기서도 지우고, sessionstorage에서도 지우기)
 	@GetMapping("/logout")
