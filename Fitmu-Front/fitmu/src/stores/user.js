@@ -18,6 +18,7 @@ export const useUserStore = defineStore('user', () => {
     })
       .then((res) => {
         sessionStorage.setItem("loginUser", res.data.userId)
+        sessionStorage.setItem("role", res.data.role)
         // console.log(sessionStorage.getItem("loginUser"))
 
         router.push({ name: 'commu' })
@@ -39,7 +40,6 @@ export const useUserStore = defineStore('user', () => {
           location.reload()
         } else {
           router.push({ name: 'commu' })
-
         }
 
         // router.go()

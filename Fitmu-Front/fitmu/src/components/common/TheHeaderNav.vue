@@ -57,21 +57,22 @@
                 <RouterLink :to="{ name: 'commu' }">
                     <scan :class="selected">홈</scan>
                 </RouterLink>
-                <scan :class="selected1">홈트레이닝</scan>
-                <scan :class="selected2">오운완</scan>
-                <scan :class="selected3">3대몇</scan>
-                <scan :class="selected4">운동팁</scan>
-                <scan :class="selected5">러닝</scan>
+                <span :class="selected1">홈트레이닝</span>
+                <span :class="selected2">오운완</span>
+                <span :class="selected3">3대몇</span>
+                <span :class="selected4">운동팁</span>
+                <span :class="selected5">러닝</span>
             </div>
         </div>
         <div v-else class="top">
             <div class="shop-category-first">
                 <RouterLink :to="{ name: 'shop' }">
-                    <scan :class="selected9">쇼핑홈</scan>
+                    <span :class="selected9">쇼핑홈</span>
                 </RouterLink>
-                <scan :class="selected6">단백질/보충제</scan>
-                <scan :class="selected7">다이어트식단</scan>
-                <scan :class="selected8">의류</scan>
+                <span :class="selected6">단백질/보충제</span>
+                <span :class="selected7">다이어트식단</span>
+                <span :class="selected8">의류</span>
+                <RouterLink :to="{name : 'productRegist'}">상품등록</RouterLink>
             </div>
         </div>
     </div>
@@ -86,6 +87,8 @@ import { useUserStore } from "@/stores/user"
 const router = useRouter();
 const route = useRoute();
 const userStore = useUserStore()
+
+const role = ref(sessionStorage.getItem("role"))
 
 const logout = function () {
     console.log(sessionStorage.getItem("loginUser"))

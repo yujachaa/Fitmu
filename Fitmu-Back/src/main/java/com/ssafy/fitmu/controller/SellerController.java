@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -28,6 +29,18 @@ public class SellerController {
 	
 	public SellerController(SellerService sellserService) {
 		this.sellerService = sellserService;
+	}
+	
+	@GetMapping("/{userId}")
+	@Operation(summary = "userId로 seller 가녀오기")
+	public ResponseEntity<?> getSellerByUserId(@PathVariable("userId") int userId){
+		Seller seller = sellerService.getSellerByUserId(userId);
+		
+		if(seller == null) {
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		}else {
+			return new ResponseEntity<Seller>(seller, HttpStatus.OK);
+		}
 	}
 	
 	//판매자 등록

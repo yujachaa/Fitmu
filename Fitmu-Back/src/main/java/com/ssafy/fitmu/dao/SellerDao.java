@@ -16,4 +16,6 @@ public interface SellerDao {
 	public int insertAnswer(Map<String, String> answerMap);
 	//문의 답변 삭제
 	public int deleteAnswer(int inquiryId);
+	// 유저아이디로 검색
+	public Seller getSellerByUserId(int userId);
 }
