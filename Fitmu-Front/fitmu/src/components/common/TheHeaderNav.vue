@@ -46,7 +46,7 @@
                     <span>|</span>
                     <span class="unline">고객센터</span>
                 </div>
-                <button class="btn">글쓰기</button>
+                <button class="btn" @click = "registForm">글쓰기</button>
             </div>
         </div>
     </div>
@@ -83,6 +83,7 @@ import { RouterLink, RouterView, useRoute, useRouter } from "vue-router";
 import { ref, computed } from "vue";
 import { useUserStore } from "@/stores/user"
 
+const router = useRouter();
 const route = useRoute();
 const userStore = useUserStore()
 
@@ -153,6 +154,10 @@ const selected9 = computed(() => {
 const flag = computed(() => {
     return route.fullPath == "/" ? true : false;
 })
+
+const registForm = function(){
+    router.push({name : "storyregist"})
+}
 
 
 </script>
