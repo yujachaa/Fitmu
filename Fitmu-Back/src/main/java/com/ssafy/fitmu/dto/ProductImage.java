@@ -10,9 +10,6 @@ public class ProductImage {
 	private String createdAt;
 	private String updatedAt;
 	
-	public ProductImage() {
-		
-	}
 	
 	public ProductImage(int imageId, int productId, int sellerId, String fileName, String createdAt, String updatedAt) {
 		this.imageId = imageId;
@@ -22,6 +19,7 @@ public class ProductImage {
 		this.createdAt = new Date().toString();
 		this.updatedAt = new Date().toString();
 	}
+
 
 	public int getImageId() {
 		return imageId;
