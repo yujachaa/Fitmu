@@ -1,6 +1,10 @@
 <template>
-    <div class = "pictures">
-        <img v-for="(image) in productImages" :key= "image.imageId" :src="`/src/assets/image/product/${image.fileName}`" alt="">
+    <div class="pictures">
+        <p class="small-title">상품사진</p>
+        <img class="infoimg" v-for="(image) in productImages" :key="image.imageId"
+            :src="`/src/assets/image/product/${image.fileName}`" alt="">
+        <p class = "small-title">상품 설명</p>
+        <p class = "content">{{ product.productDetail }}</p>
     </div>
 </template>
 
@@ -21,8 +25,27 @@ const productImages = ref(productStore.productImages)
 </script>
 
 <style scoped>
-.pictures{
-    display : flex;
+.pictures {
+    display: flex;
     flex-direction: column;
+    align-items: center;
+}
+
+.infoimg {
+    width: 600px;
+    height: 600px;
+    margin: 30px;
+    margin-top: 0px;
+}
+
+.small-title {
+    width: 600px;
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 30px;
+}
+
+.content{
+    width : 600px;
 }
 </style>
