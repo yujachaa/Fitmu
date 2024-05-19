@@ -64,10 +64,10 @@ export const useUserStore = defineStore('user', () => {
       })
         .then((res) => {
           if (res.status === 200) {
-            console.log("회원가입성공");
+            // console.log("회원가입성공");
             result = true;
           } else {
-            console.log("회원가입실패");
+            // console.log("회원가입실패");
             result = false;
           }
           resolve(result);
@@ -123,6 +123,28 @@ export const useUserStore = defineStore('user', () => {
     axios.get(REST_USER_API + "/" + sessionStorage.getItem("loginUser"))
     .then((res)=>{
       user.value = res.data
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+  }
+
+  //유저 정보 업데이트
+  const updateUser = function (user){
+    console.log(user)
+    axios({
+      url : REST_USER_API + "/update", 
+      method: 'PUT',
+      data: user
+    })
+    .then((res)=>{
+      axios.get(REST_USER_API + "/" + sessionStorage.getItem("loginUser"))
+      .then((res)=>{
+        user.value = res.data
+      })
+    })
+    .then((res)=>{
+      router.push({ name: 'profile' })
     })
     .catch((err)=>{
       console.log(err)
@@ -192,6 +214,8 @@ export const useUserStore = defineStore('user', () => {
     storyScrapList,
     getStoryScrap,
     kakaoLogin,
+    updateUser,
+
 
   }
 }, { persist: true })

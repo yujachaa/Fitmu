@@ -1,8 +1,11 @@
 <template>
-  <div class="container top">
+  <div class="container top ">
     <div class="profile-box d-flex flex-column align-items-center justify-content-center shadow-sm">
       <div class="profile-box-item">
         <img class="profile-image" src="@/assets/image/profile.png" alt="프로필">
+      </div>
+      <div class="profile-nickname">
+        {{ userStore.user.nickname }}
       </div>
       <div class="follow-info">
         <span class="mx-1">팔로워</span>
@@ -12,7 +15,7 @@
         <span class="mx-1">{{ userStore.followingList.length }}</span>
       </div>
       <div class="profile-box-item">
-        <button class="btn btn-outline-secondary m-2 mb-3" @click="goSetting">설정</button>
+        <button class="btn btn-outline-secondary mt-2" @click="goSetting">설정</button>
       </div>
 
       <hr>
@@ -21,7 +24,7 @@
         <div class="icon-group d-flex flex-column align-items-center">
           <RouterLink class="unline icon" :to="{ name: 'scrapbook' }"> <i class="bi bi-bookmark"> </i></RouterLink>
           <div class="icon-title">스크랩북</div>
-          <div class="icon-num">{{ userStore.storyScrapList.length}}</div>
+          <div class="icon-num">{{ userStore.storyScrapList.length }}</div>
         </div>
         <div class="icon-group d-flex flex-column align-items-center">
           <RouterLink class="unline icon" :to="{ name: 'zzim' }"> <i class="bi bi-heart"></i> </RouterLink>
@@ -53,6 +56,11 @@
         </div>
       </div>
     </div>
+    <div class="seller-regist d-flex justify-content-center" v-if="isUser">
+      <div>
+        <button class="btn btn-outline-secondary btn-regist"><RouterLink to="@/components/SellerRegist.vue">판매자 등록하기</RouterLink></button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -60,7 +68,7 @@
 import { useStoryStore } from '@/stores/story';
 import { useUserStore } from '@/stores/user';
 import { computed, onMounted, ref } from 'vue';
-import {useRouter} from 'vue-router';
+import { useRouter } from 'vue-router';
 
 const userStore = useUserStore()
 const storyStore = useStoryStore()
@@ -76,22 +84,35 @@ onMounted(() => {
 });
 
 
-const goSetting = function(){
-  router.push({name : 'setting'})
+const goSetting = function () {
+  router.push({ name: 'setting' })
 }
+
+const isUser = computed(()=>{
+  return sessionStorage.getItem("role") == "u" ? true : false
+})
 
 
 </script>
 
 <style scoped>
+
+.seller-regist{
+  width: 250px;
+}
 .top {
   padding-left: 80px;
   padding-right: 80px;
+  
+}
+.mystory{
+  width: 800px;
 }
 
 .container {
   width: 100%;
   display: flex;
+  flex-wrap: wrap;
   padding-left: 80px;
   padding-right: 80px;
 }
@@ -158,7 +179,13 @@ const goSetting = function(){
   height: 150px;
   border-radius: 70%;
   padding: 0;
-  margin-bottom: 30px;
+  margin-bottom: 10px;
+}
+
+.profile-nickname {
+  font-size: x-large;
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 
 .profile-box {
@@ -166,7 +193,7 @@ const goSetting = function(){
   border: 1px solid rgb(212, 212, 212);
   border-radius: 5px;
   padding: 20px;
-  width: 500px;
+  width: 250px;
   height: 500px;
   font-size: 14px;
   color: rgb(96, 96, 96)
@@ -180,6 +207,18 @@ const goSetting = function(){
   width: 100px;
 
 }
+/* 
+.btn-regist {
+  margin-top: 20px;
+  height: 40px;
+  background-color: #34C5F0;
+  color: white;
+  font-weight: bold;
+  border: 1px solid #34C5F0;
+  border-radius: 5px;
+} */
+
+
 
 hr {
   width: 100%;
