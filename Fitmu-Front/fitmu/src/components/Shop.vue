@@ -31,7 +31,7 @@
                     <slide v-for="slide in 7" :key="slide">
                         <div class="product_carousel__item">
                             <div class="sale-pic">
-                                <img class="pic " :src="`src/assets/image/product/${slide}.jpg`" alt="이미지">
+                                <img class="pic " :src="`src/assets/image/product/${slide}.jpg`" alt="이미지" @click = "productDetail(31)">
                             </div>
                             <div class="product-info ">
                                 <div class="brand">
@@ -113,6 +113,7 @@
 import 'vue3-carousel/dist/carousel.css'
 import { defineComponent } from 'vue'
 import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel'
+import { formToJSON } from 'axios'
 
 
 export default defineComponent({
@@ -157,6 +158,18 @@ export default defineComponent({
         },
     }),
 })
+</script>
+
+<script setup>
+import {ref, computed, watch} from 'vue'
+import {useRoute, useRouter} from 'vue-router'
+
+const router = useRouter()
+
+const productDetail = function(productId){
+    router.push({name : 'productDetail', params: {'productId' : productId}})
+}
+
 </script>
 
 <style scoped>

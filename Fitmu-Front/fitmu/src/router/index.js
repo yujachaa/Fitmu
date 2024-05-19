@@ -13,6 +13,10 @@ import ProductRegistView from '@/views/ProductRegistView.vue'
 import Profile from '@/components/Profile.vue'
 import Setting from '@/components/Setting.vue'
 import KakaoLoginView from '@/views/KakaoLoginView.vue'
+import ProductDetail from '@/components/ProductDetail.vue'
+import ProductInfo from '@/components/ProductInfo.vue'
+import ProductReview from '@/components/ProductReview.vue'
+import ProductInquiry from '@/components/ProductInquiry.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -31,7 +35,27 @@ const router = createRouter({
           path : 'shop',
           name : 'shop',
           component : Shop
-        } 
+        },
+        {
+          path : '/productdetail/:productId',
+          name : 'productDetail',
+          component : ProductDetail,
+          children : [{
+            path : '/productdetail/:productId/info',
+            name : 'productinfo',
+            component : ProductInfo
+          },
+          {
+            path : '/productdetail/:productId/review',
+            name : 'productreview',
+            component : ProductReview
+          },
+          {
+            path : 'productdetail/:productId/inquiry',
+            name : 'productinquiry',
+            component : ProductInquiry
+          }]
+        }
       ]
     },
     {

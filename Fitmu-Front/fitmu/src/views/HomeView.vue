@@ -9,6 +9,6 @@
     import TheHeaderNav from '@/components/common/TheHeaderNav.vue'
 </script>
 
-<style lang="scss" scoped>
+<style>
 
 </style>
