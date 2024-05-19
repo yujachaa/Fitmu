@@ -12,7 +12,7 @@
         <span class="mx-1">{{ userStore.followingList.length }}</span>
       </div>
       <div class="profile-box-item">
-        <button class="btn btn-outline-secondary m-2 mb-3">설정</button>
+        <button class="btn btn-outline-secondary m-2 mb-3" @click="goSetting">설정</button>
       </div>
 
       <hr>
@@ -21,12 +21,12 @@
         <div class="icon-group d-flex flex-column align-items-center">
           <RouterLink class="unline icon" :to="{ name: 'scrapbook' }"> <i class="bi bi-bookmark"> </i></RouterLink>
           <div class="icon-title">스크랩북</div>
-          <div class="icon-num">999</div>
+          <div class="icon-num">{{ userStore.storyScrapList.length}}</div>
         </div>
         <div class="icon-group d-flex flex-column align-items-center">
           <RouterLink class="unline icon" :to="{ name: 'zzim' }"> <i class="bi bi-heart"></i> </RouterLink>
           <div class="icon-title">찜</div>
-          <div class="icon-num">999</div>
+          <div class="icon-num">{{ userStore.productScrapList.length }}</div>
         </div>
       </div>
     </div>
@@ -60,20 +60,25 @@
 import { useStoryStore } from '@/stores/story';
 import { useUserStore } from '@/stores/user';
 import { computed, onMounted, ref } from 'vue';
+import {useRouter} from 'vue-router';
 
 const userStore = useUserStore()
 const storyStore = useStoryStore()
-
-//storyId 내림차순 (최신순)
+const router = useRouter()
 
 onMounted(() => {
   userStore.getUser();
   userStore.getFollowing(sessionStorage.getItem("loginUser"));
   userStore.getFollower(sessionStorage.getItem("loginUser"));
   storyStore.getUserStory();
+  userStore.getProductScrap(sessionStorage.getItem("loginUser"));
+  userStore.getStoryScrap(sessionStorage.getItem("loginUser"));
 });
 
 
+const goSetting = function(){
+  router.push({name : 'setting'})
+}
 
 
 </script>
@@ -119,7 +124,7 @@ onMounted(() => {
 .popular {
   display: flex;
   flex-wrap: wrap;
-  width: 100%;
+  width: 110%;
 }
 
 .popular-pic {
