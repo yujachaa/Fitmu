@@ -79,4 +79,14 @@ public class UserServiceImpl implements UserService {
 		map.put("followingId", followingId);
 		return userDao.deleteFollow(map);
 	}
+
+	@Override
+	public List<Integer> getProductScrap(int id) {
+		return userDao.getProductScrap(id);
+	}
+
+	@Override
+	public List<Integer> getStoryScrap(int id) {
+		return userDao.getStoryScrap(id);
+	}
 }

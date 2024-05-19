@@ -18,4 +18,7 @@ public interface UserDao {
 	public List<Integer> getFolloweeOfUser(int id);
 	public int updateUser(User user);
 	public List<User> searchByCondition(SearchCondition condition);
+	public List<Integer> getProductScrap(int userId);
+	public List<Integer> getStoryScrap(int userId);
+	
 }
