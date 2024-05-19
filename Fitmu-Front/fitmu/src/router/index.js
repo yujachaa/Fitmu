@@ -17,6 +17,7 @@ import ProductDetail from '@/components/ProductDetail.vue'
 import ProductInfo from '@/components/ProductInfo.vue'
 import ProductReview from '@/components/ProductReview.vue'
 import ProductInquiry from '@/components/ProductInquiry.vue'
+import SellerRegist from '@/components/SellerRegist.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -92,6 +93,11 @@ const router = createRouter({
           path:"/setting",
           name:"setting",
           component: Setting
+        },
+        {
+          path:"/seller-regist",
+          name : "seller-regist",
+          component: SellerRegist
         }
       ]
     },
