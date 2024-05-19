@@ -11,6 +11,9 @@
         <RouterLink class = "regist" :to="{ name: 'regist' }">회원가입</RouterLink>
         <span class = "problem">로그인에 문제가 있으신가요?</span>
     </div>
+    <div>
+        <img src="@/assets/image/kakao.png" @click = "kakaoLogin"/>
+    </div>
 </template>
 
 <script setup>
@@ -31,6 +34,15 @@ const login = function () {
 // onMounted(() => {
 //     store.getUserList()
 // })
+
+const kakaoLogin = function () {
+    const redirect_uri = "http://localhost:8080/kakao-api/kakao-login"
+    const clientId = "f89ff99ae64a8e6d277fb70f0a744b75"
+    const Auth_url = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirect_uri}`
+    
+    store.kakaoLogin(Auth_url)
+}
+
 </script>
 
 <style scoped>
