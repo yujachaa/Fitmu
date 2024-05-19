@@ -212,6 +212,11 @@ const registUser = function () {
         return
     }
 
+    if (nickMsg.value != "사용가능한 닉네임입니다! ✔️"){
+        window.alert("닉네임을 확인해주세요!")
+        return
+    }
+
     user.value.email = prevemail.value + "@" + afteremail.value
     if (agree1.value) {
         user.value.agreeTOS = 1

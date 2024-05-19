@@ -139,6 +139,7 @@ public class UserController {
 	@GetMapping("/logout")
 	@Operation(summary = "로그아웃")
 	public ResponseEntity<?> logout(HttpSession session) {
+		
 		// 그냥 session 지우기?
 		session.invalidate();
 
@@ -178,11 +179,11 @@ public class UserController {
 	@PutMapping("/update")
 	@Operation(summary = "사용자 설정 변경")
 	public ResponseEntity<?> update(HttpSession session, @RequestBody User user) {
-		User loginUser = (User) session.getAttribute("loginUser");
-		int loginUserId = loginUser.getUserId();
-
-		user.setUserId(loginUserId);
-
+//		User loginUser = (User) session.getAttribute("loginUser");
+//		int loginUserId = loginUser.getUserId();
+//
+//		user.setUserId(loginUserId);
+//		System.out.println(user);
 		int result = userService.updateUser(user);
 
 		if (result == 0) {
@@ -304,7 +305,6 @@ public class UserController {
 				int storyId = storyList.get(i);
 				list.add(storyService.selectOne(storyId));
 			}
-			System.out.println(list.toString());
 			return new ResponseEntity<List<Story>>(list, HttpStatus.OK);
 		}
 	}
