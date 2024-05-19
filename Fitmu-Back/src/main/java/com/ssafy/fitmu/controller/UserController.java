@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -26,6 +27,8 @@ import com.ssafy.fitmu.dto.Story;
 import com.ssafy.fitmu.dto.User;
 import com.ssafy.fitmu.service.ProductService;
 import com.ssafy.fitmu.service.StoryService;
+
+import com.ssafy.fitmu.service.KakaoLoginService;
 import com.ssafy.fitmu.service.UserService;
 import com.ssafy.fitmu.util.JwtUtil;
 
@@ -38,10 +41,12 @@ import jakarta.servlet.http.HttpSession;
 @RequestMapping("/user-api")
 @Tag(name = "유저 컨트롤러")
 public class UserController {
+	
 	private final UserService userService;
 	private final ProductService productService;
 	private final StoryService storyService;
 	private final JwtUtil jwtUtil;
+
 
 	public UserController(UserService userService, ProductService productService, StoryService storyService, JwtUtil jwtUtil) {
 		this.userService = userService;
