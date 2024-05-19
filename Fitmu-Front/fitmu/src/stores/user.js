@@ -46,6 +46,14 @@ export const useUserStore = defineStore('user', () => {
       })
   }
 
+  const kakaoLogin = function(url){
+    axios.post(url)
+    .then((response)=>{
+      console.log(response)
+      // router.push({ name: 'commu' })
+    })
+  }
+
   const registUser = function (user) {
     return new Promise((resolve, reject) => {
       let result = false;
@@ -183,7 +191,7 @@ export const useUserStore = defineStore('user', () => {
     getProductScrap,
     storyScrapList,
     getStoryScrap,
-    
+    kakaoLogin,
 
   }
 }, { persist: true })
