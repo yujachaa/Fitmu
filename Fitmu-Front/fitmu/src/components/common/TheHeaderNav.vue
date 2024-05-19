@@ -205,7 +205,7 @@ const shopFlag = computed(()=>{
 })
 
 const mypageFlag = computed(()=>{
-    return route.fullPath == "/mypage" ? true : false;
+    return (!flag.value && !shopFlag.value)
 })
 
 const registForm = function(){

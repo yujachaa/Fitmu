@@ -65,4 +65,15 @@
 			ORDER BY ${orderBy} ${orderByDir}
 		</if>        
 	</select>
+	
+	<select id="getProductScrap" resultType="int" parameterType="int">
+		SELECT product_id from product_scrapbook
+		WHERE user_id = #{userId}
+	</select>
+
+	<select id="getStoryScrap" resultType="int" parameterType="int">
+		SELECT story_id from story_scrapbook
+		WHERE user_id = #{userId}
+	</select>
+
 </mapper>

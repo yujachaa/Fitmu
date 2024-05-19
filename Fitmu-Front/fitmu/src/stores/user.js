@@ -6,7 +6,6 @@ import { useRoute } from 'vue-router'
 
 const REST_USER_API = `http://localhost:8080/user-api`
 
-
 export const useUserStore = defineStore('user', () => {
 
   const route = useRoute();
@@ -110,13 +109,54 @@ export const useUserStore = defineStore('user', () => {
     })
   }
 
+  //유저 한명 가져오기
+  const user = ref([])
+  const getUser = function(){
+    axios.get(REST_USER_API + "/" + sessionStorage.getItem("loginUser"))
+    .then((res)=>{
+      user.value = res.data
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+  }
+
+  //유저가 팔로우하는 사람들 가져오기 (팔로잉)
+  const followingList = ref([])
+  const getFollowing = function(userId){
+    axios.get(REST_USER_API + "/user/" + userId + "/follower")
+    .then((res)=>{
+      followingList.value = res.data
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+  }
+  //유저의 팔로워들 가져오기 (팔로워)
+  const followerList = ref([])
+  const getFollower = function(userId){
+    axios.get(REST_USER_API + "/user/" + userId + "/followee")
+    .then((res)=>{
+      followerList.value = res.data
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+  }
+
   return {
     login,
     logout,
     registUser,
     emailCheck,
     getUserList,
-    userList
+    userList,
+    user,
+    getUser,
+    followingList,
+    getFollowing,
+    followerList,
+    getFollower,
 
   }
 }, { persist: true })

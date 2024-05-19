@@ -6,16 +6,16 @@
       </div>
       <div class="follow-info">
         <span class="mx-1">팔로워</span>
-        <span class="mx-1">999 </span>
+        <span class="mx-1">{{ userStore.followerList.length }}</span>
         |
         <span class="mx-1">팔로잉</span>
-        <span class="mx-1">999</span>
+        <span class="mx-1">{{ userStore.followingList.length }}</span>
       </div>
       <div class="profile-box-item">
         <button class="btn btn-outline-secondary m-2 mb-3">설정</button>
       </div>
 
-        <hr>
+      <hr>
 
       <div class="icons d-flex align-items-center profile-box-item">
         <div class="icon-group d-flex flex-column align-items-center">
@@ -42,11 +42,11 @@
             </div>
           </div>
 
-          <div class="popular d-flex justify-content-between">
+          <div class="popular d-flex align-items-start">
             <!-- v-for 넣기 -->
-            <div v-for="num in 6" :key="num">
-              <div class="popular-pic">
-                <img class="pic" :src="`src/assets/image/product/${num + 6}.jpg`" alt="이미지">
+            <div v-for="story in storyStore.recent6List" :key="story">
+              <div class="popular-pic mx-2">
+                <img class="pic" :src="`src/assets/image/story/${story.image}`" alt="이미지">
               </div>
             </div>
           </div>
@@ -57,7 +57,24 @@
 </template>
 
 <script setup>
-import TheHeaderNav from '@/components/common/TheHeaderNav.vue'
+import { useStoryStore } from '@/stores/story';
+import { useUserStore } from '@/stores/user';
+import { computed, onMounted, ref } from 'vue';
+
+const userStore = useUserStore()
+const storyStore = useStoryStore()
+
+//storyId 내림차순 (최신순)
+
+onMounted(() => {
+  userStore.getUser();
+  userStore.getFollowing(sessionStorage.getItem("loginUser"));
+  userStore.getFollower(sessionStorage.getItem("loginUser"));
+  storyStore.getUserStory();
+});
+
+
+
 
 </script>
 
@@ -154,15 +171,16 @@ import TheHeaderNav from '@/components/common/TheHeaderNav.vue'
   margin: 5px 0;
 }
 
-.icon-group{
+.icon-group {
   width: 100px;
 
 }
 
-hr{
+hr {
   width: 100%;
   /* color: rgb(212, 212, 212); */
 }
+
 .unline {
   text-decoration: none;
   color: black;
