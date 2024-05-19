@@ -116,7 +116,6 @@ export const useUserStore = defineStore('user', () => {
     registUser,
     emailCheck,
     getUserList,
-    userList
 
   }
 }, { persist: true })
