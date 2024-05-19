@@ -7,7 +7,25 @@ export const useProductStore = defineStore('product', () => {
 
   const route = useRoute()
   const router = useRouter()
+  const product = ref({})
+  const productImages = ref([])
+  const products = ref([])
 
+  const getProduct = function(productId){
+    axios.get("http://localhost:8080/product-api/" + productId)
+    .then((response)=>{
+      console.log(response.data)
+      product.value = response.data
+    })
+  }
+
+  const getProductImages = function(productId){
+    axios.get("http://localhost:8080/product-api/image/" + productId)
+    .then((response)=>{
+      console.log(response.data)
+      productImages.value = response.data
+    })
+  }
   
   const registProduct = function(product, files){
     console.log(files)
@@ -46,5 +64,9 @@ export const useProductStore = defineStore('product', () => {
   }
   return {
     registProduct,
+    getProduct,
+    getProductImages,
+    product,
+    productImages,
    }
 }, {persist : true})

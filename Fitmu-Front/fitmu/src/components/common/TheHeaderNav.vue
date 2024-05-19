@@ -31,7 +31,9 @@
                             </div>
                         </a>
                         <ul class="dropdown-menu">
-                            <li><RouterLink class="dropdown-item" :to="{name : 'profile'}">마이페이지</RouterLink> </li>
+                            <li>
+                                <RouterLink class="dropdown-item" :to="{ name: 'profile' }">마이페이지</RouterLink>
+                            </li>
                             <li><a class="dropdown-item" href="#">판매자 신청</a></li>
                             <li><a class="dropdown-item" href="#">고객센터</a></li>
                             <li><a class="dropdown-item" @click="logout">로그아웃</a></li>
@@ -46,7 +48,7 @@
                     <span>|</span>
                     <span class="unline">고객센터</span>
                 </div>
-                <button class="btn" @click = "registForm">글쓰기</button>
+                <button class="btn" @click="registForm">글쓰기</button>
             </div>
         </div>
     </div>
@@ -72,7 +74,7 @@
                 <span :class="selected6">단백질/보충제</span>
                 <span :class="selected7">다이어트식단</span>
                 <span :class="selected8">의류</span>
-                <RouterLink :to="{name : 'productRegist'}">상품등록</RouterLink>
+                <RouterLink :to="{ name: 'productRegist' }">상품등록</RouterLink>
             </div>
         </div>
         <div v-else-if="mypageFlag" class="top">
@@ -84,7 +86,7 @@
                 <span :class="selected12">나의 리뷰</span>
                 <span :class="selected13">스크랩북</span>
                 <span :class="selected14">나의 문의</span>
-                <RouterLink :to="{name:'setting'}">
+                <RouterLink :to="{ name: 'setting' }">
                     <span :class="selected15">설정</span>
                 </RouterLink>
             </div>
@@ -109,9 +111,9 @@ const logout = function () {
     userStore.logout();
 }
 
-const islogin = computed(()=>{
-    
-    if(sessionStorage.getItem("loginUser") == null)
+const islogin = computed(() => {
+
+    if (sessionStorage.getItem("loginUser") == null)
         return false;
     else
         return true;
@@ -167,9 +169,9 @@ const selected9 = computed(() => {
 //         return {blue : true}
 //     }
 // })
-const selected10 = computed(()=>{
-    if(route.name === "profile"){
-        return {blue : true}
+const selected10 = computed(() => {
+    if (route.name === "profile") {
+        return { blue: true }
     }
 })
 // const selected11 = computed(()=>{
@@ -192,9 +194,9 @@ const selected10 = computed(()=>{
 //         return {blue : true}
 //     }
 // })
-const selected15 = computed(()=>{
-    if(route.name === "setting"){
-        return {blue : true}
+const selected15 = computed(() => {
+    if (route.name === "setting") {
+        return { blue: true }
     }
 })
 
@@ -202,16 +204,16 @@ const flag = computed(() => {
     return route.fullPath == "/" ? true : false;
 })
 
-const shopFlag = computed(()=>{
+const shopFlag = computed(() => {
     return route.fullPath == "/shop" ? true : false;
 })
 
-const mypageFlag = computed(()=>{
+const mypageFlag = computed(() => {
     return (!flag.value && !shopFlag.value)
 })
 
-const registForm = function(){
-    router.push({name : "storyregist"})
+const registForm = function () {
+    router.push({ name: "storyregist" })
 }
 
 
@@ -224,8 +226,8 @@ const registForm = function(){
     margin-top: 20px;
 }
 
-.under-hr{
-    margin-bottom : 0px;
+.under-hr {
+    margin-bottom: 0px;
 }
 
 .blue {
@@ -313,7 +315,7 @@ const registForm = function(){
     color: black;
 }
 
-.mypage-category{
+.mypage-category {
     display: flex;
     width: 100%;
     gap: 30px;
@@ -383,12 +385,14 @@ const registForm = function(){
     gap: 8px;
     font-size: 14px;
 }
-.login-users{
+
+.login-users {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
-.not-login-user{
+
+.not-login-user {
     align-items: center;
     display: flex;
     gap: 8px;
@@ -431,7 +435,7 @@ const registForm = function(){
     border-radius: 70%;
 } */
 
-.profile-image:hover{
+.profile-image:hover {
     border: 3px solid #34C5F0;
     border-radius: 70%;
 }
