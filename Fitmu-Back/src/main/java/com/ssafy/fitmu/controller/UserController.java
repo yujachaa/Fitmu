@@ -37,7 +37,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
 
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/user-api")
 @Tag(name = "유저 컨트롤러")
 public class UserController {

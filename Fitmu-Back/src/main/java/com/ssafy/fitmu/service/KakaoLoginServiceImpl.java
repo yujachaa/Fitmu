@@ -42,7 +42,7 @@ public class KakaoLoginServiceImpl implements KakaoLoginService {
 			StringBuilder sb = new StringBuilder();
 			sb.append("grant_type=authorization_code");
 			sb.append("&client_id=f89ff99ae64a8e6d277fb70f0a744b75"); // TODO REST_API_KEY 입력
-			sb.append("&redirect_uri=http://localhost:8080/kakao-api/kakao-login"); // TODO 인가코드 받은 redirect_uri 입력
+			sb.append("&redirect_uri=http://localhost:5173/kakaologin"); // TODO 인가코드 받은 redirect_uri 입력
 			sb.append("&code=" + code);
 			bw.write(sb.toString());
 			bw.flush();

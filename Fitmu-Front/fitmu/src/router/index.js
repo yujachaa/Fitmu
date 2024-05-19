@@ -12,6 +12,7 @@ import StoryRegistView from '@/views/StoryRegistView.vue'
 import ProductRegistView from '@/views/ProductRegistView.vue'
 import Profile from '@/components/Profile.vue'
 import Setting from '@/components/Setting.vue'
+import KakaoLoginView from '@/views/KakaoLoginView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -79,6 +80,11 @@ const router = createRouter({
       path : "/productregist",
       name : "productRegist",
       component : ProductRegistView,
+    },
+    {
+      path :"/kakaologin",
+      name : "kakaoLogin",
+      component : KakaoLoginView,
     }
   ]
 })

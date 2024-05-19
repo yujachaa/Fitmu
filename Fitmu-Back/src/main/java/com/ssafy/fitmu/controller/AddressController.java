@@ -22,7 +22,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/address-api")
 @Tag(name = "주소 컨트롤러")
 public class AddressController {

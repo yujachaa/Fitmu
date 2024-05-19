@@ -21,7 +21,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/order-api")
 @Tag(name = "주문 컨트롤러")
 public class OrderController {

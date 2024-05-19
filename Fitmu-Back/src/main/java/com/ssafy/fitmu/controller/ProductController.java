@@ -30,7 +30,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/product-api")
 @Tag(name = "상품 컨트롤러")
 public class ProductController {

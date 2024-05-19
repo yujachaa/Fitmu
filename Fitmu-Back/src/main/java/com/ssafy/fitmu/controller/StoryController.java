@@ -29,7 +29,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
-@CrossOrigin("*")
 @RequestMapping("/story-api")
 @Tag(name = "게시글 컨트롤러")
 public class StoryController {
