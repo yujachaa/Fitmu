@@ -40,7 +40,6 @@ export const useStoryStore = defineStore('story', () => {
     .then(()=>{
       const sortedStories = userStoryList.value.sort((a, b) => b.storyId - a.storyId);
       recent6List.value = sortedStories.slice(0, 6);
-      console.log(recent6List.value)
     })
 
 

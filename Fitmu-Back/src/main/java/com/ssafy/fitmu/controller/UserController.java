@@ -229,8 +229,10 @@ public class UserController {
 		
 		List<Integer> followerList = userService.getFollowerOfUser(id);
 		
-		if(followerList == null || followerList.size() == 0) {
+		if(followerList == null) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		}else if (followerList.size() == 0) {
+			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 		}else {
 			List<User> list = new ArrayList<>();
 			
@@ -249,8 +251,10 @@ public class UserController {
 		
 		List<Integer> followeeList = userService.getFolloweeOfUser(id);
 		
-		if(followeeList == null || followeeList.size() == 0) {
+		if(followeeList == null) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		}else if (followeeList.size() == 0) {
+			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 		}else {
 			List<User> list = new ArrayList<>();
 			
@@ -263,14 +267,16 @@ public class UserController {
 	}
 	
 	//유저 상품 스크랩북 조회 -> 상품객체배열로 리턴
-	@GetMapping("/user/{userId}/product-scrap/")
+	@GetMapping("/user/{userId}/product-scrap")
 	@Operation(summary = "유저의 상품 스크랩북 조회")
 	public ResponseEntity<?> getProductScrapbook(@PathVariable("userId") int id) {
 		
 		List<Integer> productList = userService.getProductScrap(id);
 		
-		if(productList == null || productList.size() == 0) {
+		if(productList == null ) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		} else if (productList.size() == 0) {
+			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 		}else {
 			List<Product> list = new ArrayList<>();
 			
@@ -282,16 +288,16 @@ public class UserController {
 		}
 	}
 	//유저 게시글 스크랩북 조회 -> 게시글객체배열로 리턴
-	@GetMapping("/user/{userId}/story-scrap/")
+	@GetMapping("/user/{userId}/story-scrap")
 	@Operation(summary = "유저의 게시글 스크랩북 조회")
 	public ResponseEntity<?> getStoryScrapbook(@PathVariable("userId") int id) {
 		
 		List<Integer> storyList = userService.getStoryScrap(id);
-		
-		System.out.println(storyList.toString());
-		
-		if(storyList == null || storyList.size() == 0) {
+				
+		if(storyList == null) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		} else if (storyList.size() == 0) {
+			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 		}else {
 			List<Story> list = new ArrayList<>();
 			

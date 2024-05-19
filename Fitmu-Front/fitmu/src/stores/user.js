@@ -143,6 +143,28 @@ export const useUserStore = defineStore('user', () => {
       console.log(err)
     })
   }
+  //유저의 상품 스크랩북 (찜목록) 가져오기
+  const productScrapList = ref([])
+  const getProductScrap = function(userId){
+    axios.get(REST_USER_API + "/user/" + userId + "/product-scrap")
+    .then((res)=>{
+      productScrapList.value = res.data
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+  }
+  //유저의 게시글 스크랩북 가져오기
+  const storyScrapList = ref([])
+  const getStoryScrap = function(userId){
+    axios.get(REST_USER_API + "/user/" + userId + "/story-scrap")
+    .then((res)=>{
+      storyScrapList.value = res.data
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+  }
 
   return {
     login,
@@ -157,7 +179,11 @@ export const useUserStore = defineStore('user', () => {
     getFollowing,
     followerList,
     getFollower,
-
+    productScrapList,
+    getProductScrap,
+    storyScrapList,
+    getStoryScrap,
+    
 
   }
 }, { persist: true })

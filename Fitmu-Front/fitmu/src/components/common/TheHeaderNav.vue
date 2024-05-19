@@ -84,7 +84,9 @@
                 <span :class="selected12">나의 리뷰</span>
                 <span :class="selected13">스크랩북</span>
                 <span :class="selected14">나의 문의</span>
-                <span :class="selected15">설정</span>
+                <RouterLink :to="{name:'setting'}">
+                    <span :class="selected15">설정</span>
+                </RouterLink>
             </div>
         </div>
     </div>
@@ -190,11 +192,11 @@ const selected10 = computed(()=>{
 //         return {blue : true}
 //     }
 // })
-// const selected15 = computed(()=>{
-//     if(route.name === "commu"){
-//         return {blue : true}
-//     }
-// })
+const selected15 = computed(()=>{
+    if(route.name === "setting"){
+        return {blue : true}
+    }
+})
 
 const flag = computed(() => {
     return route.fullPath == "/" ? true : false;

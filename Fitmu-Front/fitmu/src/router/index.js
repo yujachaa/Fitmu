@@ -11,6 +11,7 @@ import Zzim from '@/components/Zzim.vue'
 import StoryRegistView from '@/views/StoryRegistView.vue'
 import ProductRegistView from '@/views/ProductRegistView.vue'
 import Profile from '@/components/Profile.vue'
+import Setting from '@/components/Setting.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -62,6 +63,11 @@ const router = createRouter({
           name:"zzim",
           component: Zzim
         },
+        {
+          path:"/setting",
+          name:"setting",
+          component: Setting
+        }
       ]
     },
     {
