@@ -58,7 +58,7 @@
     </div>
     <div class="seller-regist d-flex justify-content-center" v-if="isUser">
       <div>
-        <button class="btn btn-outline-secondary btn-regist"><RouterLink to="@/components/SellerRegist.vue">판매자 등록하기</RouterLink></button>
+        <button class="btn btn-outline-secondary btn-regist" @click="goSellerRegist">판매자 신청하기</button>
       </div>
     </div>
   </div>
@@ -86,6 +86,10 @@ onMounted(() => {
 
 const goSetting = function () {
   router.push({ name: 'setting' })
+}
+
+const goSellerRegist = function(){
+  router.push({name: 'seller-regist'})
 }
 
 const isUser = computed(()=>{

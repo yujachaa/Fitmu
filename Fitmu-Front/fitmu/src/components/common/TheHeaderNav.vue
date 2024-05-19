@@ -34,7 +34,7 @@
                             <li>
                                 <RouterLink class="dropdown-item" :to="{ name: 'profile' }">마이페이지</RouterLink>
                             </li>
-                            <li><a class="dropdown-item" href="#">판매자 신청</a></li>
+                            <li v-if="role == 'u'"><RouterLink class="dropdown-item" :to="{ name: 'seller-regist' }">판매자 신청</RouterLink></li>
                             <li><a class="dropdown-item" href="#">고객센터</a></li>
                             <li><a class="dropdown-item" @click="logout">로그아웃</a></li>
                         </ul>

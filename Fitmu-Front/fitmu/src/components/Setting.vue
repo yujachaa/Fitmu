@@ -151,4 +151,8 @@ const nickCheck = function () {
   border: none;
   border-radius: 5px;
 }
+
+.btn-update:hover {
+    background-color: #26768e;
+}
 </style>
