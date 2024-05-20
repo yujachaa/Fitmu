@@ -1,6 +1,7 @@
 package com.ssafy.fitmu.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
@@ -47,6 +48,11 @@ public class SellerSeriveImpl implements SellerService {
 	@Override
 	public Seller getSellerByUserId(int userId) {
 		return sellerDao.getSellerByUserId(userId);
+	}
+
+	@Override
+	public List<Seller> selectAll() {
+		return sellerDao.selectAll();
 	}
 
 }
