@@ -21,6 +21,12 @@ export const useProductStore = defineStore('product', () => {
     reviews.value = reviews.value.sort((a,b) => b.reviewId - a.reviewId)
   }
 
+  const registReview = function(review){
+    axios.post("http://localhost:8080/review-api/regist", review)
+    .then((response)=>{
+      router.go()
+    })
+  }
   const getUsers = function(){
     axios.get("http://localhost:8080/user-api/")
     .then((response)=>{
@@ -108,6 +114,7 @@ export const useProductStore = defineStore('product', () => {
     users,
     reviewLike,
     help,
-    late
+    late,
+    registReview,
    }
 }, {persist : true})

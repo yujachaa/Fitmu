@@ -68,27 +68,28 @@
                         <div class="rate">
                             <p class = "info">별점 평가</p>
                             <div>
-                                <span class = "satis">만족도</span>
-                                <input id = "one" type="checkbox">
-                                <label for="one"><i v-for="_ in 1" class="mini-star bi bi-star-fill"></i></label>
-                                <input id = "two" type="checkbox">
-                                <label for="two"><i v-for="_ in 2" class="mini-star bi bi-star-fill"></i></label>
-                                <input id = "three" type="checkbox">
-                                <label for="three"><i v-for="_ in 3" class="mini-star bi bi-star-fill"></i></label>
-                                <input id = "four" type="checkbox">
-                                <label for="four"><i v-for="_ in 4" class="mini-star bi bi-star-fill"></i></label>
-                                <input id = "five" type="checkbox">
-                                <label for="five"><i v-for="_ in 5" class="mini-star bi bi-star-fill"></i></label>
+                                <span class = "satis">만족도</span><br>
+                                <input name="sat" class = "checkBox" id = "one" type="radio" value ="1" v-model = "satisfy">
+                                <label for="one"><i v-for="_ in 1" class="mini-star2 bi bi-star-fill"></i></label>
+                                <input name="sat" class = "checkBox" id = "two" type="radio" value ="2" v-model = "satisfy">
+                                <label for="two"><i v-for="_ in 2" class="mini-star2 bi bi-star-fill"></i></label>
+                                <input name="sat" class = "checkBox" id = "three" type="radio" value ="3" v-model = "satisfy">
+                                <label for="three"><i v-for="_ in 3" class="mini-star2 bi bi-star-fill"></i></label>
+                                <input name="sat" class = "checkBox" id = "four" type="radio" value ="4" v-model = "satisfy">
+                                <label for="four"><i v-for="_ in 4" class="mini-star2 bi bi-star-fill"></i></label>
+                                <input name="sat" class = "checkBox" id = "five" type="radio" value ="5" v-model = "satisfy">
+                                <label for="five"><i v-for="_ in 5" class="mini-star2 bi bi-star-fill"></i></label>
                             </div>
                         </div>
                         <div class="reviewContent">
                             <p class = "info">리뷰 작성</p>
+                            <textarea name="" id="reviewContent" placeholder="자세하고 솔직한 리뷰는 다른 고객에게 큰 도움이 됩니다." v-model = "reviewContent"></textarea>
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Send message</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-primary" @click = "registReview">등록</button>
                 </div>
             </div>
         </div>
@@ -109,6 +110,26 @@ const reviews = computed(() => {
     return productStore.reviews
 })
 const users = ref(productStore.users)
+
+const satisfy = ref(0)
+const userId = sessionStorage.getItem("loginUser")
+const reviewContent = ref("")
+
+const registReview = function(){
+    const review = {
+        reviewId : 0,
+        userId : userId,
+        productId : product.value.productId,
+        sellerId : product.value.sellerId,
+        rating : satisfy.value,
+        reviewImage : "",
+        content : reviewContent.value,
+        liked : 0,
+        blockStatus : 0,
+        createdAt : ""
+    }
+    productStore.registReview(review)
+}
 
 const getUser = function (userId) {
     return users.value.filter(user => user.userId == userId)[0].nickname
@@ -139,7 +160,7 @@ const rating = computed(() => {
     for (let i = 0; i < reviews.value.length; i++) {
         sum += reviews.value[i].rating
     }
-    return sum / reviews.value.length
+    return (sum / reviews.value.length).toFixed(1)
 })
 
 const help = function () {
@@ -152,8 +173,20 @@ const late = function () {
 </script>
 
 <style scoped>
-.satis{
-    margin-right : 20px;
+#reviewContent{
+    width: 100%;
+    height : 100px;
+    border-color : #DBDBDB;
+    border-radius : 5px;
+    resize : none;
+    padding-left : 10px;
+    padding-top : 5px;
+}
+.rate{
+    margin-bottom : 40px;
+}
+.checkBox{
+    margin-left : 10px;
 }
 .info{
     font-weight: bold;
@@ -222,6 +255,12 @@ const late = function () {
 }
 
 .mini-star {
+    color: #34C5F0;
+    font-size: 20px;
+    margin-left: 3px;
+}
+
+.mini-star2 {
     color: #34C5F0;
     font-size: 20px;
     margin-left: 3px;
