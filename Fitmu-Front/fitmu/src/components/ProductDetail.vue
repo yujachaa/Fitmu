@@ -87,12 +87,11 @@ const rating = computed(()=>{
     return sum / reviews.value.length
 })
 
-onMounted(() => {
+onMounted(async () => {
     productStore.getProduct(productId.value)
     productStore.getProductImages(productId.value)
     productStore.getProductReviews(productId.value)
     productStore.getUsers()
-
     // 여기 문의도 불러와야 함!!
 })
 </script>
