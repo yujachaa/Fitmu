@@ -49,7 +49,7 @@ public class CommentController {
 	public ResponseEntity<?> getCommentByStory(@PathVariable("storyId") int id){
 		List<Comment> list = commentService.selectAllByStory(id);
 		
-		if (list == null || list.size() == 0) {
+		if (list == null) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		} else {
 			return new ResponseEntity<List<Comment>>(list, HttpStatus.OK);

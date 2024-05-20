@@ -107,7 +107,7 @@ public class ReviewController {
 	public ResponseEntity<?> reviewAll(@PathVariable("productId") int id) {
 		List<Review> list = reviewService.seletAll(id);
 
-		if (list == null || list.size() == 0) {
+		if (list == null) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		} else {
 			return new ResponseEntity<List<Review>>(list, HttpStatus.OK);
@@ -120,7 +120,7 @@ public class ReviewController {
 	public ResponseEntity<?> reviewAllOrderByLike(@PathVariable("productId") int id) {
 		List<Review> list = reviewService.selectAllOrderByLike(id);
 		
-		if (list == null || list.size() == 0) {
+		if (list == null) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		} else {
 			return new ResponseEntity<List<Review>>(list, HttpStatus.OK);

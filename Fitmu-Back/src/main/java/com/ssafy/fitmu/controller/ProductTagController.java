@@ -35,7 +35,7 @@ public class ProductTagController {
 	public ResponseEntity<?> getAllTagOfStory(@PathVariable("stroyId") int id) {
 		List<ProductTag> list = productTagService.seletAllByStroy(id);
 
-		if (list == null || list.size() == 0) {
+		if (list == null) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		} else {
 			return new ResponseEntity<List<ProductTag>>(list, HttpStatus.OK);

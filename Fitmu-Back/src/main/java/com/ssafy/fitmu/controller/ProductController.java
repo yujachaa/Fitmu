@@ -58,7 +58,7 @@ public class ProductController {
 	public ResponseEntity<?> productAll(){
 		List<Product> productList = productService.selectAll();
 		
-		if(productList == null || productList.size() == 0) {
+		if(productList == null) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		}else {
 			return new ResponseEntity<List<Product>>(productList, HttpStatus.OK);

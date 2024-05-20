@@ -1,28 +1,28 @@
 <template>
     <div class="container">
         <div class="pic-div">
-            <img class="main-pic" :src="`/src/assets/image/product/${mainImage}`" alt="이미지">
+            <img class="main-pic" :src="`/src/assets/image/product/${productStore.productImages[0].fileName}`" alt="이미지">
         </div>
         <div class="info">
-            <p class="brand">{{ product.brand }}</p>
+            <p class="brand">{{ productStore.product.brand }}</p>
             <div class="namediv">
-                <h3 class="name">{{ product.name }}</h3>
+                <h3 class="name">{{ productStore.product.name }}</h3>
                 <i class="heart bi bi-heart"></i>
             </div>
-            ⭐<span class="rating" v-if="reviews.length != 0">{{ rating }}</span>
+            ⭐<span class="rating" v-if="productStore.reviews.length != 0">{{ rating }}</span>
             <span class="rating" v-else>0</span>
-            <span>{{ reviews.length}}개 리뷰</span>
+            <span>{{ productStore.reviews.length}}개 리뷰</span>
             <br>
-            <span class="discount">{{ product.discountRate }}%</span>
-            <span class="price">{{ product.price }}원</span><br>
+            <span class="discount">{{ productStore.product.discountRate }}%</span>
+            <span class="price">{{ productStore.product.price }}원</span><br>
             <div class="price2">
-                <p class="specialPrice">{{ product.specialPrice }}</p>
+                <p class="specialPrice">{{ productStore.product.specialPrice }}</p>
                 <p>원</p>
                 <p class="xmrrk">특가</p>
             </div>
             <div class="delivery">
                 <span class="delivery2">배송</span>
-                <span class="deliveryFee" v-if="product.deliveryFee != 0">{{ product.deliveryFee }}원</span>
+                <span class="deliveryFee" v-if="product.deliveryFee != 0">{{productStore.product.deliveryFee }}원</span>
                 <span class="deliveryFee" v-else>무료배송</span>
             </div>
             <hr>
@@ -42,7 +42,7 @@
                 </select>
                 <div class = "totalPrice">
                     <p>주문금액</p>
-                    <p>{{ totalPrice }}원</p>
+                    <p>{{ productStore.product.specialPrice * quantity }}원</p>
                 </div>
                 <button class = "buybtn">바로 구매</button>
             </div>
@@ -61,7 +61,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, computed } from 'vue';
+import { onMounted, ref, computed, onUpdated, } from 'vue';
 import { useRoute, useRouter } from 'vue-router'
 import { useProductStore } from '@/stores/product'
 
@@ -69,39 +69,29 @@ const route = useRoute()
 const router = useRouter()
 const productStore = useProductStore()
 
-const productId = ref(0)
-const product = ref({})
-const productImages = ref([])
-const reviews = ref([])
-const mainImage = ref("")
-
-onMounted(()=>{
-    productId.value = route.params.productId
-    product.value = productStore.product
-    productImages.value = productStore.productImages
-    reviews.value = productStore.reviews
-    mainImage.value = productImages.value[0].fileName
+onMounted(async()=>{
+    productStore.getProduct(route.params.productId)
+    productStore.getProductImages(route.params.productId)
+    productStore.getProductReviews(route.params.productId)
+    productStore.getUsers()
+    productStore.getProductInquiry(route.params.productId)
 })
+
+const productId = ref(route.params.productId)
+const product = ref(productStore.product)
+const productImages = ref(productStore.productImages)
+const reviews = ref(productStore.reviews)
+const mainImage = ref(productImages.value[0].fileName)
+
 
 const quantity = ref(0)
-const totalPrice = computed(()=>{
-    return product.value.specialPrice * quantity.value
-})
 
 const rating = computed(()=>{
     let sum = 0
     for(let i=0; i<reviews.value.length; i++){
         sum += reviews.value[i].rating
     }
-    return sum / reviews.value.length
-})
-
-onMounted(async () => {
-    productStore.getProduct(productId.value)
-    productStore.getProductImages(productId.value)
-    productStore.getProductReviews(productId.value)
-    productStore.getUsers()
-    // 여기 문의도 불러와야 함!!
+    return (sum / reviews.value.length).toFixed(1)
 })
 </script>
 
