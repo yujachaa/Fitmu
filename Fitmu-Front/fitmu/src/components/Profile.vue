@@ -52,7 +52,7 @@
             </div>
             <!-- v-for 넣기 -->
             <div v-for="story in storyStore.recent6List" :key="story" v-else>
-              <div class="popular-pic mx-2">
+              <div class="popular-pic">
                 <img class="pic" :src="`src/assets/image/story/${story.image}`" alt="이미지">
               </div>
             </div>
@@ -98,7 +98,7 @@
       </div>
     </div> -->
 
-    
+
   </div>
 </template>
 
@@ -223,7 +223,8 @@ const noStory = computed(()=>{
   object-fit: cover;
   object-fit: cover;
   overflow: hidden;
-  margin-bottom: 20px;
+  margin-left: 30px;
+  margin-bottom: 30px;
 }
 
 .popular-pic>.pic {
@@ -279,7 +280,7 @@ const noStory = computed(()=>{
 
 
 .under-box{
-  margin-top: 10px;
+  /* margin-top: 10px; */
   margin-bottom: 30px;
 }
 

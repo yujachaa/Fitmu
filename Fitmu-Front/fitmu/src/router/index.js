@@ -18,6 +18,7 @@ import ProductInfo from '@/components/ProductInfo.vue'
 import ProductReview from '@/components/ProductReview.vue'
 import ProductInquiry from '@/components/ProductInquiry.vue'
 import SellerRegist from '@/components/SellerRegist.vue'
+import StoryDetail from '@/components/StoryDetail.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -30,7 +31,14 @@ const router = createRouter({
         {
           path : '/',
           name : 'commu',
-          component : Commu
+          component : Commu,
+          children:[
+            {
+              path : '/storydetail/:storyId',
+              name:'storyDetail',
+              component:StoryDetail
+            }
+          ]
         },
         {
           path : 'shop',
