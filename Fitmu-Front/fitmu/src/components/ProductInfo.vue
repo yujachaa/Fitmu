@@ -1,10 +1,10 @@
 <template>
     <div class="pictures">
         <p class="small-title">상품사진</p>
-        <img class="infoimg" v-for="(image) in productImages" :key="image.imageId"
+        <img class="infoimg" v-for="(image) in productStore.productImages" :key="image.imageId"
             :src="`/src/assets/image/product/${image.fileName}`" alt="">
         <p class = "small-title">상품 설명</p>
-        <p class = "content">{{ product.productDetail }}</p>
+        <p class = "content">{{ productStore.product.productDetail }}</p>
     </div>
 </template>
 

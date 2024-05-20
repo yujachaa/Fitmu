@@ -21,7 +21,7 @@
 	
 	<update id="updateAddress" parameterType = "Address">
 		UPDATE address
-		SET address_name = #{addressName}, receiver = #{receiver}, phone_number = #{phoneNumber}, address1 = #{address1}, address2 = #{address2} 
+		SET address_name = #{addressName}, receiver = #{receiver}, phone_number = #{phoneNumber}, address1 = #{address1}, address2 = #{address2}, is_default = #{isDefault} 
 		WHERE address_id = #{addressId}
 	</update>
 	

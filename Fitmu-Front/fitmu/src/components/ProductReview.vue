@@ -3,14 +3,14 @@
         <div class="reviewtop">
             <div class="reviewCnt">
                 <p>리뷰</p>
-                <p class="numColor">{{ reviews.length }}</p>
+                <p class="numColor">{{ productStore.reviews.length }}</p>
             </div>
             <button class="reviewbtn" data-bs-toggle="modal" data-bs-target="#exampleModal"
                 data-bs-whatever="@mdo">리뷰쓰기</button>
         </div>
         <div class="stardiv">
             <i class="star bi bi-star-fill"></i>
-            <p class="rating" v-if="reviews.length == 0">0</p>
+            <p class="rating" v-if="productStore.reviews.length == 0">0</p>
             <p class="rating" v-else>{{ rating }}</p>
             <div class="vertical-line"></div>
             <div class="ratinglist">
@@ -28,8 +28,8 @@
         </div>
         <hr>
         <div class="reviews">
-            <div v-if = "reviews.length == 0">리뷰 좀 써주세요 ㅠㅠ</div>
-            <div v-for="review in reviews" class="review">
+            <div v-if = "productStore.reviews.length == 0">리뷰 좀 써주세요 ㅠㅠ</div>
+            <div v-for="review in productStore.reviews" class="review">
                 <div class="user-profile">
                     <img class="profile" src="@/assets/image/profile.png" alt="">
                     <p>{{ getUser(review.userId) }}</p> <br>
@@ -63,8 +63,8 @@
                     <form>
                         <div class="productInfo">
                             <p class = "info">상품 정보</p>
-                            <span class = "brand">{{ product.brand }}</span>
-                            <span class = "name">{{ product.name }}</span>
+                            <span class = "brand">{{ productStore.product.brand }}</span>
+                            <span class = "name">{{ productStore.product.name }}</span>
                         </div>
                         <div class="rate">
                             <p class = "info">별점 평가</p>
@@ -158,10 +158,10 @@ const five = computed(() => {
 
 const rating = computed(() => {
     let sum = 0
-    for (let i = 0; i < reviews.value.length; i++) {
-        sum += reviews.value[i].rating
+    for (let i = 0; i < productStore.reviews.length; i++) {
+        sum += productStore.reviews[i].rating
     }
-    return (sum / reviews.value.length).toFixed(1)
+    return (sum / productStore.reviews.length).toFixed(1)
 })
 
 const help = function () {

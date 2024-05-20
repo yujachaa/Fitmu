@@ -3,7 +3,7 @@
         <div class="reviewtop">
             <div class="reviewCnt">
                 <p>문의</p>
-                <p class="numColor">{{ inquirys.length }}</p>
+                <p class="numColor">{{ productStore.inquirys.length }}</p>
             </div>
             <button class="reviewbtn" data-bs-toggle="modal" data-bs-target="#exampleModal"
                 data-bs-whatever="@mdo">문의하기</button>
@@ -96,9 +96,6 @@ const productStore = useProductStore()
 
 const role = ref(sessionStorage.getItem("role"))
 const product = ref(productStore.product)
-const inquirys = computed(() => {
-    return productStore.inquirys
-})
 const users = ref(productStore.users)
 
 const userId = sessionStorage.getItem("loginUser")
