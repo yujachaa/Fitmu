@@ -39,6 +39,7 @@
 	<select id="selectByUserId" resultType = "Story" parameterType = "int">
 		SELECT * FROM story
 		WHERE user_id = #{userId}
+		ORDER BY created_date DESC
 	</select>
 	
 	<select id="popularStory" resultType = "Story">
@@ -97,5 +98,10 @@
 	<select id="getImageByStoryId" parameterType = "int" resultType = "StoryImage">
 		SELECT * FROM story_image
 		WHERE story_id = #{storyId}
+	</select>
+	
+	<select id="getScrapCountByStoryId" parameterType="int" resultType="int">
+		select count(*) AS cnt from story_scrapbook
+		where story_id = #{storyId};
 	</select>
 </mapper>

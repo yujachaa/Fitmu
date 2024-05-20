@@ -53,7 +53,7 @@
             <!-- v-for 넣기 -->
             <div v-for="story in storyStore.recent6List" :key="story" v-else>
               <div class="popular-pic">
-                <img class="pic" :src="`src/assets/image/story/${story.image}`" alt="이미지">
+                <img class="pic" :src="`src/assets/image/story/${story.image}`" alt="이미지" @click = "storyDetail(story.storyId)">
               </div>
             </div>
           </div>
@@ -145,6 +145,10 @@ const isSeller = computed(()=>{
 const noStory = computed(()=>{
   return storyStore.recent6List.length == 0 ? true : false
 })
+
+const storyDetail = function (storyId){
+  router.push({name : 'storyDetail', params: {'storyId' : storyId}})
+}
 
 
 </script>

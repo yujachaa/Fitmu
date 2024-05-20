@@ -26,4 +26,5 @@ public interface StoryDao {
 	public int deleteScrapBook(Map<String,Integer> map);
 	public int insertStoryImage(StoryImage storyImage);
 	public List<StoryImage> getImageByStoryId(int storyId);
+	public int getScrapCountByStoryId(int storyId);
 }

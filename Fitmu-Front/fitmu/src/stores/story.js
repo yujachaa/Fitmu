@@ -47,15 +47,36 @@ export const useStoryStore = defineStore('story', () => {
       console.log(err)
       // userStoryList.value = []
     })
-
-
   }
+  
+  //지금 조회하는 게시글 가져오기
+  const story = ref({})
+  const getStory = function(storyId){
+    axios.get(REST_STORY_API + "/" + storyId)
+    .then((res)=>{
+      story.value = res.data
+    })
+  }
+
+  //지금 조회하는 게시글의 스크랩수 가져오기
+  const storyScrapCnt = ref(0)
+  const getStoryScrapCount = function(storyId){
+    axios.get(REST_STORY_API + "/scrap/" + storyId)
+    .then((res)=>{
+      storyScrapCnt.value = res.data
+    })
+  }
+
 
   return {
     registStory,
     userStoryList,
     getUserStory,
     recent6List,
+    story,
+    getStory,
+    storyScrapCnt,
+    getStoryScrapCount,
 
    }
 }, {persist : true})
