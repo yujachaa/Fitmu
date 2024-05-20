@@ -117,7 +117,7 @@ export const useUserStore = defineStore('user', () => {
     })
   }
 
-  //유저 한명 가져오기
+  //현재 로그인한 유저 한명 가져오기
   const user = ref([])
   const getUser = function(){
     axios.get(REST_USER_API + "/" + sessionStorage.getItem("loginUser"))
@@ -200,6 +200,23 @@ export const useUserStore = defineStore('user', () => {
     })
   }
 
+  //팔로우 하기
+  const follow = function(userId, followingId){
+    axios.post(REST_USER_API + "/user/" + userId + "/follow/" + followingId)
+    .then((res)=>{
+      
+    })
+  }
+
+  //팔로우 취소 언팔
+  const unfollow = function(userId, followingId){
+    axios.delete(REST_USER_API + "/user/" + userId + "/follow/" + followingId)
+    .then((res)=>{
+      
+    })
+  }
+
+
   return {
     login,
     logout,
@@ -219,7 +236,8 @@ export const useUserStore = defineStore('user', () => {
     getStoryScrap,
     kakaoLogin,
     updateUser,
-
+    unfollow,
+    follow,
 
   }
 }, { persist: true })

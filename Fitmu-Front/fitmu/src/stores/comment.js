@@ -8,23 +8,18 @@ export const useCommentStore = defineStore('comment', () => {
 
   const commentList = ref([])
 
+  //댓글 등록하기
   const registComment = function (comment) {
-    axios.post({
-      url: REST_COMMENT_API + "/regist",
-      data: comment
-    })
-      .then((res) => {
-        //댓글 등록한 다음에 이 게시글에 달린 리뷰 리스트 다시 전체 조회
-        axios.get(REST_COMMENT_API + "/story/" + comment.storyId)
-          .then((res) => {
-            commentList.value = res.data
-          })
-      })
+    axios.post(REST_COMMENT_API + "/regist", comment)
       .then((res) => {
         location.reload()
       })
+      .catch((err)=>{
+        console.log(err)
+      })
   }
 
+  //게시글에 달린 댓글리스트 가져오기
   const getCommentList = function(storyId){
     axios.get(REST_COMMENT_API + "/story/" + storyId)
     .then((res) => {
