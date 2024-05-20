@@ -1,7 +1,7 @@
 <template>
     <div class="container1">
         <RouterLink class="logo" :to="{ name: 'commu' }">
-            <span class="jua-regular">핏뮤<span class="fitmu">Fitmu</span></span>
+            <span class="jua-regular">핏뮤<span class="fitmu">Fitmu</span><span class = "for">for</span> <span class ="seller">Seller</span></span>
         </RouterLink>
     </div>
     <hr>
@@ -113,10 +113,19 @@ const registProduct = function () {
 </script>
 
 <style scoped>
+.for{
+    font-size : 30px;
+    margin-left : 10px;
+}
+
+.seller{
+    font-size : 35px;
+    color : pink;
+}
 .filearea{
     display : flex;
     flex-direction: column;
-    width : 425px;
+    width : 100%;
     height : 100px;
     border-radius: 8px;
     border : 1px solid #EDEDED;
@@ -126,14 +135,15 @@ const registProduct = function () {
 }
 
 .btn2{
-    width : 200px;
-    height : 50px;
+    width : 100%;
+    height : 45px;
     color : white;
     font-weight : bold;
     border : 1px solid #34C5F0;
     background-color: #34C5F0;
     border-radius: 8px;
     margin-top : 30px;
+    margin-bottom : 100px;
 }
 .btn2:hover{
     border : 1px solid #479db8;

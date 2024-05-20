@@ -19,6 +19,7 @@ import ProductReview from '@/components/ProductReview.vue'
 import ProductInquiry from '@/components/ProductInquiry.vue'
 import SellerRegist from '@/components/SellerRegist.vue'
 import StoryDetail from '@/components/StoryDetail.vue'
+import OrderView from '@/views/OrderView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -43,7 +44,7 @@ const router = createRouter({
           name : 'productDetail',
           component : ProductDetail,
           children : [{
-            path : 'info',
+            path : '',
             name : 'productinfo',
             component : ProductInfo
           },
@@ -121,6 +122,11 @@ const router = createRouter({
       path :"/kakaologin",
       name : "kakaoLogin",
       component : KakaoLoginView,
+    },
+    {
+      path : "/order/:productId/:quantity",
+      name : "order",
+      component : OrderView
     }
   ]
 })

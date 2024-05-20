@@ -70,6 +70,17 @@ public class AddressController {
 		List<Address> addressList = addressService.getAddressByUserId(userId);
 		if(addressList.size() == 0) {
 			address.setIsDefault(1);
+		}else {
+			if(address.getIsDefault() == 1) {
+				for(Address address1 : addressList) {
+					if(address1.getIsDefault() == 1) {
+						address1.setIsDefault(0);
+						int result2 = addressService.updateAddress(address1);
+						break;
+					}
+				}
+				
+			}
 		}
 		int result = addressService.insertAddress(address);
 		

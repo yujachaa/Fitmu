@@ -44,7 +44,7 @@
                     <p>주문금액</p>
                     <p>{{ productStore.product.specialPrice * quantity }}원</p>
                 </div>
-                <button class = "buybtn">바로 구매</button>
+                <button class = "buybtn" @click="goOrder">바로 구매</button>
             </div>
         </div>
     </div>
@@ -88,11 +88,19 @@ const quantity = ref(0)
 
 const rating = computed(()=>{
     let sum = 0
-    for(let i=0; i<reviews.value.length; i++){
-        sum += reviews.value[i].rating
+    for(let i=0; i<productStore.reviews.length; i++){
+        sum += productStore.reviews[i].rating
     }
-    return (sum / reviews.value.length).toFixed(1)
+    return (sum / productStore.reviews.length).toFixed(1)
 })
+
+const goOrder = function(){
+    if(quantity.value == 0){
+        window.alert("수량을 선택해주세요")
+        return
+    }
+    router.replace({ name: 'order', params: { 'productId': route.params.productId, 'quantity': quantity.value } })
+}
 </script>
 
 <style scoped>

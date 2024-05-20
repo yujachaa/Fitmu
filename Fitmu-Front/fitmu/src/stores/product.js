@@ -13,9 +13,43 @@ export const useProductStore = defineStore('product', () => {
   const reviews = ref([])
   const users = ref([])
   const inquirys = ref([])
+  const addresses = ref([])
+  const defaultAddress = ref(null)
+
+  const addressDelete = function(id){
+    axios.delete("http://localhost:8080/address-api/address/" + id)
+   .then((response)=>{
+    router.go()
+   })
+  }
+
+  const deleteAddress = function(){
+    defaultAddress.value = null
+  }
+
+  const registAddress = function(address){
+    axios.post("http://localhost:8080/address-api/address/" + sessionStorage.getItem("loginUser"), address)
+    .then((response)=>{
+      router.go()
+    })
+  }
+
+  const getAddress = function(id){
+    axios.get("http://localhost:8080/address-api/address/user/" + id)
+    .then((response)=>{
+      addresses.value = response.data
+    })
+  }
+
+  const getDefaultAddress = function(id){
+    axios.get("http://localhost:8080/address-api/address/default/" + id)
+    .then((response)=>{
+      defaultAddress.value = response.data
+    })
+  }
 
   const getProductInquiry = function(productId){
-    axios.get("http://localhost:8080/inquiry-api/product/" + product.value.productId)
+    axios.get("http://localhost:8080/inquiry-api/product/" + route.params.productId)
     .then((response)=>{
       inquirys.value = response.data
     })
@@ -119,6 +153,7 @@ export const useProductStore = defineStore('product', () => {
   }
   
   return {
+    deleteAddress,
     registProduct,
     getProduct,
     getProductImages,
@@ -134,6 +169,13 @@ export const useProductStore = defineStore('product', () => {
     registReview,
     getProductInquiry,
     inquirys,
-    registInquiry
+    registInquiry,
+    getAddress,
+    getDefaultAddress,
+    addresses,
+    defaultAddress,
+    registAddress,
+    addressDelete,
+    
    }
 }, {persist : true})
