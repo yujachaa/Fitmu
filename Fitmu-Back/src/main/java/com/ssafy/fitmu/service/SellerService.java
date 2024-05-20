@@ -1,5 +1,7 @@
 package com.ssafy.fitmu.service;
 
+import java.util.List;
+
 import com.ssafy.fitmu.dto.Product;
 import com.ssafy.fitmu.dto.Seller;
 
@@ -14,4 +16,5 @@ public interface SellerService {
 	public int deleteAnswer(int inquiryId);
 	
 	public Seller getSellerByUserId(int userId);
+	public List<Seller> selectAll();
 }

@@ -101,7 +101,7 @@ public class StoryController {
 	public ResponseEntity<?> storyAll() {
 		List<Story> storyList = storyService.selectAll();
 
-		if (storyList == null || storyList.size() == 0) {
+		if (storyList == null) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		} else {
 			return new ResponseEntity<List<Story>>(storyList, HttpStatus.OK);
@@ -114,7 +114,7 @@ public class StoryController {
 	public ResponseEntity<?> search(@ModelAttribute SearchCondition condition) {
 		List<Story> storyList = storyService.searchStory(condition);
 
-		if (storyList == null || storyList.size() == 0) {
+		if (storyList == null) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		} else {
 			return new ResponseEntity<List<Story>>(storyList, HttpStatus.OK);
@@ -127,7 +127,7 @@ public class StoryController {
 	public ResponseEntity<?> searchByUserId(@PathVariable("userId") int id) {
 		List<Story> storyList = storyService.selectByUserId(id);
 
-		if (storyList == null || storyList.size() == 0) {
+		if (storyList == null) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		} else {
 			return new ResponseEntity<List<Story>>(storyList, HttpStatus.OK);
@@ -191,7 +191,7 @@ public class StoryController {
 	public ResponseEntity<?> popularStory() {
 		List<Story> storyList = storyService.popularStory();
 
-		if (storyList == null || storyList.size() == 0) {
+		if (storyList == null) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		} else {
 			return new ResponseEntity<List<Story>>(storyList, HttpStatus.OK);
@@ -203,7 +203,7 @@ public class StoryController {
 	public ResponseEntity<?> likeStory() {
 		List<Story> storyList = storyService.likeStory();
 
-		if (storyList == null || storyList.size() == 0) {
+		if (storyList == null) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		} else {
 			return new ResponseEntity<List<Story>>(storyList, HttpStatus.OK);
@@ -261,7 +261,7 @@ public class StoryController {
 	public ResponseEntity<?> getProductImageByStoryId(@PathVariable("storyId") int storyId){
 		List<StoryImage> storyImageList = storyService.getImageByStoryId(storyId);
 		
-		if(storyImageList == null || storyImageList.size() == 0) {
+		if(storyImageList == null) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		} else {
 			return new ResponseEntity<List<StoryImage>>(storyImageList, HttpStatus.OK);

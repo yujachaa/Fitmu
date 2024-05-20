@@ -1,8 +1,9 @@
 package com.ssafy.fitmu.controller;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,8 +31,20 @@ public class SellerController {
 		this.sellerService = sellserService;
 	}
 	
+	@GetMapping("/seller")
+	@Operation(summary = "seller 전체 조회")
+	public ResponseEntity<?> getAllSeller(){
+		List<Seller> list = sellerService.selectAll();
+		
+		if(list == null) {
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		}else {
+			return new ResponseEntity<List<Seller>>(list, HttpStatus.OK);
+		}
+	}
+	
 	@GetMapping("/{userId}")
-	@Operation(summary = "userId로 seller 가녀오기")
+	@Operation(summary = "userId로 seller 가져오기")
 	public ResponseEntity<?> getSellerByUserId(@PathVariable("userId") int userId){
 		Seller seller = sellerService.getSellerByUserId(userId);
 		

@@ -34,7 +34,7 @@
       </div>
     </div>
     <div class="mystory">
-      <div class="container">
+      <div >
         <div class="section">
           <div class="section-title">
             <div class="small-title">
@@ -45,9 +45,13 @@
             </div>
           </div>
 
-          <div class="popular d-flex align-items-start">
+
+          <div class="popular d-flex align-items-start" >
+            <div class="no-story" v-if="noStory">
+              <p>아직 작성한 게시글이 없어요.😅</p>
+            </div>
             <!-- v-for 넣기 -->
-            <div v-for="story in storyStore.recent6List" :key="story">
+            <div v-for="story in storyStore.recent6List" :key="story" v-else>
               <div class="popular-pic mx-2">
                 <img class="pic" :src="`src/assets/image/story/${story.image}`" alt="이미지">
               </div>
@@ -57,10 +61,44 @@
       </div>
     </div>
     <div class="seller-regist d-flex justify-content-center" v-if="isUser">
-      <div>
+      <div class="under-box">
         <button class="btn btn-outline-secondary btn-regist" @click="goSellerRegist">판매자 신청하기</button>
       </div>
     </div>
+    <div class="seller-regist d-flex justify-content-center" v-else-if="isSeller">
+      <div class="under-box">
+        <button class="btn btn-outline-secondary btn-regist" @click="goProductRegist">판매 상품 등록하기</button>
+      </div>
+    </div>
+    <!-- 유저가 셀러일 때 내 상품 표시? 일단 보류 -->
+    <!-- <div class="mystory">
+      <div >
+        <div class="section">
+          <div class="section-title">
+            <div class="small-title">
+              <h4>내 상품</h4>
+            </div>
+            <div>
+              <a>더보기</a>
+            </div>
+          </div>
+
+
+          <div class="popular d-flex align-items-start" >
+            <div class="no-story" v-if="noStory">
+              <p>아직 등록한 상품이 없어요.😅</p>
+            </div>
+            <div v-for="story in storyStore.recent6List" :key="story" v-else>
+              <div class="popular-pic mx-2">
+                <img class="pic" :src="`src/assets/image/story/${story.image}`" alt="이미지">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+    
   </div>
 </template>
 
@@ -88,29 +126,53 @@ const goSetting = function () {
   router.push({ name: 'setting' })
 }
 
-const goSellerRegist = function(){
-  router.push({name: 'seller-regist'})
+const goSellerRegist = function () {
+  router.push({ name: 'seller-regist' })
 }
 
-const isUser = computed(()=>{
+const goProductRegist = function (){
+  router.push({name : 'productRegist'})
+}
+
+const isUser = computed(() => {
   return sessionStorage.getItem("role") == "u" ? true : false
+})
+
+const isSeller = computed(()=>{
+  return sessionStorage.getItem("role") == "s" ? true : false
+})
+
+const noStory = computed(()=>{
+  return storyStore.recent6List.length == 0 ? true : false
 })
 
 
 </script>
 
 <style scoped>
+.no-story {
+  width: 100%;
+  height: 400px;
+  border: 2px dashed rgb(153, 153, 153);
+  color: rgb(153, 153, 153);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-.seller-regist{
+.seller-regist {
   width: 250px;
 }
+
 .top {
   padding-left: 80px;
   padding-right: 80px;
-  
+
 }
-.mystory{
-  width: 800px;
+
+.mystory {
+  position: relative;
+  width: 65%;
 }
 
 .container {
@@ -123,7 +185,9 @@ const isUser = computed(()=>{
 
 .section {
   margin-bottom: 20px;
+  margin-left: 80px;
   width: 100%;
+
 }
 
 .section-title {
@@ -194,6 +258,7 @@ const isUser = computed(()=>{
 
 .profile-box {
   margin-top: 50px;
+  margin-bottom: 20px;
   border: 1px solid rgb(212, 212, 212);
   border-radius: 5px;
   padding: 20px;
@@ -211,17 +276,12 @@ const isUser = computed(()=>{
   width: 100px;
 
 }
-/* 
-.btn-regist {
-  margin-top: 20px;
-  height: 40px;
-  background-color: #34C5F0;
-  color: white;
-  font-weight: bold;
-  border: 1px solid #34C5F0;
-  border-radius: 5px;
-} */
 
+
+.under-box{
+  margin-top: 10px;
+  margin-bottom: 30px;
+}
 
 
 hr {

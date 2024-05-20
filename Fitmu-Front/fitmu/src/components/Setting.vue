@@ -13,7 +13,7 @@
           <div id="nickHelp" class="form-text">
           </div>
           <input type="text" id="nickname" class="form-control" aria-describedby="nickHelp"
-            v-model="userStore.user.nickname" placeholder="2자~20자까지 입력할 수 있어요." @keyup="nickCheck">
+            v-model.trim="userStore.user.nickname" placeholder="2자~20자까지 입력할 수 있어요." @keyup="nickCheck">
           <div class="form-text" id="nickHelp">{{ nickMsg }}</div>
         </div>
 

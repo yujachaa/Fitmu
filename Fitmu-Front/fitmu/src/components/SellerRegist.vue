@@ -10,111 +10,127 @@
           <label for="nickname" class="form-label">
             <h5 class="label">사업자 등록번호<span class="star">*</span></h5>
           </label>
+          <div class="company-number d-flex justify-content-between ">
+            <div class="regi-num">
+              <input type="text" class="form-control" aria-describedby="reginumHelp"
+                placeholder="'-'를 제외하고 입력해주세요." maxlength="10" @input="validateNumber" v-model.trime="seller.registrationNum" :disabled="checked">
+            </div>
+            <div class="regi-button-box">
+              <button class="btn btn-primary btn-reginum-check" type="button" @click="regiNumCheck" :disabled="checked">인증하기</button>
+            </div>
+          </div>
+          <div class="form-text" id="reginumHelp">{{ regiNumMsg }}</div>
+        </div>
+
+        <div class="input">
+          <label for="nickname" class="form-label">
+            <h5 class="label">대표자명<span class="star">*</span></h5>
+          </label>
           <div id="nickHelp" class="form-text">
           </div>
-          <div class="company-number d-flex justify-content-between row">
-            <div class="col-8">
-              <input type="text" id="nickname" class="form-control" aria-describedby="nickHelp"
-                v-model="userStore.user.nickname" placeholder="'-'를 제외하고 입력해주세요." @keyup="nickCheck">
-            </div>
-            <div class="col-3 px-0 mx-0">
-              <button class="btn btn-primary">인증하기</button>
-            </div>
-          </div>
-          <div class="form-text" id="nickHelp">{{ nickMsg }}</div>
+          <input type="email"  class="form-control" placeholder="이메일을 입력해주세요." v-model.trim="seller.representative">
         </div>
+        
         <div class="input">
           <label for="nickname" class="form-label">
             <h5 class="label">회사명<span class="star">*</span></h5>
           </label>
-          <div id="nickHelp" class="form-text">
-          </div>
-          <input type="text" id="nickname" class="form-control" aria-describedby="nickHelp"
-            v-model="userStore.user.nickname" placeholder="2자~20자까지 입력할 수 있어요." @keyup="nickCheck">
-          <div class="form-text" id="nickHelp">{{ nickMsg }}</div>
+          <input type="text" class="form-control" placeholder="2자~20자까지 입력할 수 있어요." v-model.trim="seller.companyName">
         </div>
         <div class="input">
           <label for="nickname" class="form-label">
             <h5 class="label">회사 주소지<span class="star">*</span></h5>
           </label>
-          <div id="nickHelp" class="form-text">
-          </div>
-          <input type="text" id="nickname" class="form-control" aria-describedby="nickHelp"
-            v-model="userStore.user.nickname" placeholder="2자~20자까지 입력할 수 있어요." @keyup="nickCheck">
-          <div class="form-text" id="nickHelp">{{ nickMsg }}</div>
+          <input type="text"  class="form-control" placeholder="주소를 입력해주세요." v-model.trim="seller.address">
         </div>
         <div class="input">
           <label for="nickname" class="form-label">
             <h5 class="label">고객센터<span class="star">*</span></h5>
           </label>
-          <div id="nickHelp" class="form-text">
-          </div>
-          <input type="text" id="nickname" class="form-control" aria-describedby="nickHelp"
-            v-model="userStore.user.nickname" placeholder="2자~20자까지 입력할 수 있어요." @keyup="nickCheck">
-          <div class="form-text" id="nickHelp">{{ nickMsg }}</div>
+          <input type="text"  class="form-control" placeholder="연락가능한 전화번호를 입력해주세요." maxlength="11" v-model.trim="seller.customerCenter">
         </div>
         <div class="input">
           <label for="nickname" class="form-label">
             <h5 class="label">회사 이메일<span class="star">*</span></h5>
           </label>
-          <div id="nickHelp" class="form-text">
-          </div>
-          <input type="email" id="nickname" class="form-control" aria-describedby="nickHelp"
-            v-model="userStore.user.nickname" placeholder="2자~20자까지 입력할 수 있어요." @keyup="nickCheck">
-          <div class="form-text" id="nickHelp">{{ nickMsg }}</div>
+          <input type="email"  class="form-control" placeholder="이메일을 입력해주세요." v-model.trim="seller.email">
         </div>
-        <button class="btn btn-primary btn-regist" @click="registSeller" type="button">신청하기</button>
+
+        <button class=" btn-regist" @click="registSeller" type="button">신청하기</button>
       </form>
     </div>
   </div>
-
 </template>
 
 <script setup>
 import { useUserStore } from '@/stores/user';
+import {useSellerStore} from '@/stores/seller'
 import { onMounted, ref } from 'vue';
 
 const userStore = useUserStore()
+const sellerStore = useSellerStore()
 
-const user = ref({
-  nickname: "",
-  birth: "",
-  gender: "0"
+const seller = ref({
+  userId: sessionStorage.getItem("loginUser"),
+  companyName: "",
+  representative: "",
+  address: "",
+  customerCenter: "",
+  email: "",
+  registrationNum: ""
 })
 
 onMounted(() => {
   userStore.getUser(sessionStorage.getItem("loginUser"))
   userStore.getUserList()
+  sellerStore.getSellerList()
 })
 
-const registSeller = function () {
-  if (nickMsg.value == "이미 존재하는 닉네임입니다." || nickMsg.value == "2자 이상 입력해주세요." || nickMsg.value == "20자 이하로 입력해주세요.") {
-    window.alert("닉네임을 확인해주세요!")
+
+
+const regiNumMsg = ref("")
+const regiNumCheck = function ()  {
+  const numExist = sellerStore.sellerList.some(existSeller => existSeller.registrationNum === seller.value.registrationNum)
+  if(numExist){
+    regiNumMsg.value="이미 등록된 번호입니다."
+  } else if (seller.value.registrationNum < 10) {
+    regiNumMsg.value="10자리 모두 입력해주세요."
+  } else {
+    checked.value = true
+    regiNumMsg.value="신청가능한 번호입니다."
+  }
+}
+
+const registSeller = function (){
+  if(regiNumMsg.value != "신청가능한 번호입니다."){
+    window.alert("사업자등록번호를 확인하세요!")
+    return
+  } else if(seller.value.companyName == ""){
+    window.alert("필수 입력 사항을 모두 입력하세요!")
+    return
+  }else if(seller.value.representative == ""){
+    window.alert("필수 입력 사항을 모두 입력하세요!")
+    return
+  }else if(seller.value.address == ""){
+    window.alert("필수 입력 사항을 모두 입력하세요!")
+    return
+  }else if(seller.value.customerCenter == ""){
+    window.alert("필수 입력 사항을 모두 입력하세요!")
+    return
+  }else if(seller.value.email == ""){
+    window.alert("필수 입력 사항을 모두 입력하세요!")
     return
   }
-  user.value = userStore.user
-  console.log(user.value)
-
-  userStore.updateUser(user.value);
+  sellerStore.registSeller(seller.value)
 }
 
-//닉네임 체크
-const nickMsg = ref("")
-const nickCheck = function () {
-  const nickExist = userStore.userList.some(existuser => existuser.nickname === userStore.user.nickname)
 
-  if (nickExist) {
-    nickMsg.value = "이미 존재하는 닉네임입니다."
-  } else if (userStore.user.nickname < 2) {
-    nickMsg.value = "2자 이상 입력해주세요."
-  } else if (userStore.user.nickname > 20) {
-    nickMsg.value = "20자 이하로 입력해주세요."
-  } else {
-    nickMsg.value = "사용가능한 닉네임입니다! ✔️"
-  }
-}
+const checked = ref(false)
+
 
 </script>
+
+
 
 <style scoped>
 .box {
@@ -149,16 +165,17 @@ const nickCheck = function () {
   vertical-align: text-top;
 }
 
-.btn-check {
-  width: 100%;
+.btn-reginum-check {
   height: 40px;
+  width: 100%;
   background-color: #34C5F0;
   color: white;
   font-weight: bold;
   border: none;
   border-radius: 5px;
 }
-.btn-check:hover {
+
+.btn-reginum-check:hover {
   background-color: #26768e;
 }
 
@@ -174,5 +191,13 @@ const nickCheck = function () {
 
 .btn-regist:hover {
   background-color: #26768e;
+}
+
+.regi-num {
+  width: 250px;
+}
+
+.regi-button-box {
+  width: 120px;
 }
 </style>

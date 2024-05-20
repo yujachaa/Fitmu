@@ -33,6 +33,8 @@ export const useStoryStore = defineStore('story', () => {
   const userStoryList = ref([])
   const recent6List = ref([])
   const getUserStory = function(){
+    userStoryList.value = []
+    recent6List.value = []
     axios.get(REST_STORY_API + "/user/" + sessionStorage.getItem("loginUser"))
     .then((res)=>{
       userStoryList.value = res.data
@@ -40,6 +42,10 @@ export const useStoryStore = defineStore('story', () => {
     .then(()=>{
       const sortedStories = userStoryList.value.sort((a, b) => b.storyId - a.storyId);
       recent6List.value = sortedStories.slice(0, 6);
+    })
+    .catch((err)=>{
+      console.log(err)
+      // userStoryList.value = []
     })
 
 

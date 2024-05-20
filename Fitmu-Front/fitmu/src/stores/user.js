@@ -156,6 +156,7 @@ export const useUserStore = defineStore('user', () => {
   const getFollowing = function(userId){
     axios.get(REST_USER_API + "/user/" + userId + "/follower")
     .then((res)=>{
+      followingList.value = []
       followingList.value = res.data
     })
     .catch((err)=>{
@@ -167,6 +168,7 @@ export const useUserStore = defineStore('user', () => {
   const getFollower = function(userId){
     axios.get(REST_USER_API + "/user/" + userId + "/followee")
     .then((res)=>{
+      followerList.value = []
       followerList.value = res.data
     })
     .catch((err)=>{
@@ -178,6 +180,7 @@ export const useUserStore = defineStore('user', () => {
   const getProductScrap = function(userId){
     axios.get(REST_USER_API + "/user/" + userId + "/product-scrap")
     .then((res)=>{
+      productScrapList.value = []
       productScrapList.value = res.data
     })
     .catch((err)=>{
@@ -189,6 +192,7 @@ export const useUserStore = defineStore('user', () => {
   const getStoryScrap = function(userId){
     axios.get(REST_USER_API + "/user/" + userId + "/story-scrap")
     .then((res)=>{
+      storyScrapList.value = []
       storyScrapList.value = res.data
     })
     .catch((err)=>{

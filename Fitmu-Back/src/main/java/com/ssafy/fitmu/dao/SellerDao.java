@@ -1,5 +1,6 @@
 package com.ssafy.fitmu.dao;
 
+import java.util.List;
 import java.util.Map;
 
 import com.ssafy.fitmu.dto.Product;
@@ -18,4 +19,5 @@ public interface SellerDao {
 	public int deleteAnswer(int inquiryId);
 	// 유저아이디로 검색
 	public Seller getSellerByUserId(int userId);
+	public List<Seller> selectAll();
 }
