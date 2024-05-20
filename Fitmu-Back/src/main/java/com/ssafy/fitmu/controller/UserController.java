@@ -125,7 +125,6 @@ public class UserController {
 		List<User> allUsers = userService.selectAll();
 		
 		for (User user : allUsers) {
-			System.out.println(user.getEmail());
 			if (user.getEmail().equals(email)) {
 				return new ResponseEntity<Void>(HttpStatus.IM_USED);
 			}

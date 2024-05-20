@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="pic-div">
-            <img class="main-pic" :src="`/src/assets/image/product/${productImages[0].fileName}`" alt="이미지">
+            <img class="main-pic" :src="`/src/assets/image/product/${mainImage}`" alt="이미지">
         </div>
         <div class="info">
             <p class="brand">{{ product.brand }}</p>
@@ -69,10 +69,19 @@ const route = useRoute()
 const router = useRouter()
 const productStore = useProductStore()
 
-const productId = ref(route.params.productId)
-const product = ref(productStore.product)
-const productImages = ref(productStore.productImages)
-const reviews = ref(productStore.reviews)
+const productId = ref(0)
+const product = ref({})
+const productImages = ref([])
+const reviews = ref([])
+const mainImage = ref("")
+
+onMounted(()=>{
+    productId.value = route.params.productId
+    product.value = productStore.product
+    productImages.value = productStore.productImages
+    reviews.value = productStore.reviews
+    mainImage.value = productImages.value[0].fileName
+})
 
 const quantity = ref(0)
 const totalPrice = computed(()=>{
