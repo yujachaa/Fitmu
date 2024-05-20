@@ -10,12 +10,39 @@ export const useProductStore = defineStore('product', () => {
   const product = ref({})
   const productImages = ref([])
   const products = ref([])
+  const reviews = ref([])
+  const users = ref([])
+
+  const help = function(){
+    reviews.value = reviews.value.sort((a,b)=> b.liked - a.liked)
+  }
+
+  const late = function(){
+    reviews.value = reviews.value.sort((a,b) => b.reviewId - a.reviewId)
+  }
+
+  const getUsers = function(){
+    axios.get("http://localhost:8080/user-api/")
+    .then((response)=>{
+      users.value = response.data
+    })
+  }
 
   const getProduct = function(productId){
     axios.get("http://localhost:8080/product-api/" + productId)
     .then((response)=>{
       console.log(response.data)
       product.value = response.data
+    })
+  }
+
+  const reviewLike = function(reviewId){
+    axios.put("http://localhost:8080/review-api/like/" + reviewId)
+    .then((res)=>{
+      return axios.get("http://localhost:8080/review-api/review/" + product.value.productId)
+    })
+    .then((response)=>{
+      window.location.reload()
     })
   }
 
@@ -62,11 +89,25 @@ export const useProductStore = defineStore('product', () => {
         return Promise.all(uploadPromises)
       })
   }
+
+  const getProductReviews = function(productId){
+    axios.get("http://localhost:8080/review-api/review/" + productId)
+    .then((response)=>{
+      reviews.value = response.data
+    })
+  }
   return {
     registProduct,
     getProduct,
     getProductImages,
     product,
     productImages,
+    reviews,
+    getProductReviews,
+    getUsers,
+    users,
+    reviewLike,
+    help,
+    late
    }
 }, {persist : true})
