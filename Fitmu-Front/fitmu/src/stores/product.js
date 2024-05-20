@@ -12,6 +12,14 @@ export const useProductStore = defineStore('product', () => {
   const products = ref([])
   const reviews = ref([])
   const users = ref([])
+  const inquirys = ref([])
+
+  const getProductInquiry = function(productId){
+    axios.get("http://localhost:8080/inquiry-api/product/" + product.value.productId)
+    .then((response)=>{
+      inquirys.value = response.data
+    })
+  }
 
   const help = function(){
     reviews.value = reviews.value.sort((a,b)=> b.liked - a.liked)
@@ -23,6 +31,13 @@ export const useProductStore = defineStore('product', () => {
 
   const registReview = function(review){
     axios.post("http://localhost:8080/review-api/regist", review)
+    .then((response)=>{
+      router.go()
+    })
+  }
+
+  const registInquiry = function(inquiry){
+    axios.post("http://localhost:8080/inquiry-api/regist", inquiry)
     .then((response)=>{
       router.go()
     })
@@ -102,6 +117,7 @@ export const useProductStore = defineStore('product', () => {
       reviews.value = response.data
     })
   }
+  
   return {
     registProduct,
     getProduct,
@@ -116,5 +132,8 @@ export const useProductStore = defineStore('product', () => {
     help,
     late,
     registReview,
+    getProductInquiry,
+    inquirys,
+    registInquiry
    }
 }, {persist : true})

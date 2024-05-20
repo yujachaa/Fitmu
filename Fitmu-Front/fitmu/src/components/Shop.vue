@@ -31,7 +31,7 @@
                     <slide v-for="slide in 7" :key="slide">
                         <div class="product_carousel__item">
                             <div class="sale-pic">
-                                <img class="pic " :src="`src/assets/image/product/${slide}.jpg`" alt="이미지" @click = "productDetail(5)">
+                                <img class="pic " :src="`src/assets/image/product/${slide}.jpg`" alt="이미지" @click = "productDetail(2)">
                             </div>
                             <div class="product-info ">
                                 <div class="brand">

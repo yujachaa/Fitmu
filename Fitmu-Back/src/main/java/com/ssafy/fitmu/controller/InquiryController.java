@@ -50,7 +50,7 @@ public class InquiryController {
 	public ResponseEntity<?> getInquiryByUser(@PathVariable("userId") int id){
 		List<Inquiry> list = inquiryService.selectAllByUser(id);
 		
-		if (list == null || list.size() == 0) {
+		if (list == null) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		} else {
 			return new ResponseEntity<List<Inquiry>>(list, HttpStatus.OK);
@@ -63,7 +63,7 @@ public class InquiryController {
 	public ResponseEntity<?> getInquiryByProduct(@PathVariable("productId") int id){
 		List<Inquiry> list = inquiryService.selectAllByProduct(id);
 		
-		if (list == null || list.size() == 0) {
+		if (list == null) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		} else {
 			return new ResponseEntity<List<Inquiry>>(list, HttpStatus.OK);

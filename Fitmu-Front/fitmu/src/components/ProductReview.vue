@@ -28,6 +28,7 @@
         </div>
         <hr>
         <div class="reviews">
+            <div v-if = "reviews.length == 0">리뷰 좀 써주세요 ㅠㅠ</div>
             <div v-for="review in reviews" class="review">
                 <div class="user-profile">
                     <img class="profile" src="@/assets/image/profile.png" alt="">
