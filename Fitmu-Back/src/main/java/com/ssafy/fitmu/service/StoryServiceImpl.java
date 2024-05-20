@@ -106,4 +106,9 @@ public class StoryServiceImpl implements StoryService{
 		return storyDao.getImageByStoryId(storyId);
 	}
 
+	@Override
+	public int getScrapCountByStoryId(int storyId) {
+		return storyDao.getScrapCountByStoryId(storyId);
+	}
+
 }

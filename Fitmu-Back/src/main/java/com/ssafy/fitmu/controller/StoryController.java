@@ -7,7 +7,6 @@ import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.ssafy.fitmu.dto.FileAndStory;
 import com.ssafy.fitmu.dto.SearchCondition;
 import com.ssafy.fitmu.dto.Story;
 import com.ssafy.fitmu.dto.StoryImage;
@@ -56,13 +54,13 @@ public class StoryController {
 	@Operation(summary = "게시글 등록")
 	public ResponseEntity<?> storyRegist(@RequestBody Story story) {
 		int result = storyService.insertStory(story);
-		
+
 		List<Story> storyList = storyService.selectAll();
 
 		if (result == 0) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		} else {
-			int ID = storyList.get(storyList.size()-1).getStoryId();
+			int ID = storyList.get(storyList.size() - 1).getStoryId();
 			return new ResponseEntity<Integer>(ID, HttpStatus.OK);
 		}
 	}
@@ -197,7 +195,7 @@ public class StoryController {
 			return new ResponseEntity<List<Story>>(storyList, HttpStatus.OK);
 		}
 	}
-	
+
 	@GetMapping("/story/like")
 	@Operation(summary = "게시글 좋아요 순으로 조회")
 	public ResponseEntity<?> likeStory() {
@@ -209,35 +207,36 @@ public class StoryController {
 			return new ResponseEntity<List<Story>>(storyList, HttpStatus.OK);
 		}
 	}
-	
+
 	@PutMapping("/updateFileName/{storyId}/{fileName}")
 	@Operation(summary = "게시글 파일명 변경")
-	public ResponseEntity<?> updateStoryFileName(@PathVariable("storyId") int storyId, @PathVariable("fileName") String fileName){
+	public ResponseEntity<?> updateStoryFileName(@PathVariable("storyId") int storyId,
+			@PathVariable("fileName") String fileName) {
 		Story story = storyService.selectOne(storyId);
 		story.setImage(fileName);
-		
+
 		int result = storyService.updateStory(story);
-		
-		if(result == 0) {
+
+		if (result == 0) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
-		}else {
+		} else {
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		}
 	}
+
 	@PostMapping("/imageUpload")
 	@Operation(summary = "게시글 이미지 DB에 저장")
 	@Transactional
 	public ResponseEntity<?> insertStoryImage(@RequestBody StoryImage storyImage) {
 		int result = storyService.insertStoryImage(storyImage);
-		
-		if(result == 0) {
+
+		if (result == 0) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
-		}else {
+		} else {
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		}
 	}
-	
-	
+
 	@PostMapping("/upload")
 	@Operation(summary = "게시글 이미지 업로드")
 	@Transactional
@@ -246,25 +245,34 @@ public class StoryController {
 		String originalFilename = file.getOriginalFilename(); // 원본 파일 이름
 		String extension = originalFilename.substring(originalFilename.lastIndexOf(".")); // 파일 확장자 추출
 		String newFilename = uuid.toString() + extension; // UUID를 파일 이름에 추가
-	
+
 		try {
 			// 파일 경로 재설정 필요!!!!!해요. (나도 재설성 해야함..)
 			file.transferTo(new File("C:/Fitmu/Fitmu/Fitmu-Front/fitmu/src/assets/image/story", newFilename));
 		} catch (Exception e) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		}
-		return new ResponseEntity<String>(newFilename,HttpStatus.OK);
+		return new ResponseEntity<String>(newFilename, HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/image/{storyId}")
 	@Operation(summary = "게시글 이미지 조회(게시글)")
-	public ResponseEntity<?> getProductImageByStoryId(@PathVariable("storyId") int storyId){
+	public ResponseEntity<?> getProductImageByStoryId(@PathVariable("storyId") int storyId) {
 		List<StoryImage> storyImageList = storyService.getImageByStoryId(storyId);
-		
-		if(storyImageList == null) {
+
+		if (storyImageList == null) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		} else {
 			return new ResponseEntity<List<StoryImage>>(storyImageList, HttpStatus.OK);
 		}
+	}
+
+	@GetMapping("/scrap/{storyId}")
+	@Operation(summary = "게시글 스크랩 수 조회")
+	public ResponseEntity<?> getScrapCount(@PathVariable("storyId") int storyId){
+		int result = storyService.getScrapCountByStoryId(storyId);
+
+		return new ResponseEntity<Integer>(result, HttpStatus.OK);
+	
 	}
 }

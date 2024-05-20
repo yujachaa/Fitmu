@@ -24,4 +24,5 @@ public interface StoryService {
 	public int deleteScrapBook(int userId, int storyId);
 	public int insertStoryImage(StoryImage storyImage);
 	public List<StoryImage> getImageByStoryId(int storyId);
+	public int getScrapCountByStoryId(int storyId);
 }

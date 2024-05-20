@@ -32,13 +32,6 @@ const router = createRouter({
           path : '/',
           name : 'commu',
           component : Commu,
-          children:[
-            {
-              path : '/storydetail/:storyId',
-              name:'storyDetail',
-              component:StoryDetail
-            }
-          ]
         },
         {
           path : 'shop',
@@ -50,21 +43,26 @@ const router = createRouter({
           name : 'productDetail',
           component : ProductDetail,
           children : [{
-            path : '/productdetail/:productId/info',
+            path : 'info',
             name : 'productinfo',
             component : ProductInfo
           },
           {
-            path : '/productdetail/:productId/review',
+            path : 'review',
             name : 'productreview',
             component : ProductReview
           },
           {
-            path : 'productdetail/:productId/inquiry',
+            path : 'inquiry',
             name : 'productinquiry',
             component : ProductInquiry
           }]
-        }
+        },
+        {
+          path : '/storydetail/:storyId',
+          name:'storyDetail',
+          component:StoryDetail
+        },
       ]
     },
     {
