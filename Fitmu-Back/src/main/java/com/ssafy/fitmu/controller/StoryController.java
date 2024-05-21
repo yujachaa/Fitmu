@@ -241,11 +241,15 @@ public class StoryController {
 	@Transactional
 	public ResponseEntity<?> insertStoryImage(@RequestBody StoryImage storyImage) {
 		int result = storyService.insertStoryImage(storyImage);
+		
+		List<StoryImage> storyImages = storyService.getImageByStoryId(storyImage.getStoryId());
+		
+		int storyImageId = storyImages.get(0).getImageId();
 
 		if (result == 0) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		} else {
-			return new ResponseEntity<Void>(HttpStatus.OK);
+			return new ResponseEntity<Integer>(storyImageId, HttpStatus.OK);
 		}
 	}
 

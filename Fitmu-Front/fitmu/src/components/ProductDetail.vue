@@ -61,7 +61,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, computed, onUpdated, } from 'vue';
+import { onMounted, ref, computed, onUpdated, onBeforeMount } from 'vue';
 import { useRoute, useRouter } from 'vue-router'
 import { useProductStore } from '@/stores/product'
 
@@ -69,13 +69,13 @@ const route = useRoute()
 const router = useRouter()
 const productStore = useProductStore()
 
-onBeforeMount(async()=>{
-    productStore.getProduct(route.params.productId)
-    productStore.getProductImages(route.params.productId)
-    productStore.getProductReviews(route.params.productId)
-    productStore.getUsers()
-    productStore.getProductInquiry(route.params.productId)
-})
+productStore.getProduct(route.params.productId)
+productStore.getProductImages(route.params.productId)
+productStore.getProductReviews(route.params.productId)
+productStore.getUsers()
+productStore.getProductInquiry(route.params.productId)
+// onBeforeMount(()=>{
+// })
 
 const productId = ref(route.params.productId)
 const product = ref(productStore.product)

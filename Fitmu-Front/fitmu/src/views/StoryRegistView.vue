@@ -220,8 +220,9 @@ const registStory = function () {
   // 스토리 등록
   story.value.userId = sessionStorage.getItem("loginUser")
   const formData = new FormData()
+  productStore.selectedProduct = selectedProduct.value
   formData.append('file', file.value)
-  storyStore.registStory(story.value, formData)
+  storyStore.registStory(story.value, formData,tagList.value)
 }
 
 </script>

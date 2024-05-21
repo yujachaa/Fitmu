@@ -24,7 +24,7 @@
       <div class="story-box">
         <!-- 스토리 사진 -->
         <div>
-          <img class="story-img" :src="`/src/assets/image/story/${storyStore.story.image}`" alt="스토리사진">
+          <img ref = "img" class="story-img" :src="`/src/assets/image/story/${storyStore.story.image}`" alt="스토리사진">
         </div>
 
         <!-- 스토리 내용 -->
@@ -89,18 +89,45 @@
     <div class="to-top" @click="toTop">맨위로</div>
 
   </div>
+  <div v-if = "TAGS">
+    <div v-for="(tag, index) in storyStore.tags" :key="tag.tagId"
+      :style="{ position: 'absolute', left: tag.left + elementPositionX + 'px', top: tag.top + elementPositionY + 'px' }">
+      <Popper :hover=true interactive disableClickAway>
+        <button id="btn" ref="autobtn">+</button>
+        <label class="btn" for="btn">+</label>
+        <template #content>
+          <div class="content2">
+            <div class="garo">
+              <img class="mini-img" :src="`/src/assets/image/product/${getProductImage(tag.productId)}`" alt="이미지">
+              <div class="productInfo">
+                <span class="productBrand">{{ getSelectedProductInfo(tag.productId).brand }}</span>
+                <span class="productName">{{ getSelectedProductInfo(tag.productId).name }}</span>
+              </div>
+            </div>
+          </div>
+        </template>
+      </Popper>
+    </div>
+  </div>
 </template>
 
 <script setup>
+import { useMouseInElement, watchDebounced } from '@vueuse/core'
 import { ref, onMounted, computed, onBeforeMount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStoryStore } from '@/stores/story'
 import { useUserStore } from '@/stores/user'
+import {useProductStore} from '@/stores/product'
 import { useCommentStore } from '@/stores/comment'
+import { useWindowScroll } from '@vueuse/core'
+
+const img = ref(null)
+const { elementPositionX, elementPositionY } = useMouseInElement(img)
 
 const route = useRoute()
 const router = useRouter()
 const storyStore = useStoryStore()
+const productStore =useProductStore()
 const userStore = useUserStore()
 const commentStore = useCommentStore()
 
@@ -113,20 +140,32 @@ const comment = ref({
   content: ""
 })
 
+const TAGS = computed(()=>{
+  return storyStore.tags.length > 0 ? true : false;
+})
+
+const getProductImage = function (productId) {
+  if (productStore.productAllImages.filter(image => image.productId == productId).length == 0) {
+    return "1.jpg";
+  }
+  return productStore.productAllImages.filter(image => image.productId == productId)[0].fileName
+}
+
+const getSelectedProductInfo = function(id){
+  return productStore.selectedProduct.find(product => product.productId == id)
+}
+
 
 onBeforeMount(() => {
   commentStore.getCommentList(route.params.storyId)
-  storyId.value = route.params.storyId
   storyStore.getStory(route.params.storyId)
   storyStore.getStoryScrapCount(route.params.storyId)
   userStore.getUserList()
+  storyStore.getTags()
+  productStore.getProductALLImages()
+  storyId.value = route.params.storyId
 })
 // onMounted(() => {
-//   storyId.value = route.params.storyId
-//   storyStore.getStory(route.params.storyId)
-//   storyStore.getStoryScrapCount(route.params.storyId)
-//   commentStore.getCommentList(route.params.storyId)
-//   userStore.getUserList()
 // })
 
 const registComment = function () {
@@ -135,8 +174,6 @@ const registComment = function () {
 }
 
 const getUserNick = function (userId) {
-  console.log(userId)
-  console.log(userStore.userList.filter((user)=> user.userId == userId)[0])
   return userStore.userList.filter((user) => user.userId == userId)[0].nickname
 }
 
@@ -168,7 +205,6 @@ const toTop = function () {
 }
 
 //스크롤
-import { useWindowScroll } from '@vueuse/core'
 
 const { x, y } = useWindowScroll()
 // console.log(x.value) // read current x scroll value
@@ -185,13 +221,25 @@ const onScroll = function () {
 }
 
 </script>
+<script>
+import { defineComponent, ref } from "vue"
+import Popper from "vue3-popper";
+
+export default defineComponent({
+  name: 'App',
+  components: {
+    Popper
+  },
+})
+</script>
 
 <style scoped>
 .container {
   margin-top: 40px;
   width: 50%;
 }
-.total{
+
+.total {
   position: absolute;
   width: 100%;
   z-index: 1;
@@ -204,7 +252,7 @@ const onScroll = function () {
 
 }
 
-.screen{
+.screen {
   position: relative;
   height: 1000px;
   width: 100%;
@@ -369,6 +417,4 @@ const onScroll = function () {
   height: 10000px;
   ;
 }
-
-
 </style>

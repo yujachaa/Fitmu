@@ -17,6 +17,7 @@ export const useProductStore = defineStore('product', () => {
   const addresses = ref([])
   const defaultAddress = ref(null)
   const searchProducts = ref([])
+  const selectedProduct = ref([])
 
   const getProductALLImages = function(){
     axios.get("http://localhost:8080/product-api/image")
@@ -204,5 +205,6 @@ export const useProductStore = defineStore('product', () => {
     products,
     getProductALLImages,
     productAllImages,
+    selectedProduct,
    }
 }, {persist : true})
