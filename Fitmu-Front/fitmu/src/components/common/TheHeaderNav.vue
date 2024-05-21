@@ -62,39 +62,61 @@
         <div v-if="commuflag" class="top">
             <div class="commu-category-first">
                 <RouterLink :to="{ name: 'commu' }">
-                    <span :class="selected">홈</span>
+                    <span class="commu-category-second" :class="selected">홈</span>
                 </RouterLink>
-                <span :class="selected1">홈트레이닝</span>
-                <span :class="selected2">오운완</span>
-                <span :class="selected3">3대몇</span>
-                <span :class="selected4">운동팁</span>
-                <span :class="selected5">러닝</span>
+                <RouterLink :to="{name:'homeTraining'}">
+                    <span class="commu-category-second" :class="selected1">홈트레이닝</span>
+                </RouterLink>
+                <RouterLink :to="{name:'today'}">
+                    <span class="commu-category-second" :class="selected2">오운완</span>
+                </RouterLink>
+                <RouterLink :to="{name:'three'}">
+                <span class="commu-category-second" :class="selected3">3대몇</span>
+                </RouterLink>
+                <RouterLink :to="{name:'tip'}">
+                <span class="commu-category-second" :class="selected4">운동팁</span>
+                </RouterLink>
+                <RouterLink :to="{name:'running'}">
+                    <span class="commu-category-second" :class="selected5">러닝</span>
+                </RouterLink>
             </div>
         </div>
         <div v-else-if="shopFlag" class="top">
             <div class="shop-category-first">
                 <RouterLink :to="{ name: 'shop' }">
-                    <span :class="selected9">쇼핑홈</span>
+                    <span class="shop-category-second" :class="selected9">쇼핑홈</span>
                 </RouterLink>
-                <span :class="selected6">단백질/보충제</span>
-                <span :class="selected7">다이어트식단</span>
-                <span :class="selected8">의류</span>
-                <RouterLink :to="{ name: 'productRegist' }">상품등록</RouterLink>
+                <RouterLink :to="{ name: 'protein'}">
+                    <span class="shop-category-second" :class="selected6">단백질/보충제</span>
+                </RouterLink>
+                <RouterLink :to="{ name: 'diet'}">
+                    <span class="shop-category-second" :class="selected7">다이어트식단</span>
+                </RouterLink>
+                <RouterLink :to="{ name: 'clothes'}">
+                    <span class="shop-category-second" :class="selected8">의류</span>
+                </RouterLink>
+                <RouterLink :to="{ name: 'productRegist' }" class="for-seller">상품등록</RouterLink>
             </div>
         </div>
         <div v-else-if="mypageFlag" class="top">
             <div class="mypage-category">
                 <RouterLink :to="{ name: 'profile' }">
-                    <span :class="selected10">프로필</span>
+                    <span class="mypage-category-second" :class="selected10">프로필</span>
                 </RouterLink>
                 <RouterLink :to="{ name: 'my-order' }">
-                    <span :class="selected11">나의 쇼핑</span>
+                    <span class="mypage-category-second" :class="selected11">나의 쇼핑</span>
                 </RouterLink>
-                <span :class="selected12">나의 리뷰</span>
-                <span :class="selected13">스크랩북</span>
-                <span :class="selected14">나의 문의</span>
+                <RouterLink :to="{name: 'my-review'}">
+                    <span class="mypage-category-second" :class="selected12">나의 리뷰</span>
+                </RouterLink>
+                <RouterLink :to="{name: 'my-scrapbook'}">
+                    <span class="mypage-category-second" :class="selected13">스크랩북</span>
+                </RouterLink>
+                <RouterLink :to="{name: 'my-inquiry'}">
+                    <span class="mypage-category-second" :class="selected14">나의 문의</span>
+                </RouterLink>
                 <RouterLink :to="{ name: 'setting' }">
-                    <span :class="selected15">설정</span>
+                    <span class="mypage-category-second" :class="selected15">설정</span>
                 </RouterLink>
             </div>
         </div>
@@ -301,6 +323,9 @@ const registForm = function () {
     font-weight: bold;
     font-size: 19px;
 }
+.commu-category-second:hover {
+    color: #34C5F0;
+}
 
 .search {
     position: relative;
@@ -339,6 +364,10 @@ const registForm = function () {
     color: black;
 }
 
+.shop-category-second:hover{
+    color: #34C5F0;
+}
+
 .mypage-category {
     display: flex;
     width: 100%;
@@ -350,6 +379,10 @@ const registForm = function () {
 .mypage-category a {
     text-decoration: none;
     color: black;
+}
+
+.mypage-category-second:hover{
+    color: #34C5F0;
 }
 
 .commu-nav {
@@ -485,5 +518,9 @@ const registForm = function () {
 .input:focus {
     outline: 1px solid rgb(114, 202, 230, 0.5);
     border-color: #72cae6;
+}
+
+.for-seller:hover{
+    color:pink;
 }
 </style>

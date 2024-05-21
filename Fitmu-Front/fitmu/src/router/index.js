@@ -34,6 +34,7 @@ import MyReview from '@/components/MyReview.vue'
 import MyInquiry from '@/components/MyInquiry.vue'
 import Sale from '@/components/shop/Sale.vue'
 import ReviewPopluar from '@/components/shop/ReviewPopluar.vue'
+import MyScrapbook from '@/components/MyScrapbook.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -189,6 +190,11 @@ const router = createRouter({
           path : "/my-inquiry",
           name : "my-inquiry",
           component : MyInquiry,
+        },
+        {
+          path : "/my-scrapbook",
+          name : "my-scrapbook",
+          component : MyScrapbook,
         }
       ]
     },
