@@ -26,6 +26,9 @@ import Running from '@/components/commu/Running.vue'
 import Three from '@/components/commu/Three.vue'
 import Tip from '@/components/commu/Tip.vue'
 import Today from '@/components/commu/Today.vue'
+import Clothes from '@/components/shop/Clothes.vue'
+import Diet from '@/components/shop/Diet.vue'
+import Protein from '@/components/shop/Protein.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -99,6 +102,21 @@ const router = createRouter({
           path:'today',
           name:'today',
           component:Today
+        },
+        {
+          path:'clothes',
+          name:'clothes',
+          component:Clothes
+        },
+        {
+          path:'diet',
+          name:'diet',
+          component:Diet
+        },
+        {
+          path:'protein',
+          name:'protein',
+          component:Protein
         },
       ]
     },

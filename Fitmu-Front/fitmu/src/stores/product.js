@@ -183,6 +183,15 @@ export const useProductStore = defineStore('product', () => {
       reviews.value = response.data
     })
   }
+
+  //세일상품리스트 가져오기
+  const saleList = ref([])
+  const getSaleList = function(){
+    axios.get("http://localhost:8080/product-api/discount/0")
+    .then((res)=>{
+      saleList.value = res.data
+    })
+  }
   
   return {
     deleteAddress,
@@ -215,5 +224,8 @@ export const useProductStore = defineStore('product', () => {
     productAllImages,
     selectedProduct,
     getProducts,
+    getSaleList,
+    saleList,
+
    }
 }, {persist : true})
