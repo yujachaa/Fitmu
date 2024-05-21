@@ -31,7 +31,7 @@
                     <slide v-for="(product, index) in saleList" :key="product">
                         <div class="product_carousel__item">
                             <div class="sale-pic">
-                                <img class="pic " :src="`src/assets/image/product/${index + 1}`" alt="이미지" @click = "productDetail(product.productId)">
+                                <img v-if="getProductMainImage(product.productId)" class="pic " :src="`src/assets/image/product/${getProductMainImage(product.productId)}`" alt="이미지" @click = "productDetail(product.productId)">
                             </div>
                             <div class="product-info ">
                                 <div class="brand">
@@ -173,23 +173,30 @@ productStore.getSaleList()
 productStore.getProductALLImages()
 console.log(productStore.productAllImages)
 
-
-
-
-
 const saleList = computed(()=>{
     return productStore.saleList
 })
 
 
 //이부분 확인하기
-// const productAllImages = computed(()=>{
-//     return productStore.productAllImages
-// })
+const productAllImages = computed(()=>{
+    return productStore.productAllImages
+})
 
-// const getProductMainImage = function(productId){
-//     return productAllImages.filter((productImg) => productImg.productId == productId)[0].fileName
-// }
+const getImageName = function(productId){
+    const files = productStore.productAllImages.filter((productImg) => productImg.productId == productId)
+    if(files[0] == undefined)
+        return ''
+    return files[0].fileName
+    // return (files != undefined) ? files[0].fileName : '';
+}
+
+const getProductMainImage = function(productId){
+    if(productStore.productAllImages.length > 0){
+        return getImageName(productId);
+    }
+    return '';
+}
 
 
 
