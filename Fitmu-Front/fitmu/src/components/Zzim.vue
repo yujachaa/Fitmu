@@ -38,7 +38,7 @@
         <div class="section">
           <div class="section-title">
             <div class="small-title">
-              <h4>내가 쓴 게시글</h4>
+              <h4>나의 상품 스크랩북</h4>
             </div>
             <div>
               <a>더보기</a>
@@ -48,7 +48,7 @@
 
           <div class="popular d-flex align-items-start">
             <div class="no-story" v-if="noStory">
-              <p>아직 작성한 게시글이 없어요.😅</p>
+              <p>아직 스크랩한 상품이 없어요.😅</p>
             </div>
             <!-- v-for 넣기 -->
             <div v-for="product in productScrapList" :key="product.productId" v-else>
@@ -158,7 +158,7 @@ const isSeller = computed(() => {
 })
 
 const noStory = computed(() => {
-  return storyStore.recent6List.length == 0 ? true : false
+  return userStore.productScrapList.length == 0 ? true : false
 })
 
 const productScrapList = computed(()=>{

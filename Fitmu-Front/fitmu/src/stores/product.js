@@ -21,6 +21,26 @@ export const useProductStore = defineStore('product', () => {
   const productLike = ref([])
 
 
+  const finish = function(memo){
+    let order = {
+      orderId : 0,
+      productId : route.params.productId,
+      userId : sessionStorage.get('loginUser'),
+      sellerId : product.value.sellerId,
+      quantity : route.params.quantity,
+      status : "배송중",
+      confirmedAt : null,
+      createdAt : "",
+      memo : memo
+    }
+    axios.post("http://localhost:8080/order-api/order", order)
+    .then((response)=>{
+      window.alert("주문이 완료되었습니다.")
+      router.push({name:'commu'})
+
+    })
+  }
+
   const YesProduct = function(id){
     axios.post("http://localhost:8080/product-api/scrap/" + id + "/user/" + sessionStorage.getItem("loginUser"))
   }
