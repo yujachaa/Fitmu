@@ -89,6 +89,25 @@ export const useStoryStore = defineStore(
         });
     };
 
+
+  //조회수 순 게시글 가져오기 (인기글)
+  const popularList = ref([])
+  const popular10List = ref([]) //인기글 6개
+  const getPopularList = function(){
+    popularList.value = []
+    popular10List.value = []
+    axios.get(REST_STORY_API + "/story/popular")
+    .then((res)=>{
+      popularList.value = res.data
+    })
+    .then((res)=>{
+      popular10List.value = popularList.value.slice(0,10);
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+  }
+
     //지금 조회하는 게시글 가져오기
     const story = ref({});
     const getStory = function (storyId) {
@@ -178,26 +197,25 @@ export const useStoryStore = defineStore(
         });
     };
 
-    return {
-      registStory,
-      userStoryList,
-      getUserStory,
-      recent6List,
-      story,
-      getStory,
-      storyScrapCnt,
-      getStoryScrapCount,
-      popularList,
-      popular6List,
-      getPopularList,
-      recentList,
-      recent4List,
-      getRecentList,
-      randomStory,
-      totalStoryList,
-      getRandom,
-      getTags,
-      tags,
+  return {
+    registStory,
+    userStoryList,
+    getUserStory,
+    recent6List,
+    story,
+    getStory,
+    storyScrapCnt,
+    getStoryScrapCount,
+    popularList,
+    popular10List,
+    getPopularList,
+    recentList,
+    recent4List,
+    getRecentList,
+    randomStory,
+    totalStoryList,
+    getRandom,
+
 
     };
   },

@@ -1,11 +1,11 @@
 <template>
     <div class="container toptop">
-        <div class="main-img">
-            <img class="mainimg" src="@/assets/1.jpg" alt="">
+        <div class="main-img" @click="goDetail(storyStore.randomStory.storyId)">
+            <img class="mainimg" :src="`/src/assets/image/story/${storyStore.randomStory.image}`" alt="랜덤게시글사진">
             <div class="main-img-info">
-                <p class="title">{{ storyStore.randomStory.title}}</p>
+                <p class="title">{{ storyStore.randomStory.title }}</p>
                 <div class="user-info">
-                    <img class="mini-img" src="@/assets/2.jpg" alt="하이루">
+                    <img class="mini-img" src="@/assets/2.jpg" alt="랜덤게시글작성자프로필사진">
                     <p v-if="randomNick">{{ randomNick }}</p>
                     <p></p>
                 </div>
@@ -33,18 +33,19 @@
                     <span>다른 유저들이 관심 있는 콘텐츠를 확인해보세요!</span>
                 </div>
                 <div>
-                    <a>더보기</a>
+                    <RouterLink :to="{name : 'popular'}">더보기</RouterLink>
+                    <!-- <a>더보기</a> -->
                 </div>
             </div>
             <carousel class="story-carousel" v-bind="settings" :breakpoints="breakpoints" :mouseDrag="false"
                 :touchDrag="false">
-                <slide v-for="slide in 6" :key="slide">
+                <slide v-for="(story, index) in storyStore.popular10List" :key="story">
                     <div class="slide1">
-                        <img class="product_carousel_pic" :src="`src/assets/${slide}.jpg`" alt="이미지">
+                        <img class="product_carousel_pic" :src="`src/assets/image/story/${story.image}`" alt="이미지" @click="goDetail(story.storyId)">
                         <div class="main-img-info2">
                             <div class="user-info2">
                                 <img class="mini-img2" src="@/assets/2.jpg" alt="하이루">
-                                <p>닉네임인것</p>
+                                <p v-if="popularNick(index)">{{ popularNick(index) }}</p>
                                 <div class="bookmark">
                                     <i id="book" class="bi bi-bookmark-fill"></i>
                                     <i id="book2" class="bi bi-bookmark"></i>
@@ -70,17 +71,17 @@
                 </div>
             </div>
             <div class="test2">
-                <div v-for="index in 4">
+                <div class="one-pic" v-for="(story,index) in storyStore.recent4List" :key="story">
                     <div class="sub-img">
-                        <img class="subimg" :src="`src/assets/${index}.jpg`" alt="">
+                        <img class="subimg" :src="`src/assets/image/story/${story.image}`" alt="" @click="goDetail(story.storyId)">
                         <div class="main-img-info3">
                             <i id="book" class="bi bi-bookmark-fill"></i>
                             <i id="book2" class="bi bi-bookmark"></i>
                         </div>
                     </div>
-                    <div class="infoo">
-                        <span class="font-bold">운동 전 몸풀기는 필수! </span>
-                        <span>꼭 실천해서 다치지 말아요~</span>
+                    <div class="infoo" >
+                        <span class="font-bold" v-if="recentNick(index)">{{ recentNick(index) }} 님의 </span>
+                        <span>{{ story.title }}</span>
                     </div>
                 </div>
             </div>
@@ -93,31 +94,54 @@
 import { useStoryStore } from '@/stores/story';
 import { useUserStore } from '@/stores/user';
 import { onBeforeMount, onMounted, computed } from 'vue';
+import { useRouter } from 'vue-router'
 
 const storyStore = useStoryStore()
 const userStore = useUserStore()
+const router = useRouter()
+
+storyStore.getRandom()
+storyStore.getPopularList()
+storyStore.getRecentList()
+userStore.getUserList()
+
 
 onBeforeMount(() => {
-    storyStore.getRandom()
-    storyStore.getPopularList()
-    storyStore.getRecentList()
-    userStore.getUserList()
 })
 
-
+// const testStory = computed(()=>{
+//     return storyStore.story
+// })
 
 const getUserNick = (userId) => {
-  const user = userStore.userList.find(user => user.userId === userId);
-  return user ? user.nickname : '';
+    const user = userStore.userList.find(user => user.userId === userId);
+    return user ? user.nickname : '';
 };
 
 const randomNick = computed(() => {
-  if (userStore.userList.length > 0) {
-    return getUserNick(storyStore.randomStory.userId);
-  }
-  return '';
+    if (userStore.userList.length > 0) {
+        return getUserNick(storyStore.randomStory.userId);
+    }
+    return '';
 });
 
+const popularNick = function (idx) {
+    if (userStore.userList.length > 0) {
+        return getUserNick(storyStore.popular10List[idx].userId);
+    }
+    return '';
+}
+
+const recentNick = function (idx) {
+    if (userStore.userList.length > 0) {
+        return getUserNick(storyStore.recent4List[idx].userId);
+    }
+    return '';
+}
+
+const goDetail = function(storyId){
+    router.push({name: 'storyDetail', params: {'storyId' : storyId}})
+}
 
 </script>
 
@@ -367,6 +391,7 @@ export default defineComponent({
 }
 
 .test2 {
+    margin-top: 20px;
     width: 100%;
     display: flex;
     gap: 20px;
@@ -395,5 +420,9 @@ export default defineComponent({
     border-radius: 5px;
     transform: scale(1.1);
     cursor: pointer;
+}
+
+.one-pic{
+    width: 25%;
 }
 </style>

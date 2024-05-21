@@ -20,6 +20,12 @@ import ProductInquiry from '@/components/ProductInquiry.vue'
 import SellerRegist from '@/components/SellerRegist.vue'
 import StoryDetail from '@/components/StoryDetail.vue'
 import OrderView from '@/views/OrderView.vue'
+import Popular from '@/components/commu/Popular.vue'
+import HomeTraining from '@/components/commu/HomeTraining.vue'
+import Running from '@/components/commu/Running.vue'
+import Three from '@/components/commu/Three.vue'
+import Tip from '@/components/commu/Tip.vue'
+import Today from '@/components/commu/Today.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -63,6 +69,36 @@ const router = createRouter({
           path : '/storydetail/:storyId',
           name:'storyDetail',
           component:StoryDetail
+        },
+        {
+          path:'popular',
+          name:'popular',
+          component:Popular
+        },
+        {
+          path:'homeTraining',
+          name:'homeTraining',
+          component:HomeTraining
+        },
+        {
+          path:'running',
+          name:'running',
+          component:Running
+        },
+        {
+          path:'three',
+          name:'three',
+          component:Three
+        },
+        {
+          path:'tip',
+          name:'tip',
+          component:Tip
+        },
+        {
+          path:'today',
+          name:'today',
+          component:Today
         },
       ]
     },
@@ -127,7 +163,8 @@ const router = createRouter({
       path : "/order/:productId/:quantity",
       name : "order",
       component : OrderView
-    }
+    },
+
   ]
 })
 
