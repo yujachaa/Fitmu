@@ -18,7 +18,23 @@ export const useProductStore = defineStore('product', () => {
   const defaultAddress = ref(null)
   const searchProducts = ref([])
   const selectedProduct = ref([])
+  const productLike = ref([])
 
+
+  const YesProduct = function(id){
+    axios.post("http://localhost:8080/product-api/scrap/" + id + "/user/" + sessionStorage.getItem("loginUser"))
+  }
+
+  const NoProduct = function(id){
+    axios.delete("http://localhost:8080/product-api/scrap/" + id + "/user/" + sessionStorage.getItem("loginUser"))
+  }
+
+  const getProductLike = function(){
+    axios.get("http://localhost:8080/user-api/user/" + sessionStorage.getItem("loginUser") + "/product-scrap").
+    then((response)=>{
+      productLike.value = response.data
+    })
+  }
 
   const getProducts = function(){
     axios.get("http://localhost:8080/product-api/product")
@@ -215,5 +231,9 @@ export const useProductStore = defineStore('product', () => {
     productAllImages,
     selectedProduct,
     getProducts,
+    getProductLike,
+    productLike,
+    YesProduct,
+    NoProduct,
    }
 }, {persist : true})

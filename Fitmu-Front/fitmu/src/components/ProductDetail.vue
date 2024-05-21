@@ -7,7 +7,7 @@
             <p class="brand">{{ productStore.product.brand }}</p>
             <div class="namediv">
                 <h3 class="name">{{ productStore.product.name }}</h3>
-                <i class="heart bi bi-heart"></i>
+                <i :class = "{setRed : isLike(route.params.productId)}" @click = "YesProduct(route.params.productId)" class="heart bi bi-heart"></i>
             </div>
             ⭐<span class="rating" v-if="productStore.reviews.length != 0">{{ rating }}</span>
             <span class="rating" v-else>0</span>
@@ -74,17 +74,45 @@ productStore.getProductImages(route.params.productId)
 productStore.getProductReviews(route.params.productId)
 productStore.getUsers()
 productStore.getProductInquiry(route.params.productId)
+productStore.getProductLike()
 // onBeforeMount(()=>{
 // })
 
 const productId = ref(route.params.productId)
 const product = ref(productStore.product)
-const productImages = ref(productStore.productImages)
+const productImages = computed(()=>{
+        return productStore.productImages
+
+})
 const reviews = ref(productStore.reviews)
 const mainImage = ref(productImages.value[0].fileName)
 
+const productLike = computed(()=>{
+    return productStore.productLike
+})
 
 const quantity = ref(0)
+
+const YesProduct = function(id){
+    if(isLike(id)){
+        let index = productLike.value.findIndex((product)=> product.storyId == id)
+        productLike.value.splice(index, 1)
+        productStore.NoProduct(id)
+    }else{
+        productLike.value.push(productStore.product)
+        productStore.YesProduct(id)
+    }
+}
+
+const isLike = function(id){
+    for(let i=0; i<productLike.value.length; i++){
+        if(productLike.value[i].productId == id){
+            return true
+        }
+    }
+    return false
+}
+
 
 const rating = computed(()=>{
     let sum = 0
@@ -104,6 +132,9 @@ const goOrder = function(){
 </script>
 
 <style scoped>
+.setRed{
+    color : red;
+}
 .totalPrice{
     display : flex;
     justify-content : space-between;
@@ -167,6 +198,12 @@ hr {
 .heart {
     font-size: 30px;
     margin-right: 30px;
+}
+.heart:hover {
+    font-size: 30px;
+    margin-right: 30px;
+    color : red;
+    cursor : pointer;
 }
 
 .rating {

@@ -47,7 +47,7 @@
     </div>
     <!-- 태그 생성 -->
     <div v-for="(tag, index) in tagList" :key="tag.tagId"
-      :style="{ position: 'absolute', left: tag.left/100 * 500 + imgleft + 'px', top: tag.top/100 * 500 + imgtop + 'px' }">
+      :style="{ position: 'absolute', left: tag.left/100 * 500 + imgleft - 10 + 'px', top: tag.top/100 * 500 + imgtop - 10 + 'px' }">
       <Popper :hover=true interactive disableClickAway>
         <button id="btn" ref="autobtn">+</button>
         <label class="btn" for="btn">+</label>
