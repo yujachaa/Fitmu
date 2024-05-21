@@ -207,6 +207,18 @@ public class StoryController {
 			return new ResponseEntity<List<Story>>(storyList, HttpStatus.OK);
 		}
 	}
+	
+	@GetMapping("/story/latest")
+	@Operation(summary = "게시글 최신 순으로 조회")
+	public ResponseEntity<?> latestStory() {
+		List<Story> storyList = storyService.latestStory();
+		
+		if (storyList == null) {
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		} else {
+			return new ResponseEntity<List<Story>>(storyList, HttpStatus.OK);
+		}
+	}
 
 	@PutMapping("/updateFileName/{storyId}/{fileName}")
 	@Operation(summary = "게시글 파일명 변경")

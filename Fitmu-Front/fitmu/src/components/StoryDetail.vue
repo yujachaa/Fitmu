@@ -92,7 +92,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, onBeforeMount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStoryStore } from '@/stores/story'
 import { useUserStore } from '@/stores/user'
@@ -113,13 +113,20 @@ const comment = ref({
   content: ""
 })
 
-onMounted(() => {
+onBeforeMount(() =>{
   storyId.value = route.params.storyId
   storyStore.getStory(route.params.storyId)
   storyStore.getStoryScrapCount(route.params.storyId)
   commentStore.getCommentList(route.params.storyId)
   userStore.getUserList()
 })
+// onMounted(() => {
+//   storyId.value = route.params.storyId
+//   storyStore.getStory(route.params.storyId)
+//   storyStore.getStoryScrapCount(route.params.storyId)
+//   commentStore.getCommentList(route.params.storyId)
+//   userStore.getUserList()
+// })
 
 const registComment = function () {
   console.log(comment.value)

@@ -228,7 +228,7 @@ const registUser = function () {
 
     store.registUser(user.value)
         .then(result => {
-            console.log(result);  // true 또는 false
+            // console.log(result);  // true 또는 false
             if(result){
                 router.push({ name: 'login' });
                 window.alert("회원가입을 축하합니다!")
