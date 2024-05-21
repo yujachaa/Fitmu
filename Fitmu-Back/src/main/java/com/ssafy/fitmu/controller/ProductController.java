@@ -8,7 +8,6 @@ import java.util.UUID;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -16,14 +15,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.fitmu.dto.Product;
 import com.ssafy.fitmu.dto.ProductImage;
 import com.ssafy.fitmu.dto.SearchCondition;
-import com.ssafy.fitmu.dto.StoryImage;
 import com.ssafy.fitmu.service.ProductService;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -182,12 +179,23 @@ public class ProductController {
 		}
 	}
 	
-	@GetMapping("/image/search")
+	@GetMapping("image")
+	public ResponseEntity<?> getProductImage(){
+		List<ProductImage> productImageList = productService.getProductImage();
+		
+		if(productImageList == null) {
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<List<ProductImage>>(productImageList, HttpStatus.OK);
+	}
+	
+	@GetMapping("/search")
 	@Operation(summary = "상품 검색")
 	public ResponseEntity<?> productSearch(@ModelAttribute SearchCondition condition){
+		System.out.println(condition);
 		List<Product> productList = productService.searchByCondition(condition);
 		
-		if(productList == null || productList.size() == 0) {
+		if(productList == null) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		} else {
 			return new ResponseEntity<List<Product>>(productList, HttpStatus.OK);

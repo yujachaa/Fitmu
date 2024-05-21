@@ -9,12 +9,36 @@ export const useProductStore = defineStore('product', () => {
   const router = useRouter()
   const product = ref({})
   const productImages = ref([])
+  const productAllImages = ref([])
   const products = ref([])
   const reviews = ref([])
   const users = ref([])
   const inquirys = ref([])
   const addresses = ref([])
   const defaultAddress = ref(null)
+  const searchProducts = ref([])
+
+  const getProductALLImages = function(){
+    axios.get("http://localhost:8080/product-api/image")
+    .then((response)=>{
+      productAllImages.value = response.data
+    })
+  }
+
+  const searchProductforTag = function(word){
+    let searchCondition = {
+      'key' : 'name',
+      'word' : word,
+      'orderBy' : null,
+      'orderByDir' : null
+    }
+    axios.get("http://localhost:8080/product-api/search", {
+      params: searchCondition
+    })
+    .then((response)=>{
+      searchProducts.value = response.data
+    })
+  }
 
   const addressDelete = function(id){
     axios.delete("http://localhost:8080/address-api/address/" + id)
@@ -104,7 +128,6 @@ export const useProductStore = defineStore('product', () => {
   const getProductImages = function(productId){
     axios.get("http://localhost:8080/product-api/image/" + productId)
     .then((response)=>{
-      console.log(response.data)
       productImages.value = response.data
     })
   }
@@ -176,6 +199,10 @@ export const useProductStore = defineStore('product', () => {
     defaultAddress,
     registAddress,
     addressDelete,
-    
+    searchProductforTag,
+    searchProducts,
+    products,
+    getProductALLImages,
+    productAllImages,
    }
 }, {persist : true})

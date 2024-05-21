@@ -69,7 +69,7 @@ const route = useRoute()
 const router = useRouter()
 const productStore = useProductStore()
 
-onMounted(async()=>{
+onBeforeMount(async()=>{
     productStore.getProduct(route.params.productId)
     productStore.getProductImages(route.params.productId)
     productStore.getProductReviews(route.params.productId)

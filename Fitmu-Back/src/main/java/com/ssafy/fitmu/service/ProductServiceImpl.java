@@ -72,4 +72,9 @@ public class ProductServiceImpl implements ProductService {
 		return productDao.insertProduct(product);
 	}
 
+	@Override
+	public List<ProductImage> getProductImage() {
+		return productDao.getProductImage();
+	}
+
 }

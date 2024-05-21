@@ -113,11 +113,12 @@ const comment = ref({
   content: ""
 })
 
-onBeforeMount(() =>{
+
+onBeforeMount(() => {
+  commentStore.getCommentList(route.params.storyId)
   storyId.value = route.params.storyId
   storyStore.getStory(route.params.storyId)
   storyStore.getStoryScrapCount(route.params.storyId)
-  commentStore.getCommentList(route.params.storyId)
   userStore.getUserList()
 })
 // onMounted(() => {
@@ -134,6 +135,8 @@ const registComment = function () {
 }
 
 const getUserNick = function (userId) {
+  console.log(userId)
+  console.log(userStore.userList.filter((user)=> user.userId == userId)[0])
   return userStore.userList.filter((user) => user.userId == userId)[0].nickname
 }
 
