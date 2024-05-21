@@ -21,7 +21,7 @@
 		</if>
 		<!-- 동적쿼리(정렬 조건) -->
 		<if test = "orderBy != null">
-			ORDER BY ${orderBy} ${orderByDir}
+			ORDER BY #{orderBy} #{orderByDir}
 		</if>        
 	</select>
 	
@@ -55,4 +55,8 @@
 		INSERT INTO product
 		VALUES (0, #{sellerId}, #{categoryId}, #{brand}, #{name}, #{price}, #{discountRate}, #{deliveryFee}, #{specialPrice}, now(), now(), 0, 0, #{productDetail})
 	</insert>
+	
+	<select id="getProductImage" resultType = "ProductImage">
+		SELECT * FROM product_image
+	</select>
 </mapper>
