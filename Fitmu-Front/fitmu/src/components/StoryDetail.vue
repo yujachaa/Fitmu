@@ -3,7 +3,7 @@
   <div class="total">
     <div class="container d-flex flex-column align-items-center align-items-stretch">
       <div class="title">
-        <h2>{{ storyStore.story.title }}</h2>
+        <h2>{{ story.title }}</h2>
       </div>
       <div class="user-info d-flex flex-row justify-content-between">
         <div>
@@ -11,37 +11,37 @@
         </div>
         <div class="user-nickname">
           <h4>
-            {{ getUserNick(storyStore.story.userId) }}
+            {{ getUserNick(story.userId) }}
           </h4>
         </div>
         <!-- 현재 사용자의 글이 아닐때만 팔로우 버튼 활성화 -->
         <div class="follow-button-box flex-grow-1" v-if="!isSameUSer">
           <button class="follow-btn btn btn-primary" :class="{ followed: isFollowed }"
-            @click="followToggle(storyStore.story.userId)">{{ followMsg }}</button>
+            @click="followToggle(story.userId)">{{ followMsg }}</button>
         </div>
       </div>
       <hr>
       <div class="story-box">
         <!-- 스토리 사진 -->
         <div>
-          <img ref = "img" class="story-img" :src="`/src/assets/image/story/${storyStore.story.image}`" alt="스토리사진">
+          <img ref="img" class="story-img" :src="`/src/assets/image/story/${story.image}`" alt="스토리사진">
         </div>
 
         <!-- 스토리 내용 -->
         <div class="story-content">
-          <p>{{ storyStore.story.content }}</p>
+          <p>{{ story.content }}</p>
         </div>
 
         <div class="story-info">
-          <span>작성 </span><span>{{ storyStore.story.createdDate }}</span>
+          <span>작성 </span><span>{{ story.createdDate }}</span>
           •
-          <span>수정 </span><span>{{ storyStore.story.modifiedDate }}</span>
+          <span>수정 </span><span>{{ story.modifiedDate }}</span>
           •
-          <span>좋아요 </span><span>{{ storyStore.story.liked }}</span>
+          <span>좋아요 </span><span>{{ story.liked }}</span>
           •
-          <span>스크랩 </span><span>{{ storyStore.storyScrapCnt }}</span>
+          <span>스크랩 </span><span>{{ storyScrapCnt }}</span>
           •
-          <span>조회 </span><span>{{ storyStore.story.viewCnt }}</span>
+          <span>조회 </span><span>{{ story.viewCnt }}</span>
         </div>
         <!-- user-info 복붙해서 한번 더 넣기 -->
       </div>
@@ -49,7 +49,7 @@
       <div class="comment-box ">
         <div class="comment-count">
           <span>댓글</span>
-          <span class="blue">{{ commentStore.commentList.length }}</span>
+          <span class="blue">{{ commentListLength }}</span>
         </div>
         <div class="comment-input d-flex align-items-center">
           <div class="">
@@ -62,7 +62,7 @@
         </div>
 
         <!-- v-for 넣기 -->
-        <div class="comment-list" v-for="comment in commentStore.commentList" :key="comment">
+        <div class="comment-list" v-for="comment in commentList" :key="comment">
           <div class="one-comment d-flex">
             <div class="">
               <img class="comment-profile-img" src="@/assets/image/profile.png" alt="댓글프로필이미지">
@@ -89,9 +89,9 @@
     <div class="to-top" @click="toTop">맨위로</div>
 
   </div>
-  <div v-if = "TAGS">
-    <div v-for="(tag, index) in storyStore.tags" :key="tag.tagId"
-      :style="{ position: 'absolute', left: tag.left + elementPositionX + 'px', top: tag.top + elementPositionY + 'px' }">
+  <div v-if="TAGS">
+    <div v-for="(tag, index) in tags" :key="tag.tagId"
+      :style="{ position: 'absolute', left: tag.left + elementPositionX + 'px', top: tag.top + elementPositionY + 'px' , zIndex:999}">
       <Popper :hover=true interactive disableClickAway>
         <button id="btn" ref="autobtn">+</button>
         <label class="btn" for="btn">+</label>
@@ -117,7 +117,7 @@ import { ref, onMounted, computed, onBeforeMount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStoryStore } from '@/stores/story'
 import { useUserStore } from '@/stores/user'
-import {useProductStore} from '@/stores/product'
+import { useProductStore } from '@/stores/product'
 import { useCommentStore } from '@/stores/comment'
 import { useWindowScroll } from '@vueuse/core'
 
@@ -127,12 +127,42 @@ const { elementPositionX, elementPositionY } = useMouseInElement(img)
 const route = useRoute()
 const router = useRouter()
 const storyStore = useStoryStore()
-const productStore =useProductStore()
+const productStore = useProductStore()
 const userStore = useUserStore()
 const commentStore = useCommentStore()
 
-const storyId = ref()
-const story = ref({})
+
+//제일 먼저 실행되도록 setup으로 옮김
+commentStore.getCommentList(route.params.storyId)
+storyStore.getStory(route.params.storyId)
+storyStore.getStoryScrapCount(route.params.storyId)
+userStore.getUserList()
+storyStore.getTags()
+productStore.getProductALLImages()
+// storyId.value = route.params.storyId
+
+
+
+
+const story = computed(()=>{
+  return storyStore.story
+})
+const storyScrapCnt = computed(()=>{
+  return storyStore.storyScrapCnt
+})
+
+const commentListLength = computed(()=>{
+  return commentStore.commentList.length
+})
+
+const commentList = computed(()=>{
+  return commentStore.commentList
+})
+
+const tags = computed(()=>{
+  return storyStore.tags
+})
+
 
 const comment = ref({
   storyId: route.params.storyId,
@@ -140,7 +170,7 @@ const comment = ref({
   content: ""
 })
 
-const TAGS = computed(()=>{
+const TAGS = computed(() => {
   return storyStore.tags.length > 0 ? true : false;
 })
 
@@ -151,20 +181,14 @@ const getProductImage = function (productId) {
   return productStore.productAllImages.filter(image => image.productId == productId)[0].fileName
 }
 
-const getSelectedProductInfo = function(id){
+const getSelectedProductInfo = function (id) {
   return productStore.selectedProduct.find(product => product.productId == id)
 }
 
 
-onBeforeMount(() => {
-  commentStore.getCommentList(route.params.storyId)
-  storyStore.getStory(route.params.storyId)
-  storyStore.getStoryScrapCount(route.params.storyId)
-  userStore.getUserList()
-  storyStore.getTags()
-  productStore.getProductALLImages()
-  storyId.value = route.params.storyId
-})
+// onBeforeMount(() => {
+
+// })
 // onMounted(() => {
 // })
 

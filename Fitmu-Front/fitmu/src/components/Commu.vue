@@ -100,13 +100,13 @@ const storyStore = useStoryStore()
 const userStore = useUserStore()
 const router = useRouter()
 
-storyStore.getRandom()
-storyStore.getPopularList()
-storyStore.getRecentList()
-userStore.getUserList()
 
 
 onBeforeMount(() => {
+    storyStore.getRandom()
+    storyStore.getPopularList()
+    storyStore.getRecentList()
+    userStore.getUserList()
 })
 
 // const testStory = computed(()=>{
