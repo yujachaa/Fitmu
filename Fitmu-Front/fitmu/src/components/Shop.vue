@@ -1,7 +1,7 @@
 <template>
     <div class="pic-carousel">
         <carousel :autoplay="2000" :wrap-around="true">
-        <!--<carousel :wrap-around="true">-->
+            <!--<carousel :wrap-around="true">-->
             <slide v-for="slide in 7" :key="slide">
                 <img class="pic_carousel__item row" :src="`src/assets/image/product/${slide}.jpg`" alt="이미지">
             </slide>
@@ -28,29 +28,35 @@
 
             <div class="today-deal ">
                 <carousel v-bind="settings" :breakpoints="breakpoints" :mouseDrag="false" :touchDrag="false">
-                    <slide v-for="(product, index) in saleList" :key="product">
+                    <slide v-for="product in sale8List" :key="product">
                         <div class="product_carousel__item">
                             <div class="sale-pic">
-                                <img v-if="getProductMainImage(product.productId)" class="pic " :src="`src/assets/image/product/${getProductMainImage(product.productId)}`" alt="이미지" @click = "productDetail(product.productId)">
+                                <img v-if="getProductMainImage(product.productId)" class="pic "
+                                    :src="`src/assets/image/product/${getProductMainImage(product.productId)}`"
+                                    alt="이미지" @click="productDetail(product.productId)">
                             </div>
                             <div class="product-info ">
                                 <div class="brand">
-                                    삼성전자
+                                    {{ product.brand }}
                                 </div>
                                 <div class="product-name">
-                                    삼성 비스포크제트
+                                    {{ product.name }}
                                 </div>
                                 <div class="price-box">
                                     <span class="discount">
-                                        41%
+                                        {{ product.discountRate }}%
                                     </span>
                                     <span class="price">
-                                        547,700
+                                        {{ product.specialPrice.toLocaleString('ko-KR') }}
                                     </span>
                                 </div>
                                 <div>
-                                    ⭐ <span class="rating">4.9</span>
-                                    리뷰 <span class="review">61</span>
+
+                                    ⭐<span class="rating" v-if="product.ratingCnt > 0">
+                                        {{ (product.ratingSum / product.ratingCnt).toFixed(1) }}
+                                    </span>
+                                    <span class="rating" v-else>0</span>
+                                    리뷰 <span class="review">{{ product.ratingCnt }}</span>
                                 </div>
                             </div>
                         </div>
@@ -78,28 +84,32 @@
 
             <div class="popular d-flex justify-content-between">
                 <!-- v-for 넣기 -->
-                <div v-for ="num in 12" :key="num">
+                <div v-for="product in popular6List" :key="product">
                     <div class="popular-pic">
-                        <img class="pic" :src="`src/assets/image/product/${num + 6}.jpg`" alt="이미지">
+                        <img v-if="getProductMainImage(product.productId)" class="pic"
+                            :src="`src/assets/image/product/${getProductMainImage(product.productId)}`" alt="이미지">
                     </div>
                     <div class="product-info">
                         <div class="brand">
-                            삼성전자
+                            {{ product.brand }}
                         </div>
                         <div class="product-name">
-                            상품이에요 {{ num  }}
+                            {{ product.name }}
                         </div>
                         <div class="price-box">
                             <span class="discount">
-                                41%
+                                {{product.discountRate}}%
                             </span>
                             <span class="price">
-                                547,700
+                                {{ product.specialPrice.toLocaleString('ko-KR') }}
                             </span>
                         </div>
                         <div>
-                            ⭐ <span class="rating">4.9</span>
-                            <span  class="review"> 리뷰  61</span>
+                            ⭐<span class="rating" v-if="product.ratingCnt > 0">
+                                        {{ (product.ratingSum / product.ratingCnt).toFixed(1) }}
+                                    </span>
+                                    <span class="rating" v-else>0</span>
+                            <span class="review"> 리뷰 {{ product.ratingCnt }}</span>
                         </div>
                     </div>
 
@@ -161,8 +171,8 @@ export default defineComponent({
 </script>
 
 <script setup>
-import {ref, computed, watch} from 'vue'
-import {useRoute, useRouter} from 'vue-router'
+import { ref, computed, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useProductStore } from '@/stores/product'
 
 
@@ -171,28 +181,27 @@ const productStore = useProductStore()
 
 productStore.getSaleList()
 productStore.getProductALLImages()
-console.log(productStore.productAllImages)
+productStore.getProducts()
 
-const saleList = computed(()=>{
-    return productStore.saleList
+const sale8List = computed(() => {
+    return productStore.sale8List
+})
+
+const popular6List = computed(() => {
+    return productStore.popular12ProductList
 })
 
 
-//이부분 확인하기
-const productAllImages = computed(()=>{
-    return productStore.productAllImages
-})
-
-const getImageName = function(productId){
+const getImageName = function (productId) {
     const files = productStore.productAllImages.filter((productImg) => productImg.productId == productId)
-    if(files[0] == undefined)
+    if (files[0] == undefined)
         return ''
     return files[0].fileName
     // return (files != undefined) ? files[0].fileName : '';
 }
 
-const getProductMainImage = function(productId){
-    if(productStore.productAllImages.length > 0){
+const getProductMainImage = function (productId) {
+    if (productStore.productAllImages.length > 0) {
         return getImageName(productId);
     }
     return '';
@@ -201,8 +210,8 @@ const getProductMainImage = function(productId){
 
 
 
-const productDetail = function(productId){
-    router.push({name : 'productDetail', params: {'productId' : productId}})
+const productDetail = function (productId) {
+    router.push({ name: 'productDetail', params: { 'productId': productId } })
 }
 
 </script>
@@ -212,7 +221,7 @@ hr {
     margin: 0;
 }
 
-.popular-pic{
+.popular-pic {
     width: 270px;
     height: 270px;
     border-radius: 8px;
@@ -220,21 +229,23 @@ hr {
     object-fit: cover;
     overflow: hidden;
 }
-.popular-pic>.pic{
+
+.popular-pic>.pic {
     border-radius: 8px;
     object-fit: cover;
     width: 100%;
     height: 100%;
     transition: all 0.2s linear;
 }
-.popular-pic:hover .pic{
+
+.popular-pic:hover .pic {
     width: 100%;
     height: 100%;
     transform: scale(1.1);
     cursor: pointer;
 }
 
-.sale-pic{
+.sale-pic {
     width: 220px;
     height: 220px;
     border-radius: 8px;
@@ -244,60 +255,66 @@ hr {
     /* border-radius: 5px; */
 }
 
-.sale-pic>.pic{
+.sale-pic>.pic {
     width: 100%;
     height: 100%;
     object-fit: cover;
     border-radius: 8px;
     transition: all 0.1s linear;
 }
-.sale-pic:hover .pic{
+
+.sale-pic:hover .pic {
     width: 100%;
     height: 100%;
     transform: scale(1.1);
     cursor: pointer;
 }
 
-.product-info{
+.product-info {
     margin-top: 5px;
     margin-bottom: 15px;
 }
 
-.price-box{
+.price-box {
     font-size: larger;
     margin-top: 5px;
 }
 
-.brand{
+.brand {
     font-size: smaller;
     color: gray;
 }
 
-.discount{
+.discount {
     color: #34C5F0;
     font-weight: bold;
 }
 
-.price{
+.price {
+    margin-left: 5px;
     font-weight: bold;
 }
 
-.rating{
+.rating {
+    margin-right: 5px;
     font-weight: bold;
 }
-.review{
+
+.review {
+    margin-left: 5px;
     color: gray;
 }
 
 
-.carousel{
+.carousel {
     text-align: start;
 }
-.carousel__slide{
+
+.carousel__slide {
     padding: 0;
 }
 
-.product-info{
+.product-info {
     justify-content: start;
 }
 

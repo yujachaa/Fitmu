@@ -1,6 +1,6 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
-import {useRoute, useRouter} from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import axios from 'axios'
 
 export const useProductStore = defineStore('product', () => {
@@ -11,6 +11,7 @@ export const useProductStore = defineStore('product', () => {
   const productImages = ref([])
   const productAllImages = ref([])
   const products = ref([])
+  const popular12ProductList = ref([])
   const reviews = ref([])
   const users = ref([])
   const inquirys = ref([])
@@ -21,175 +22,178 @@ export const useProductStore = defineStore('product', () => {
   const productLike = ref([])
 
 
-  const finish = function(memo){
+  const finish = function (memo) {
     let order = {
-      orderId : 0,
-      productId : route.params.productId,
-      userId : sessionStorage.get('loginUser'),
-      sellerId : product.value.sellerId,
-      quantity : route.params.quantity,
-      status : "배송중",
-      confirmedAt : null,
-      createdAt : "",
-      memo : memo
+      orderId: 0,
+      productId: route.params.productId,
+      userId: sessionStorage.get('loginUser'),
+      sellerId: product.value.sellerId,
+      quantity: route.params.quantity,
+      status: "배송중",
+      confirmedAt: null,
+      createdAt: "",
+      memo: memo
     }
     axios.post("http://localhost:8080/order-api/order", order)
-    .then((response)=>{
-      window.alert("주문이 완료되었습니다.")
-      router.push({name:'commu'})
+      .then((response) => {
+        window.alert("주문이 완료되었습니다.")
+        router.push({ name: 'commu' })
 
-    })
+      })
   }
 
-  const YesProduct = function(id){
+  const YesProduct = function (id) {
     axios.post("http://localhost:8080/product-api/scrap/" + id + "/user/" + sessionStorage.getItem("loginUser"))
   }
 
-  const NoProduct = function(id){
+  const NoProduct = function (id) {
     axios.delete("http://localhost:8080/product-api/scrap/" + id + "/user/" + sessionStorage.getItem("loginUser"))
   }
 
-  const getProductLike = function(){
+  const getProductLike = function () {
     axios.get("http://localhost:8080/user-api/user/" + sessionStorage.getItem("loginUser") + "/product-scrap").
-    then((response)=>{
-      productLike.value = response.data
-    })
+      then((response) => {
+        productLike.value = response.data
+      })
   }
 
-  const getProducts = function(){
+  const getProducts = function () {
     axios.get("http://localhost:8080/product-api/product")
-   .then((response)=>{
-    products.value = response.data
-   })
+      .then((response) => {
+        products.value = response.data
+      })
+      .then((res) => {
+        popular12ProductList.value = products.value.sort((a, b) => b.ratingCnt - a.ratingCnt).slice(0, 12);
+      })
   }
 
-  const getProductALLImages = function(){
+  const getProductALLImages = function () {
     axios.get("http://localhost:8080/product-api/image")
-    .then((response)=>{
-      productAllImages.value = response.data
-    })
+      .then((response) => {
+        productAllImages.value = response.data
+      })
   }
 
-  const searchProductforTag = function(word){
+  const searchProductforTag = function (word) {
     let searchCondition = {
-      'key' : 'name',
-      'word' : word,
-      'orderBy' : null,
-      'orderByDir' : null
+      'key': 'name',
+      'word': word,
+      'orderBy': null,
+      'orderByDir': null
     }
     axios.get("http://localhost:8080/product-api/search", {
       params: searchCondition
     })
-    .then((response)=>{
-      searchProducts.value = response.data
-    })
+      .then((response) => {
+        searchProducts.value = response.data
+      })
   }
 
-  const addressDelete = function(id){
+  const addressDelete = function (id) {
     axios.delete("http://localhost:8080/address-api/address/" + id)
-   .then((response)=>{
-    router.go()
-   })
+      .then((response) => {
+        router.go()
+      })
   }
 
-  const deleteAddress = function(){
+  const deleteAddress = function () {
     defaultAddress.value = null
   }
 
-  const registAddress = function(address){
+  const registAddress = function (address) {
     axios.post("http://localhost:8080/address-api/address/" + sessionStorage.getItem("loginUser"), address)
-    .then((response)=>{
-      router.go()
-    })
+      .then((response) => {
+        router.go()
+      })
   }
 
-  const getAddress = function(id){
+  const getAddress = function (id) {
     axios.get("http://localhost:8080/address-api/address/user/" + id)
-    .then((response)=>{
-      addresses.value = response.data
-    })
+      .then((response) => {
+        addresses.value = response.data
+      })
   }
 
-  const getDefaultAddress = function(id){
+  const getDefaultAddress = function (id) {
     axios.get("http://localhost:8080/address-api/address/default/" + id)
-    .then((response)=>{
-      defaultAddress.value = response.data
-    })
+      .then((response) => {
+        defaultAddress.value = response.data
+      })
   }
 
-  const getProductInquiry = function(productId){
+  const getProductInquiry = function (productId) {
     axios.get("http://localhost:8080/inquiry-api/product/" + route.params.productId)
-    .then((response)=>{
-      inquirys.value = response.data
-    })
+      .then((response) => {
+        inquirys.value = response.data
+      })
   }
 
-  const help = function(){
-    reviews.value = reviews.value.sort((a,b)=> b.liked - a.liked)
+  const help = function () {
+    reviews.value = reviews.value.sort((a, b) => b.liked - a.liked)
   }
 
-  const late = function(){
-    reviews.value = reviews.value.sort((a,b) => b.reviewId - a.reviewId)
+  const late = function () {
+    reviews.value = reviews.value.sort((a, b) => b.reviewId - a.reviewId)
   }
 
-  const registReview = function(review){
+  const registReview = function (review) {
     axios.post("http://localhost:8080/review-api/regist", review)
-    .then((response)=>{
-      router.go()
-    })
+      .then((response) => {
+        router.go()
+      })
   }
 
-  const registInquiry = function(inquiry){
+  const registInquiry = function (inquiry) {
     axios.post("http://localhost:8080/inquiry-api/regist", inquiry)
-    .then((response)=>{
-      router.go()
-    })
+      .then((response) => {
+        router.go()
+      })
   }
-  const getUsers = function(){
+  const getUsers = function () {
     axios.get("http://localhost:8080/user-api/")
-    .then((response)=>{
-      users.value = response.data
-    })
+      .then((response) => {
+        users.value = response.data
+      })
   }
 
-  const getProduct = function(productId){
+  const getProduct = function (productId) {
     axios.get("http://localhost:8080/product-api/" + productId)
-    .then((response)=>{
-      console.log(response.data)
-      product.value = response.data
-    })
+      .then((response) => {
+        console.log(response.data)
+        product.value = response.data
+      })
   }
 
-  const reviewLike = function(reviewId){
+  const reviewLike = function (reviewId) {
     axios.put("http://localhost:8080/review-api/like/" + reviewId)
-    .then((res)=>{
-      return axios.get("http://localhost:8080/review-api/review/" + product.value.productId)
-    })
-    .then((response)=>{
-      window.location.reload()
-    })
+      .then((res) => {
+        return axios.get("http://localhost:8080/review-api/review/" + product.value.productId)
+      })
+      .then((response) => {
+        window.location.reload()
+      })
   }
 
-  const getProductImages = function(productId){
+  const getProductImages = function (productId) {
     axios.get("http://localhost:8080/product-api/image/" + productId)
-    .then((response)=>{
-      productImages.value = response.data
-    })
+      .then((response) => {
+        productImages.value = response.data
+      })
   }
-  
-  const registProduct = function(product, files){
+
+  const registProduct = function (product, files) {
     console.log(files)
     const userId = sessionStorage.getItem("loginUser")
     const productId = ref(0);
     const sellerId = ref(0);
     axios.get("http://localhost:8080/seller-api/" + userId, product)
-     .then((response)=> {
+      .then((response) => {
         sellerId.value = response.data.sellerId
         product.sellerId = sellerId.value
         product.userId = userId
         return axios.post("http://localhost:8080/product-api/regist", product)
       })
-      .then((response)=>{
+      .then((response) => {
         productId.value = response.data
         const formData = new FormData()
         for (let i = 0; i < files.length; i++) {
@@ -198,14 +202,14 @@ export const useProductStore = defineStore('product', () => {
         console.log(formData)
         return axios.post("http://localhost:8080/product-api/upload", formData)
       })
-      .then((response)=>{
+      .then((response) => {
         console.log(response.data)
         const uploadPromises = response.data.map((fileName) => {
           const productImage = {
-              imageId: 0,
-              sellerId: sellerId.value,
-              productId: productId.value,
-              fileName: fileName
+            imageId: 0,
+            sellerId: sellerId.value,
+            productId: productId.value,
+            fileName: fileName
           }
           return axios.post("http://localhost:8080/product-api/imageUpload", productImage)
         })
@@ -213,22 +217,28 @@ export const useProductStore = defineStore('product', () => {
       })
   }
 
-  const getProductReviews = function(productId){
+  const getProductReviews = function (productId) {
     axios.get("http://localhost:8080/review-api/review/" + productId)
-    .then((response)=>{
-      reviews.value = response.data
-    })
+      .then((response) => {
+        reviews.value = response.data
+      })
   }
 
-  //세일상품리스트 가져오기
+  //세일상품리스트 가져오기 -> 8개만 자르기!!
   const saleList = ref([])
-  const getSaleList = function(){
+  const sale8List = ref([])
+  const getSaleList = function () {
+    saleList.value = []
+    sale8List.value = []
     axios.get("http://localhost:8080/product-api/discount/0")
-    .then((res)=>{
-      saleList.value = res.data
-    })
+      .then((res) => {
+        saleList.value = res.data
+      })
+      .then((res) => {
+        sale8List.value = saleList.value.slice(0, 8);
+      })
   }
-  
+
   return {
     deleteAddress,
     registProduct,
@@ -266,5 +276,8 @@ export const useProductStore = defineStore('product', () => {
     NoProduct,
     getSaleList,
     saleList,
-   }
-}, {persist : true})
+    sale8List,
+    popular12ProductList,
+
+  }
+}, { persist: true })

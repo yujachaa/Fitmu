@@ -14,15 +14,15 @@
             <span>{{ productStore.reviews.length}}개 리뷰</span>
             <br>
             <span class="discount">{{ productStore.product.discountRate }}%</span>
-            <span class="price">{{ productStore.product.price }}원</span><br>
+            <span class="price">{{ productStore.product.price.toLocaleString('ko-KR') }}원</span><br>
             <div class="price2">
-                <p class="specialPrice">{{ productStore.product.specialPrice }}</p>
+                <p class="specialPrice">{{ productStore.product.specialPrice.toLocaleString('ko-KR') }}</p>
                 <p>원</p>
                 <p class="xmrrk">특가</p>
             </div>
             <div class="delivery">
                 <span class="delivery2">배송</span>
-                <span class="deliveryFee" v-if="product.deliveryFee != 0">{{productStore.product.deliveryFee }}원</span>
+                <span class="deliveryFee" v-if="product.deliveryFee != 0">{{productStore.product.deliveryFee.toLocaleString('ko-KR') }}원</span>
                 <span class="deliveryFee" v-else>무료배송</span>
             </div>
             <hr>
