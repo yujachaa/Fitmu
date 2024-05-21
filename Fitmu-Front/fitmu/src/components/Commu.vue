@@ -75,7 +75,7 @@
                     <div class="sub-img">
                         <img class="subimg" :src="`src/assets/image/story/${story.image}`" alt="" @click="goDetail(story.storyId)">
                         <div class="main-img-info3">
-                            <i id="book" class="bi bi-bookmark-fill"></i>
+                            <i id="book" :class="{setBlue : isScrap(story.storyId)}" class="bi bi-bookmark-fill" @click = "YesBook(story.storyId)"></i>
                             <i id="book2" class="bi bi-bookmark"></i>
                         </div>
                     </div>
@@ -102,16 +102,35 @@ const router = useRouter()
 
 
 
-onBeforeMount(() => {
-    storyStore.getRandom()
-    storyStore.getPopularList()
-    storyStore.getRecentList()
-    userStore.getUserList()
-})
+storyStore.getRandom()
+storyStore.getPopularList()
+storyStore.getRecentList()
+userStore.getUserList()
+storyStore.getStoryScrap()
+// onBeforeMount(() => {
+// })
 
+const storyScrap = computed(()=>{
+    return storyStore.storyScrap
+})
 // const testStory = computed(()=>{
 //     return storyStore.story
 // })
+
+const YesBook = function(id){
+    storyStore.YesBook(id)
+}
+
+const isScrap = function(id){
+    console.log(storyScrap.value)
+    for(let i=0; i<storyScrap.value.length; i++){
+        if(storyScrap.value[i].storyId == id){
+            return true
+        }
+    }
+    return false
+}
+
 
 const getUserNick = (userId) => {
     const user = userStore.userList.find(user => user.userId === userId);
@@ -194,6 +213,9 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.setBlue{
+    color : #34C5F0;
+}
 #book {
     position: absolute;
     opacity: 0.5;

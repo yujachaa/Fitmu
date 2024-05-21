@@ -14,6 +14,22 @@ export const useStoryStore = defineStore(
     const registFileName = ref("")
     const imageId = ref(0)
     const tags = ref([])
+    const storyScrap = ref([])
+    const productScrap = ref([])
+
+    const getStoryScrap = function(){
+      axios.get("http://localhost:8080/user-api/user/" + sessionStorage.getItem("loginUser") + "/story-scrap")
+     .then((response)=>{
+      storyScrap.value = response.data
+     })
+    }
+
+    const YesBook = function(id){
+      axios.post("http://localhost:8080/story-api/story/" + id + "/user/" + sessionStorage.getItem("loginUser"))
+      .then((response)=>{
+        router.go()
+      })
+    }
 
     const getTags = function(){
       axios.get("http://localhost:8080/tag-api/story/" + route.params.storyId)
@@ -199,6 +215,9 @@ export const useStoryStore = defineStore(
     getRandom,
     getTags,
     tags,
+    YesBook,
+    getStoryScrap,
+    storyScrap,
 
 
     };
