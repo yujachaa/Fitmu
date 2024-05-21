@@ -33,7 +33,7 @@ export const useProductStore = defineStore('product', () => {
     let order = {
       orderId: 0,
       productId: route.params.productId,
-      userId: sessionStorage.get('loginUser'),
+      userId: sessionStorage.getItem('loginUser'),
       sellerId: product.value.sellerId,
       quantity: route.params.quantity,
       status: "배송중",
@@ -44,8 +44,7 @@ export const useProductStore = defineStore('product', () => {
     axios.post("http://localhost:8080/order-api/order", order)
       .then((response) => {
         window.alert("주문이 완료되었습니다.")
-        router.push({ name: 'commu' })
-
+        router.push({ name: 'my-order' })
       })
   }
 
@@ -287,5 +286,6 @@ export const useProductStore = defineStore('product', () => {
     popular12ProductList,
     getOrders,
     orders,
+    finish,
   }
 }, { persist: true })
