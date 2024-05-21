@@ -152,51 +152,51 @@ const selected = computed(() => {
         return { blue: true }
     }
 })
-// const selected1 = computed(()=>{
-//     if(route.name === "commu"){
-//         return {blue : true}
-//     }
-// })
-// const selected2 = computed(()=>{
-//     if(route.name === "commu"){
-//         return {blue : true}
-//     }
-// })
-// const selected3 = computed(()=>{
-//     if(route.name === "commu"){
-//         return {blue : true}
-//     }
-// })
-// const selected4 = computed(()=>{
-//     if(route.name === "commu"){
-//         return {blue : true}
-//     }
-// })
-// const selected5 = computed(()=>{
-//     if(route.name === "commu"){
-//         return {blue : true}
-//     }
-// })
+const selected1 = computed(()=>{
+    if(route.name === "homeTraining"){
+        return {blue : true}
+    }
+})
+const selected2 = computed(()=>{
+    if(route.name === "today"){
+        return {blue : true}
+    }
+})
+const selected3 = computed(()=>{
+    if(route.name === "three"){
+        return {blue : true}
+    }
+})
+const selected4 = computed(()=>{
+    if(route.name === "tip"){
+        return {blue : true}
+    }
+})
+const selected5 = computed(()=>{
+    if(route.name === "running"){
+        return {blue : true}
+    }
+})
 const selected9 = computed(() => {
     if (route.name === "shop") {
         return { blue: true }
     }
 })
-// const selected6 = computed(()=>{
-//     if(route.name === "shop"){
-//         return {blue : true}
-//     }
-// })
-// const selected7 = computed(()=>{
-//     if(route.name === "commu"){
-//         return {blue : true}
-//     }
-// })
-// const selected8 = computed(()=>{
-//     if(route.name === "commu"){
-//         return {blue : true}
-//     }
-// })
+const selected6 = computed(()=>{
+    if(route.name === "protein"){
+        return {blue : true}
+    }
+})
+const selected7 = computed(()=>{
+    if(route.name === "diet"){
+        return {blue : true}
+    }
+})
+const selected8 = computed(()=>{
+    if(route.name === "clothes"){
+        return {blue : true}
+    }
+})
 const selected10 = computed(() => {
     if (route.name === "profile") {
         return { blue: true }
@@ -207,21 +207,21 @@ const selected11 = computed(() => {
         return { blue: true }
     }
 })
-// const selected12 = computed(()=>{
-//     if(route.name === "commu"){
-//         return {blue : true}
-//     }
-// })
-// const selected13 = computed(()=>{
-//     if(route.name === "commu"){
-//         return {blue : true}
-//     }
-// })
-// const selected14 = computed(()=>{
-//     if(route.name === "commu"){
-//         return {blue : true}
-//     }
-// })
+const selected12 = computed(()=>{
+    if(route.name === "my-review"){
+        return {blue : true}
+    }
+})
+const selected13 = computed(()=>{
+    if(route.name === "my-scrapbook"){
+        return {blue : true}
+    }
+})
+const selected14 = computed(()=>{
+    if(route.name === "my-inquiry"){
+        return {blue : true}
+    }
+})
 const selected15 = computed(() => {
     if (route.name === "setting") {
         return { blue: true }
@@ -229,7 +229,7 @@ const selected15 = computed(() => {
 })
 
 const commuflag = computed(() => {
-    const pathsToCheck = ["/homeTraining", "/popluar", "/running", "/three", "/today", "/tip"];
+    const pathsToCheck = ["/homeTraining", "/popular", "/running", "/three", "/today", "/tip"];
     if (route.fullPath === "/") {
         return true;
     }
