@@ -134,25 +134,6 @@ export const useStoryStore = defineStore(
         });
     };
 
-    //조회수 순 게시글 가져오기 (인기글)
-    const popularList = ref([]);
-    const popular6List = ref([]); //인기글 6개
-    const getPopularList = function () {
-      popularList.value = [];
-      popular6List.value = [];
-      axios
-        .get(REST_STORY_API + "/story/popular")
-        .then((res) => {
-          popularList.value = res.data;
-        })
-        .then((res) => {
-          popular6List.value = popularList.value.slice(0, 6);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    };
-
     //최신글 가져오기
     const recentList = ref([]);
     const recent4List = ref([]);
@@ -215,6 +196,7 @@ export const useStoryStore = defineStore(
     randomStory,
     totalStoryList,
     getRandom,
+    getTags,
 
 
     };
