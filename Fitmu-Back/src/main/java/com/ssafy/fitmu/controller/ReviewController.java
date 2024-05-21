@@ -155,5 +155,15 @@ public class ReviewController {
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		}
 	}
+	
+	@GetMapping("/user/{userId}")
+	public ResponseEntity<?> getReviewsByUser(@PathVariable("userId") int userId){
+		List<Review> reviews = reviewService.selectByUser(userId);
+		
+		if(reviews == null) {
+			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+		}
+		return new ResponseEntity<List<Review>>(reviews, HttpStatus.OK);
+	}
 
 }

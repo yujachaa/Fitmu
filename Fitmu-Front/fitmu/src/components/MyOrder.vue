@@ -48,21 +48,23 @@
                         </div>
                         <!-- v-for 넣기 -->
                         <div v-else>
-                            <span class = "ordernum">주문 {{orders.length}}건</span>
-                            <div v-for = "order in orders" class="orderList">
-                                <div class="orderInfo">
-                                    <p class="confirm">구매확정</p>
-                                    <div class="ordergaro">
-                                        <div class="ordergaro2">
-                                            <img class="orderimg" :src="`/src/assets/image/product/${getImage(order.productId)}`" alt="이미지">
-                                            <div class="ordersero">
-                                                <span class="name">{{getProduct(order.productId).name}}</span>
-                                                <span class="price">{{getProduct(order.productId).specialPrice}}원 , {{order.quantity}}개</span>
+                            <div class = "boxbox">
+                                <span class = "ordernum">주문 {{orders.length}}건</span>
+                                <div v-for = "order in orders" class="orderList">
+                                    <div class="orderInfo">
+                                        <p class="confirm">구매확정</p>
+                                        <div class="ordergaro">
+                                            <div class="ordergaro2">
+                                                <img class="orderimg" :src="`/src/assets/image/product/${getImage(order.productId)}`" alt="이미지">
+                                                <div class="ordersero">
+                                                    <span class="name">{{getProduct(order.productId).name}}</span>
+                                                    <span class="price">{{getProduct(order.productId).specialPrice}}원 , {{order.quantity}}개</span>
+                                                </div>
                                             </div>
-                                        </div>
-                                        <div>
-                                            <button class = "inquiry">문의</button>
-                                            <button class = "review">리뷰쓰기</button>
+                                            <div>
+                                                <button class = "inquiry" @click = "goInquiry(order.productId)">문의</button>
+                                                <button class = "review" @click = "goReview(order.productId)">리뷰쓰기</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -138,6 +140,13 @@ onMounted(() => {
     productStore.getProductALLImages()
 });
 
+const goInquiry = function(id){
+    router.push({name : "productinquiry", params : {productId : id}})
+}
+const goReview = function(id){
+    router.push({name : "productreview", params : {productId : id}})
+}
+
 const getImage = function(productId){
     return productAllImages.value.filter(image => image.productId == productId)[0].fileName
 }
@@ -190,6 +199,11 @@ const storyDetail = function (storyId) {
 </script>
 
 <style scoped>
+.boxbox{
+    width : 100%;
+    overflow-y: scroll; 
+    height : 450px;
+}
 .inquiry{
     width : 150px;
     height : 35px;

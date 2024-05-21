@@ -61,4 +61,9 @@
 		SET rating_sum = rating_sum - ${rating}, rating_cnt = rating_cnt - 1
 		WHERE product_id = #{productId}
 	</update>
+	
+	<select id="selectByUser" parameterType="int" resultType = "Review">
+		SELECT * FROM review
+		WHERE user_id = #{userId}
+	</select>
 </mapper>

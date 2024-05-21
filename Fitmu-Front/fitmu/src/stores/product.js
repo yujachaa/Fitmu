@@ -21,6 +21,34 @@ export const useProductStore = defineStore('product', () => {
   const selectedProduct = ref([])
   const productLike = ref([])
   const orders =ref([])
+  const userReviews = ref([])
+  const userInquiry = ref([])
+
+  const deleteInquiry = function(id){
+    axios.delete("http://localhost:8080/inquiry-api/" + id)
+   .then((response)=>{
+    router.go()
+  })}
+
+  const getUserInquiry = function(){
+    axios.get("http://localhost:8080/inquiry-api/user/" + sessionStorage.getItem("loginUser"))
+   .then((response)=>{
+    userInquiry.value = response.data
+   })}
+
+  const deleteReview = function(id){
+    axios.delete("http://localhost:8080/review-api/" + id)
+    .then((response)=>{
+      router.go()
+    })
+  }
+
+  const getUserReviews = function(){
+    axios.get("http://localhost:8080/review-api/user/" + sessionStorage.getItem("loginUser"))
+     .then((response) => {
+        userReviews.value = response.data
+      })
+  }
 
   const getOrders = function(){
     axios.get("http://localhost:8080/order-api/order/user/" + sessionStorage.getItem("loginUser"))
@@ -33,7 +61,7 @@ export const useProductStore = defineStore('product', () => {
     let order = {
       orderId: 0,
       productId: route.params.productId,
-      userId: sessionStorage.get('loginUser'),
+      userId: sessionStorage.getItem('loginUser'),
       sellerId: product.value.sellerId,
       quantity: route.params.quantity,
       status: "배송중",
@@ -44,8 +72,7 @@ export const useProductStore = defineStore('product', () => {
     axios.post("http://localhost:8080/order-api/order", order)
       .then((response) => {
         window.alert("주문이 완료되었습니다.")
-        router.push({ name: 'commu' })
-
+        router.push({ name: 'my-order' })
       })
   }
 
@@ -287,5 +314,12 @@ export const useProductStore = defineStore('product', () => {
     popular12ProductList,
     getOrders,
     orders,
+    finish,
+    getUserReviews,
+    userReviews,
+    deleteReview,
+    getUserInquiry,
+    userInquiry,
+    deleteInquiry
   }
 }, { persist: true })
