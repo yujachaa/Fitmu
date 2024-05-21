@@ -9,6 +9,13 @@ public class SearchCondition {
 	public SearchCondition() {
 	}
 
+	public SearchCondition(String key, String word, String orderBy, String orderByDir) {
+		this.key = key;
+		this.word = word;
+		this.orderBy = orderBy;
+		this.orderByDir = orderByDir;
+	}
+
 	public String getKey() {
 		return key;
 	}
@@ -40,4 +47,12 @@ public class SearchCondition {
 	public void setOrderByDir(String orderByDir) {
 		this.orderByDir = orderByDir;
 	}
+
+	@Override
+	public String toString() {
+		return "SearchCondition [key=" + key + ", word=" + word + ", orderBy=" + orderBy + ", orderByDir=" + orderByDir
+				+ "]";
+	}
+	
+	
 }

@@ -92,7 +92,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, onBeforeMount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStoryStore } from '@/stores/story'
 import { useUserStore } from '@/stores/user'
@@ -113,11 +113,18 @@ const comment = ref({
   content: ""
 })
 
-onMounted(() => {
+// onMounted(() => {
+//   commentStore.getCommentList(route.params.storyId)
+//   storyId.value = route.params.storyId
+//   storyStore.getStory(route.params.storyId)
+//   storyStore.getStoryScrapCount(route.params.storyId)
+//   userStore.getUserList()
+// })
+onBeforeMount(() => {
+  commentStore.getCommentList(route.params.storyId)
   storyId.value = route.params.storyId
   storyStore.getStory(route.params.storyId)
   storyStore.getStoryScrapCount(route.params.storyId)
-  commentStore.getCommentList(route.params.storyId)
   userStore.getUserList()
 })
 
@@ -127,6 +134,8 @@ const registComment = function () {
 }
 
 const getUserNick = function (userId) {
+  console.log(userId)
+  console.log(userStore.userList.filter((user)=> user.userId == userId)[0])
   return userStore.userList.filter((user) => user.userId == userId)[0].nickname
 }
 
