@@ -84,7 +84,9 @@
                 <RouterLink :to="{ name: 'profile' }">
                     <span :class="selected10">프로필</span>
                 </RouterLink>
-                <span :class="selected11">나의 쇼핑</span>
+                <RouterLink :to = "{ name : 'my-order'}">
+                    <span :class="selected11">나의 쇼핑</span>
+                </RouterLink>
                 <span :class="selected12">나의 리뷰</span>
                 <span :class="selected13">스크랩북</span>
                 <span :class="selected14">나의 문의</span>
@@ -175,11 +177,11 @@ const selected10 = computed(() => {
         return { blue: true }
     }
 })
-// const selected11 = computed(()=>{
-//     if(route.name === "commu"){
-//         return {blue : true}
-//     }
-// })
+const selected11 = computed(()=>{
+    if(route.name === "my-order"){
+        return {blue : true}
+    }
+})
 // const selected12 = computed(()=>{
 //     if(route.name === "commu"){
 //         return {blue : true}
