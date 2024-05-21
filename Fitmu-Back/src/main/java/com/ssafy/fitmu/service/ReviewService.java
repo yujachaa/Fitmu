@@ -25,4 +25,6 @@ public interface ReviewService {
 	public int addProductRating(int productId, int rating);
 	//상품 별점(rating) 삭제
 	public int cancelProductRating(int productId, int rating);
+	
+	public List<Review> selectByUser(int userId);
 }

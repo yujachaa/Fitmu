@@ -21,6 +21,34 @@ export const useProductStore = defineStore('product', () => {
   const selectedProduct = ref([])
   const productLike = ref([])
   const orders =ref([])
+  const userReviews = ref([])
+  const userInquiry = ref([])
+
+  const deleteInquiry = function(id){
+    axios.delete("http://localhost:8080/inquiry-api/" + id)
+   .then((response)=>{
+    router.go()
+  })}
+
+  const getUserInquiry = function(){
+    axios.get("http://localhost:8080/inquiry-api/user/" + sessionStorage.getItem("loginUser"))
+   .then((response)=>{
+    userInquiry.value = response.data
+   })}
+
+  const deleteReview = function(id){
+    axios.delete("http://localhost:8080/review-api/" + id)
+    .then((response)=>{
+      router.go()
+    })
+  }
+
+  const getUserReviews = function(){
+    axios.get("http://localhost:8080/review-api/user/" + sessionStorage.getItem("loginUser"))
+     .then((response) => {
+        userReviews.value = response.data
+      })
+  }
 
   const getOrders = function(){
     axios.get("http://localhost:8080/order-api/order/user/" + sessionStorage.getItem("loginUser"))
@@ -287,5 +315,11 @@ export const useProductStore = defineStore('product', () => {
     getOrders,
     orders,
     finish,
+    getUserReviews,
+    userReviews,
+    deleteReview,
+    getUserInquiry,
+    userInquiry,
+    deleteInquiry
   }
 }, { persist: true })

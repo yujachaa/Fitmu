@@ -39,31 +39,34 @@
                 <div class="section">
                     <div class="section-title">
                         <div class="small-title">
-                            <h4>주문내역</h4>
+                            <h4>My 리뷰</h4>
                         </div>
                     </div>
                     <div class="popular d-flex align-items-start">
-                        <div class="no-story" v-if="noOrder">
-                            <p>주문 내역이 없어요.😅</p>
+                        <div class="no-story" v-if="noReview">
+                            <p>리뷰를 안쓰셨네요.😅</p>
                         </div>
                         <!-- v-for 넣기 -->
                         <div v-else>
                             <div class = "boxbox">
-                                <span class = "ordernum">주문 {{orders.length}}건</span>
-                                <div v-for = "order in orders" class="orderList">
+                                <span class = "ordernum">주문 {{userReviews.length}}건</span>
+                                <div v-for = "review in userReviews" class="orderList">
                                     <div class="orderInfo">
-                                        <p class="confirm">구매확정</p>
+                                        <p class="confirm">{{review.createdAt}}</p>
                                         <div class="ordergaro">
                                             <div class="ordergaro2">
-                                                <img class="orderimg" :src="`/src/assets/image/product/${getImage(order.productId)}`" alt="이미지">
+                                                <img class="orderimg" :src="`/src/assets/image/product/${getImage(review.productId)}`" alt="이미지">
                                                 <div class="ordersero">
-                                                    <span class="name">{{getProduct(order.productId).name}}</span>
-                                                    <span class="price">{{getProduct(order.productId).specialPrice}}원 , {{order.quantity}}개</span>
+                                                    <span class="price">
+                                                        <i v-for = "_ in review.rating" class="bi bi-star-fill"></i>
+                                                        <i v-for = "_ in 5 - review.rating"class="bi bi-star"></i>
+                                                    </span>
+                                                    <span class="name">{{ review.content }}</span>
                                                 </div>
                                             </div>
                                             <div>
-                                                <button class = "inquiry" @click = "goInquiry(order.productId)">문의</button>
-                                                <button class = "review" @click = "goReview(order.productId)">리뷰쓰기</button>
+                                                <button class = "inquiry" @click = "deleteReview(review.reviewId)">삭제</button>
+                                                <button class = "review" @click = "goProduct(review.productId)">상품보러가기</button>
                                             </div>
                                         </div>
                                     </div>
@@ -138,7 +141,20 @@ onMounted(() => {
     productStore.getOrders()
     productStore.getProducts()
     productStore.getProductALLImages()
+    productStore.getUserReviews()
 });
+
+const deleteReview = function(id){
+    productStore.deleteReview(id)
+}
+
+const goProduct = function(id){
+    router.push({name : "productDetail", params : {productId : id}})
+}
+
+const userReviews = computed(()=>{
+    return productStore.userReviews
+})
 
 const goInquiry = function(id){
     router.push({name : "productinquiry", params : {productId : id}})
@@ -207,7 +223,7 @@ const storyDetail = function (storyId) {
 .inquiry{
     width : 150px;
     height : 35px;
-    border : 1px solid #999999;
+    border : 1px solid red;
     border-radius: 5px;
     background-color: white;
     margin : 15px;
@@ -216,12 +232,11 @@ const storyDetail = function (storyId) {
 .inquiry:hover{
     width : 150px;
     height : 35px;
-    border : 1px solid #999999;
+    border : 1px solid red;
     border-radius: 5px;
-    background-color: white;
+    background-color: red;
     margin : 15px;
     color : white;
-    background-color: #999999;
 }
 .review{
     width : 150px;
@@ -256,12 +271,15 @@ const storyDetail = function (storyId) {
 .name {
     font-weight: bold;
     font-size: 18px;
+    width : 200px;
 }
 
 .price {
     color: #999999;
     font-weight: bold;
     font-size: 18px;
+    width : 200px;
+    color : #34C5F0;
 }
 
 .orderimg {

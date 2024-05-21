@@ -74,4 +74,9 @@ public class ReviewServiceImpl implements ReviewService {
 		return reviewDao.cancelProductRating(map);
 	}
 
+	@Override
+	public List<Review> selectByUser(int userId) {
+		return reviewDao.selectByUser(userId);
+	}
+
 }

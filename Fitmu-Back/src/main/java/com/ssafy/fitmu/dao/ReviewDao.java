@@ -27,4 +27,6 @@ public interface ReviewDao {
 	//상품 별점(rating) 삭제
 	public int cancelProductRating(Map<String, Integer> map);
 	
+	public List<Review> selectByUser(int userId);
+	
 }
