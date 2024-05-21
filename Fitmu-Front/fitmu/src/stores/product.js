@@ -20,7 +20,14 @@ export const useProductStore = defineStore('product', () => {
   const searchProducts = ref([])
   const selectedProduct = ref([])
   const productLike = ref([])
+  const orders =ref([])
 
+  const getOrders = function(){
+    axios.get("http://localhost:8080/order-api/order/user/" + sessionStorage.getItem("loginUser"))
+     .then((response) => {
+        orders.value = response.data
+      })
+  }
 
   const finish = function (memo) {
     let order = {
@@ -278,6 +285,7 @@ export const useProductStore = defineStore('product', () => {
     saleList,
     sale8List,
     popular12ProductList,
-
+    getOrders,
+    orders,
   }
 }, { persist: true })

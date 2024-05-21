@@ -41,33 +41,28 @@
                         <div class="small-title">
                             <h4>주문내역</h4>
                         </div>
-                        <div>
-                            <a>더보기</a>
-                        </div>
                     </div>
-
-
                     <div class="popular d-flex align-items-start">
-                        <div class="no-story" v-if="noStory">
+                        <div class="no-story" v-if="noOrder">
                             <p>주문 내역이 없어요.😅</p>
                         </div>
                         <!-- v-for 넣기 -->
                         <div v-else>
-                            <span class = "ordernum">주문 3건</span>
-                            <div class="orderList">
+                            <span class = "ordernum">주문 {{orders.length}}건</span>
+                            <div v-for = "order in orders" class="orderList">
                                 <div class="orderInfo">
                                     <p class="confirm">구매확정</p>
                                     <div class="ordergaro">
                                         <div class="ordergaro2">
-                                            <img class="orderimg" src="@/assets/1.png" alt="이미지">
+                                            <img class="orderimg" :src="`/src/assets/image/product/${getImage(order.productId)}`" alt="이미지">
                                             <div class="ordersero">
-                                                <span class="name">상품이름</span>
-                                                <span class="price">가격,갯수</span>
+                                                <span class="name">{{getProduct(order.productId).name}}</span>
+                                                <span class="price">{{getProduct(order.productId).specialPrice}}원 , {{order.quantity}}개</span>
                                             </div>
                                         </div>
                                         <div>
-                                            <button>문의</button>
-                                            <button>리뷰쓰기</button>
+                                            <button class = "inquiry">문의</button>
+                                            <button class = "review">리뷰쓰기</button>
                                         </div>
                                     </div>
                                 </div>
@@ -122,11 +117,13 @@
 <script setup>
 import { useStoryStore } from '@/stores/story';
 import { useUserStore } from '@/stores/user';
+import { useProductStore} from '@/stores/product'
 import { computed, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 const userStore = useUserStore()
 const storyStore = useStoryStore()
+const productStore = useProductStore()
 const router = useRouter()
 
 onMounted(() => {
@@ -136,8 +133,30 @@ onMounted(() => {
     storyStore.getUserStory();
     userStore.getProductScrap(sessionStorage.getItem("loginUser"));
     userStore.getStoryScrap(sessionStorage.getItem("loginUser"));
+    productStore.getOrders()
+    productStore.getProducts()
+    productStore.getProductALLImages()
 });
 
+const getImage = function(productId){
+    return productAllImages.value.filter(image => image.productId == productId)[0].fileName
+}
+
+const productAllImages = computed(()=>{
+    return productStore.productAllImages
+})
+
+const products = computed(()=>{
+    return productStore.products
+})
+
+const getProduct = function(productId){
+    return products.value.filter(product => product.productId == productId)[0]
+}
+
+const orders = computed(()=>{
+    return productStore.orders
+})
 
 const goSetting = function () {
     router.push({ name: 'setting' })
@@ -159,8 +178,8 @@ const isSeller = computed(() => {
     return sessionStorage.getItem("role") == "s" ? true : false
 })
 
-const noStory = computed(() => {
-    return storyStore.recent6List.length == 0 ? true : false
+const noOrder = computed(() => {
+    return orders.value.length == 0 ? true : false
 })
 
 const storyDetail = function (storyId) {
@@ -171,6 +190,44 @@ const storyDetail = function (storyId) {
 </script>
 
 <style scoped>
+.inquiry{
+    width : 150px;
+    height : 35px;
+    border : 1px solid #999999;
+    border-radius: 5px;
+    background-color: white;
+    margin : 15px;
+    margin-top : 70px;
+}
+.inquiry:hover{
+    width : 150px;
+    height : 35px;
+    border : 1px solid #999999;
+    border-radius: 5px;
+    background-color: white;
+    margin : 15px;
+    color : white;
+    background-color: #999999;
+}
+.review{
+    width : 150px;
+    height : 35px;
+    border : 1px solid #34C5F0;
+    border-radius: 5px;
+    background-color: white;
+    color : #34C5F0;
+    margin : 15px;
+    margin-top : 70px;
+}
+.review:hover{
+    width : 150px;
+    height : 35px;
+    border : 1px solid #34C5F0;
+    border-radius: 5px;
+    background-color: #34C5F0;
+    color : white;
+    margin : 15px;
+}
 .ordernum{
     color : #999999;
     font-weight: bold;
@@ -203,6 +260,7 @@ const storyDetail = function (storyId) {
 .ordersero {
     display: flex;
     flex-direction: column;
+    margin-top : 10px;
 }
 
 .ordergaro {
@@ -224,7 +282,7 @@ const storyDetail = function (storyId) {
     display: flex;
     flex-direction: column;
     border: 1px solid #999999;
-    width: 900px;
+    width: 800px;
     margin-top : 10px;
     border-radius : 10px;
 }
