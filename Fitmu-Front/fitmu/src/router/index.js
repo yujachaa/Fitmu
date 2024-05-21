@@ -32,6 +32,8 @@ import Protein from '@/components/shop/Protein.vue'
 import MyOrder from '@/components/MyOrder.vue'
 import MyReview from '@/components/MyReview.vue'
 import MyInquiry from '@/components/MyInquiry.vue'
+import Sale from '@/components/shop/Sale.vue'
+import ReviewPopluar from '@/components/shop/ReviewPopluar.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -120,6 +122,16 @@ const router = createRouter({
           path:'protein',
           name:'protein',
           component:Protein
+        },
+        {
+          path:'reviewPopular',
+          name:'reviewPopular',
+          component:ReviewPopluar
+        },
+        {
+          path:'sale',
+          name:'sale',
+          component:Sale
         },
       ]
     },

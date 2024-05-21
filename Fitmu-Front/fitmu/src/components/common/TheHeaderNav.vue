@@ -15,8 +15,11 @@
                 </RouterLink>
             </div>
             <div class="search">
-                <i class="bi bi-search"></i>
-                <input type="text" id="searchbar" class="form-control" placeholder="검색어를 입력하세요.">
+                <i class="bi bi-search search-icon"></i>
+                <!-- <div class="flex-fill"> -->
+                <input type="text" id="comment" class="input" placeholder="검색어를 입력하세요." @keyup.enter="">
+                <!-- </div> -->
+                <!-- <input type="text" id="searchbar" class="form-control" placeholder="검색어를 입력하세요."> -->
             </div>
             <div class="users">
                 <div class="login-users" v-if="islogin">
@@ -84,7 +87,7 @@
                 <RouterLink :to="{ name: 'profile' }">
                     <span :class="selected10">프로필</span>
                 </RouterLink>
-                <RouterLink :to = "{ name : 'my-order'}">
+                <RouterLink :to="{ name: 'my-order' }">
                     <span :class="selected11">나의 쇼핑</span>
                 </RouterLink>
                 <span :class="selected12">나의 리뷰</span>
@@ -177,9 +180,9 @@ const selected10 = computed(() => {
         return { blue: true }
     }
 })
-const selected11 = computed(()=>{
-    if(route.name === "my-order"){
-        return {blue : true}
+const selected11 = computed(() => {
+    if (route.name === "my-order") {
+        return { blue: true }
     }
 })
 // const selected12 = computed(()=>{
@@ -205,24 +208,24 @@ const selected15 = computed(() => {
 
 const commuflag = computed(() => {
     const pathsToCheck = ["/homeTraining", "/popluar", "/running", "/three", "/today", "/tip"];
-    if(route.fullPath === "/"){
+    if (route.fullPath === "/") {
         return true;
     }
-    else if(pathsToCheck.some(path => route.fullPath.includes(path))){
+    else if (pathsToCheck.some(path => route.fullPath.includes(path))) {
         return true;
     }
-    else if(route.fullPath.startsWith('/storydetail')){
+    else if (route.fullPath.startsWith('/storydetail')) {
         return true;
     }
     return false;
 });
 
 const shopFlag = computed(() => {
-    const pathsToCheck = ["/shop", "/clothes", "/diet", "/protein"];
-    if(pathsToCheck.some(path => route.fullPath.includes(path))){
+    const pathsToCheck = ["/shop", "/clothes", "/diet", "/protein", "/reviewPopular", "/sale"];
+    if (pathsToCheck.some(path => route.fullPath.includes(path))) {
         return true;
     }
-    else if(route.fullPath.startsWith('/productdetail')){
+    else if (route.fullPath.startsWith('/productdetail')) {
         return true;
     }
     return false;
@@ -286,11 +289,12 @@ const registForm = function () {
 }
 
 .category {
-    padding-right: 100px;
+    /* padding-right: 50px; */
     display: flex;
     justify-content: start;
     align-items: end;
     padding-bottom: 10px;
+    margin-right: auto;
 }
 
 .category span {
@@ -300,17 +304,17 @@ const registForm = function () {
 
 .search {
     position: relative;
-    width: 200px;
+    width: 300px;
+    display: flex;
+    align-items: center;
 }
 
-.search>input {
-    width: 250px;
-}
+
 
 .search>i {
     position: absolute;
-    left: 7%;
-    top: 1%;
+    left: 5%;
+    top: 30%;
 }
 
 .commu-category-first {
@@ -458,5 +462,28 @@ const registForm = function () {
 .profile-image:hover {
     border: 3px solid #34C5F0;
     border-radius: 70%;
+}
+
+
+.input {
+    margin: 10px 5px;
+    width: 100%;
+    border: 1px solid rgb(185, 185, 185);
+    border-radius: 4px;
+    height: 40px;
+    padding-left: 30px;
+}
+
+.input:hover {
+    background-color: rgb(247, 247, 247);
+}
+
+.input::placeholder {
+    color: rgb(176, 176, 176);
+}
+
+.input:focus {
+    outline: 1px solid rgb(114, 202, 230, 0.5);
+    border-color: #72cae6;
 }
 </style>
