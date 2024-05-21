@@ -18,6 +18,9 @@ export const useStoryStore = defineStore(
     const productScrap = ref([])
 
     const getStoryScrap = function(){
+      if(sessionStorage.getItem("loginUser") == null){
+        return
+      }
       axios.get("http://localhost:8080/user-api/user/" + sessionStorage.getItem("loginUser") + "/story-scrap")
      .then((response)=>{
       storyScrap.value = response.data

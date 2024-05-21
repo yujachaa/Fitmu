@@ -131,7 +131,7 @@
                             <input id="isDefault" type="checkbox" :value="true" disabled>
                             <label for="isDefault">기본 배송지로 저장</label>
                         </div>
-                        <select class="select" name="comment" id="comment">
+                        <select class="select" name="comment" id="comment" v-model = "memo">
                             <option value="배송시 요청사항을 선택해주세요">배송시 요청사항을 선택해주세요</option>
                             <option value="부재시 문앞에 놓아주세요">부재시 문앞에 놓아주세요</option>
                             <option value="배송전에 미리 연락주세요">배송전에 미리 연락주세요</option>
@@ -194,7 +194,7 @@
                                 }}원</p>
                         </div>
                     </div>
-                    <button class="buybtn">{{ productStore.product.specialPrice + productStore.product.deliveryFee }}원
+                    <button @click = "finish" class="buybtn">{{ productStore.product.specialPrice + productStore.product.deliveryFee }}원
                         결제하기</button>
                 </div>
             </div>
@@ -261,6 +261,11 @@ const phoneNumber = ref("")
 const address1 = ref("")
 const address2 = ref("")
 const isdefault = ref(0)
+const memo = ref("")
+
+const finish = function(){
+    productStore.finish(memo.value)
+}
 
 const deleteAddress = function () {
     productStore.deleteAddress()

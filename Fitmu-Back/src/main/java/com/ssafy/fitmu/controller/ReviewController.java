@@ -126,6 +126,9 @@ public class ReviewController {
 			return new ResponseEntity<List<Review>>(list, HttpStatus.OK);
 		}
 	}
+	
+//	@GetMapping("/user/{userId}")
+//	public ResponseEntity<?> 
 
 	// 리뷰 좋아요 증가
 	@PutMapping("/like/{reviewId}")
