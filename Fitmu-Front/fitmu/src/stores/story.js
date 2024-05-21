@@ -27,6 +27,9 @@ export const useStoryStore = defineStore('story', () => {
     .then((response)=>{
       return axios.put(REST_STORY_API + "/updateFileName/" + registStoryId.value +"/" + registFileName.value)
     })
+    .catch((err)=>{
+      console.log(err)
+    })
   }
 
   //현재 사용자 전체 게시글 가져오기
@@ -56,6 +59,9 @@ export const useStoryStore = defineStore('story', () => {
     .then((res)=>{
       story.value = res.data
     })
+    .catch((err)=>{
+      console.log(err)
+    })
   }
 
   //지금 조회하는 게시글의 스크랩수 가져오기
@@ -65,6 +71,67 @@ export const useStoryStore = defineStore('story', () => {
     .then((res)=>{
       storyScrapCnt.value = res.data
     })
+    .catch((err)=>{
+      console.log(err)
+    })
+  }
+
+  //조회수 순 게시글 가져오기 (인기글)
+  const popularList = ref([])
+  const popular6List = ref([]) //인기글 6개
+  const getPopularList = function(){
+    popularList.value = []
+    popular6List.value = []
+    axios.get(REST_STORY_API + "/story/popular")
+    .then((res)=>{
+      popularList.value = res.data
+    })
+    .then((res)=>{
+      popular6List.value = popularList.value.slice(0,6);
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+  }
+
+  //최신글 가져오기
+  const recentList = ref([])
+  const recent4List = ref([])
+  const getRecentList = function(){
+    recentList.value = []
+    recent4List.value = []
+    axios.get(REST_STORY_API + "/story/latest")
+    .then((res)=>{
+      recentList.value = res.data
+    })
+    .then((res)=>{
+      recent4List.value = recentList.value.slice(0,4);
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+  }
+
+  //랜덤글 하나 가져오기
+  const randomStory = ref({})
+  const totalStoryList = ref([])
+  const randomStoryNick = ref("")
+  const getRandom = function(){
+    totalStoryList.value = []
+    randomStory.value = {}
+    randomStoryNick.value = ""
+    //전체글가져온다음에 랜덤
+    axios.get(REST_STORY_API + "/story")
+    .then((res)=>{
+      totalStoryList.value = res.data
+    })
+    .then((res)=>{
+      randomStory.value = totalStoryList.value[Math.floor(Math.random() * totalStoryList.value.length)]
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+
   }
 
 
@@ -77,6 +144,15 @@ export const useStoryStore = defineStore('story', () => {
     getStory,
     storyScrapCnt,
     getStoryScrapCount,
+    popularList,
+    popular6List,
+    getPopularList,
+    recentList,
+    recent4List,
+    getRecentList,
+    randomStory,
+    totalStoryList,
+    getRandom,
 
    }
 }, {persist : true})

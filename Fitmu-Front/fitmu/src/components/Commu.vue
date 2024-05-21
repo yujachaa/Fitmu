@@ -3,10 +3,11 @@
         <div class="main-img">
             <img class="mainimg" src="@/assets/1.jpg" alt="">
             <div class="main-img-info">
-                <p class="title">제목인것</p>
+                <p class="title">{{ storyStore.randomStory.title}}</p>
                 <div class="user-info">
                     <img class="mini-img" src="@/assets/2.jpg" alt="하이루">
-                    <p>닉네임인것</p>
+                    <p v-if="randomNick">{{ randomNick }}</p>
+                    <p></p>
                 </div>
             </div>
         </div>
@@ -27,8 +28,9 @@
         <div class="test">
             <div class="what-story">
                 <div class="small-title">
-                    <h4>이런 사진 찾고 있나요?</h4>
-                    <span>좋아하실 만한 인테리어 콘텐츠를 추천해드려요</span>
+                    <!-- 인기글 상위 6개 -->
+                    <h4>지금 제일 핫한 게시글 🔥</h4>
+                    <span>다른 유저들이 관심 있는 콘텐츠를 확인해보세요!</span>
                 </div>
                 <div>
                     <a>더보기</a>
@@ -44,8 +46,8 @@
                                 <img class="mini-img2" src="@/assets/2.jpg" alt="하이루">
                                 <p>닉네임인것</p>
                                 <div class="bookmark">
-                                    <i id = "book" class="bi bi-bookmark-fill"></i>
-                                    <i id = "book2"class="bi bi-bookmark"></i>
+                                    <i id="book" class="bi bi-bookmark-fill"></i>
+                                    <i id="book2" class="bi bi-bookmark"></i>
                                 </div>
                             </div>
                         </div>
@@ -72,8 +74,8 @@
                     <div class="sub-img">
                         <img class="subimg" :src="`src/assets/${index}.jpg`" alt="">
                         <div class="main-img-info3">
-                            <i id = "book" class="bi bi-bookmark-fill"></i>
-                            <i id = "book2"class="bi bi-bookmark"></i>
+                            <i id="book" class="bi bi-bookmark-fill"></i>
+                            <i id="book2" class="bi bi-bookmark"></i>
                         </div>
                     </div>
                     <div class="infoo">
@@ -84,10 +86,38 @@
             </div>
         </div>
     </div>
-    <RouterView/>
+    <RouterView />
 </template>
 
 <script setup>
+import { useStoryStore } from '@/stores/story';
+import { useUserStore } from '@/stores/user';
+import { onBeforeMount, onMounted, computed } from 'vue';
+
+const storyStore = useStoryStore()
+const userStore = useUserStore()
+
+onBeforeMount(() => {
+    storyStore.getRandom()
+    storyStore.getPopularList()
+    storyStore.getRecentList()
+    userStore.getUserList()
+})
+
+
+
+const getUserNick = (userId) => {
+  const user = userStore.userList.find(user => user.userId === userId);
+  return user ? user.nickname : '';
+};
+
+const randomNick = computed(() => {
+  if (userStore.userList.length > 0) {
+    return getUserNick(storyStore.randomStory.userId);
+  }
+  return '';
+});
+
 
 </script>
 
@@ -140,10 +170,11 @@ export default defineComponent({
 </script>
 
 <style scoped>
-#book{
-    position : absolute;
+#book {
+    position: absolute;
     opacity: 0.5;
 }
+
 .toptop {
     margin-top: 20px;
 }

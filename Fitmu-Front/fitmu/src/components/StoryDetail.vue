@@ -113,13 +113,7 @@ const comment = ref({
   content: ""
 })
 
-// onMounted(() => {
-//   commentStore.getCommentList(route.params.storyId)
-//   storyId.value = route.params.storyId
-//   storyStore.getStory(route.params.storyId)
-//   storyStore.getStoryScrapCount(route.params.storyId)
-//   userStore.getUserList()
-// })
+
 onBeforeMount(() => {
   commentStore.getCommentList(route.params.storyId)
   storyId.value = route.params.storyId
@@ -127,6 +121,13 @@ onBeforeMount(() => {
   storyStore.getStoryScrapCount(route.params.storyId)
   userStore.getUserList()
 })
+// onMounted(() => {
+//   storyId.value = route.params.storyId
+//   storyStore.getStory(route.params.storyId)
+//   storyStore.getStoryScrapCount(route.params.storyId)
+//   commentStore.getCommentList(route.params.storyId)
+//   userStore.getUserList()
+// })
 
 const registComment = function () {
   console.log(comment.value)
