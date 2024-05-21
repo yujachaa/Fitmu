@@ -274,8 +274,6 @@ public class UserController {
 		
 		if(productList == null ) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
-		} else if (productList.size() == 0) {
-			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 		}else {
 			List<Product> list = new ArrayList<>();
 			
@@ -295,8 +293,6 @@ public class UserController {
 				
 		if(storyList == null) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
-		} else if (storyList.size() == 0) {
-			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 		}else {
 			List<Story> list = new ArrayList<>();
 			

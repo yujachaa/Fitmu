@@ -16,7 +16,7 @@
         </div>
         <!-- 현재 사용자의 글이 아닐때만 팔로우 버튼 활성화 -->
         <div class="follow-button-box flex-grow-1" v-if="!isSameUSer">
-          <button class="follow-btn btn btn-primary" :class="{ followed: isFollowed }"
+          <button class="follow-btn" :class="{ followed: isFollowed }"
             @click="followToggle(story.userId)">{{ followMsg }}</button>
         </div>
       </div>
@@ -91,7 +91,7 @@
   </div>
   <div v-if="TAGS">
     <div v-for="(tag, index) in tags" :key="tag.tagId"
-      :style="{ position: 'absolute', left: tag.left/100 * width + elementPositionX + 'px', top: tag.top/100 * height + elementPositionY + 'px' , zIndex:999}">
+      :style="{ position: 'absolute', left: tag.left/100 * width + elementPositionX - 10 + 'px', top: tag.top/100 * height + elementPositionY - 10 + 'px' , zIndex:999}">
       <Popper :hover=true interactive disableClickAway>
         <button id="btn" ref="autobtn">+</button>
         <label class="btn" for="btn">+</label>

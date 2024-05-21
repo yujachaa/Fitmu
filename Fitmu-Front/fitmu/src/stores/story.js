@@ -26,9 +26,9 @@ export const useStoryStore = defineStore(
 
     const YesBook = function(id){
       axios.post("http://localhost:8080/story-api/story/" + id + "/user/" + sessionStorage.getItem("loginUser"))
-      .then((response)=>{
-        router.go()
-      })
+    }
+    const NoBook = function(id){
+      axios.delete("http://localhost:8080/story-api/story/" + id + "/user/" + sessionStorage.getItem("loginUser"))
     }
 
     const getTags = function(){
@@ -218,8 +218,7 @@ export const useStoryStore = defineStore(
     YesBook,
     getStoryScrap,
     storyScrap,
-
-
+    NoBook
     };
   },
   { persist: true }

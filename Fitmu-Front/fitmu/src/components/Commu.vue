@@ -46,8 +46,8 @@
                                 <img class="mini-img2" src="@/assets/2.jpg" alt="하이루">
                                 <p v-if="popularNick(index)">{{ popularNick(index) }}</p>
                                 <div class="bookmark">
-                                    <i id="book" class="bi bi-bookmark-fill"></i>
-                                    <i id="book2" class="bi bi-bookmark"></i>
+                                    <i id="book" :class="{setBlue : isScrap(story.storyId)}" @click = "YesBook(story.storyId, story)" class="bi bi-bookmark-fill"></i>
+                                    <i id="book2" :class="{setBlue : isScrap(story.storyId)}" @click = "YesBook(story.storyId, story)" class="bi bi-bookmark"></i>
                                 </div>
                             </div>
                         </div>
@@ -74,8 +74,8 @@
                     <div class="sub-img">
                         <img class="subimg" :src="`src/assets/image/story/${story.image}`" alt="" @click="goDetail(story.storyId)">
                         <div class="main-img-info3">
-                            <i id="book" :class="{setBlue : isScrap(story.storyId)}" class="bi bi-bookmark-fill" @click = "YesBook(story.storyId)"></i>
-                            <i id="book2" class="bi bi-bookmark"></i>
+                            <i id="book" :class="{setBlue : isScrap(story.storyId)}" class="bi bi-bookmark-fill" @click = "YesBook(story.storyId, story)"></i>
+                            <i id="book2" :class="{setBlue : isScrap(story.storyId)}" class="bi bi-bookmark" @click = "YesBook(story.storyId, story)"></i>
                         </div>
                     </div>
                     <div class="infoo" >
@@ -99,7 +99,6 @@ const storyStore = useStoryStore()
 const userStore = useUserStore()
 const router = useRouter()
 
-
 storyStore.getRandom()
 storyStore.getPopularList()
 storyStore.getRecentList()
@@ -115,12 +114,19 @@ const storyScrap = computed(()=>{
 //     return storyStore.story
 // })
 
-const YesBook = function(id){
-    storyStore.YesBook(id)
+const YesBook = function(id, story){
+    if(isScrap(id)){
+        let index = storyScrap.value.findIndex((scrap)=> scrap.storyId == id)
+        storyScrap.value.splice(index, 1)
+        storyStore.NoBook(id)
+    }else{
+        console.log(storyScrap.value)
+        storyScrap.value.push(story)
+        storyStore.YesBook(id)
+    }
 }
 
 const isScrap = function(id){
-    console.log(storyScrap.value)
     for(let i=0; i<storyScrap.value.length; i++){
         if(storyScrap.value[i].storyId == id){
             return true
