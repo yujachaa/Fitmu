@@ -28,10 +28,10 @@
 
             <div class="today-deal ">
                 <carousel v-bind="settings" :breakpoints="breakpoints" :mouseDrag="false" :touchDrag="false">
-                    <slide v-for="slide in 7" :key="slide">
+                    <slide v-for="(product, index) in saleList" :key="product">
                         <div class="product_carousel__item">
                             <div class="sale-pic">
-                                <img class="pic " :src="`src/assets/image/product/${slide}.jpg`" alt="이미지" @click = "productDetail(2)">
+                                <img class="pic " :src="`src/assets/image/product/${index + 1}`" alt="이미지" @click = "productDetail(product.productId)">
                             </div>
                             <div class="product-info ">
                                 <div class="brand">
@@ -163,8 +163,36 @@ export default defineComponent({
 <script setup>
 import {ref, computed, watch} from 'vue'
 import {useRoute, useRouter} from 'vue-router'
+import { useProductStore } from '@/stores/product'
+
 
 const router = useRouter()
+const productStore = useProductStore()
+
+productStore.getSaleList()
+productStore.getProductALLImages()
+console.log(productStore.productAllImages)
+
+
+
+
+
+const saleList = computed(()=>{
+    return productStore.saleList
+})
+
+
+//이부분 확인하기
+// const productAllImages = computed(()=>{
+//     return productStore.productAllImages
+// })
+
+// const getProductMainImage = function(productId){
+//     return productAllImages.filter((productImg) => productImg.productId == productId)[0].fileName
+// }
+
+
+
 
 const productDetail = function(productId){
     router.push({name : 'productDetail', params: {'productId' : productId}})
