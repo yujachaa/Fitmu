@@ -1,9 +1,9 @@
 <template>
     <div class="container toptop">
-        <div class="main-img" @click="goDetail(storyStore.randomStory.storyId)">
-            <img class="mainimg" :src="`/src/assets/image/story/${storyStore.randomStory.image}`" alt="랜덤게시글사진">
+        <div class="main-img" @click="goDetail(randomStory.storyId)">
+            <img class="mainimg" :src="`/src/assets/image/story/${randomStory.image}`" alt="랜덤게시글사진">
             <div class="main-img-info">
-                <p class="title">{{ storyStore.randomStory.title }}</p>
+                <p class="title">{{ randomStory.title }}</p>
                 <div class="user-info">
                     <img class="mini-img" src="@/assets/2.jpg" alt="랜덤게시글작성자프로필사진">
                     <p v-if="randomNick">{{ randomNick }}</p>
@@ -33,13 +33,12 @@
                     <span>다른 유저들이 관심 있는 콘텐츠를 확인해보세요!</span>
                 </div>
                 <div>
-                    <RouterLink :to="{name : 'popular'}">더보기</RouterLink>
-                    <!-- <a>더보기</a> -->
+                    <a @click="goPopular">더보기</a>
                 </div>
             </div>
             <carousel class="story-carousel" v-bind="settings" :breakpoints="breakpoints" :mouseDrag="false"
                 :touchDrag="false">
-                <slide v-for="(story, index) in storyStore.popular10List" :key="story">
+                <slide v-for="(story, index) in popular10List" :key="story">
                     <div class="slide1">
                         <img class="product_carousel_pic" :src="`src/assets/image/story/${story.image}`" alt="이미지" @click="goDetail(story.storyId)">
                         <div class="main-img-info2">
@@ -67,11 +66,11 @@
                     <h4>오늘의 운동 팁 대방출! 😊</h4>
                 </div>
                 <div>
-                    <a>더보기</a>
+                    <a @click="goTip">더보기</a>
                 </div>
             </div>
             <div class="test2">
-                <div class="one-pic" v-for="(story,index) in storyStore.recent4List" :key="story">
+                <div class="one-pic" v-for="(story,index) in recent4List" :key="story">
                     <div class="sub-img">
                         <img class="subimg" :src="`src/assets/image/story/${story.image}`" alt="" @click="goDetail(story.storyId)">
                         <div class="main-img-info3">
@@ -100,14 +99,11 @@ const storyStore = useStoryStore()
 const userStore = useUserStore()
 const router = useRouter()
 
-
-onMounted(()=>{
-    storyStore.getRandom()
-    storyStore.getPopularList()
-    storyStore.getRecentList()
-    userStore.getUserList()
-    storyStore.getStoryScrap()
-})
+storyStore.getRandom()
+storyStore.getPopularList()
+storyStore.getRecentList()
+userStore.getUserList()
+storyStore.getStoryScrap()
 // onBeforeMount(() => {
 // })
 
@@ -139,6 +135,17 @@ const isScrap = function(id){
     return false
 }
 
+const recent4List = computed(()=>{
+    return storyStore.recent4List
+})
+
+const popular10List = computed(()=>{
+    return storyStore.popular10List
+})
+
+const randomStory = computed(()=>{
+    return storyStore.randomStory
+})
 
 const getUserNick = (userId) => {
     const user = userStore.userList.find(user => user.userId === userId);
@@ -168,6 +175,14 @@ const recentNick = function (idx) {
 
 const goDetail = function(storyId){
     router.push({name: 'storyDetail', params: {'storyId' : storyId}})
+}
+
+const goPopular = function(){
+    router.push({name: 'popular'})
+}
+
+const goTip = function(){
+    router.push({name: 'tip'})
 }
 
 </script>

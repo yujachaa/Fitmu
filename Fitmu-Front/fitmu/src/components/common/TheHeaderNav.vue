@@ -8,7 +8,7 @@
             </div>
             <div class="category">
                 <RouterLink class="commu-nav" :to="{ name: 'commu' }">
-                    <span :class="{ blue: flag }">커뮤니티</span>
+                    <span :class="{ blue: commuflag }">커뮤니티</span>
                 </RouterLink>
                 <RouterLink class="shop-nav" :to="{ name: 'shop' }">
                     <span :class="{ blue: shopFlag }">쇼핑</span>
@@ -34,7 +34,9 @@
                             <li>
                                 <RouterLink class="dropdown-item" :to="{ name: 'profile' }">마이페이지</RouterLink>
                             </li>
-                            <li v-if="role == 'u'"><RouterLink class="dropdown-item" :to="{ name: 'seller-regist' }">판매자 신청</RouterLink></li>
+                            <li v-if="role == 'u'">
+                                <RouterLink class="dropdown-item" :to="{ name: 'seller-regist' }">판매자 신청</RouterLink>
+                            </li>
                             <li><a class="dropdown-item" href="#">고객센터</a></li>
                             <li><a class="dropdown-item" @click="logout">로그아웃</a></li>
                         </ul>
@@ -54,7 +56,7 @@
     </div>
     <hr>
     <div class="container">
-        <div v-if="flag" class="top">
+        <div v-if="commuflag" class="top">
             <div class="commu-category-first">
                 <RouterLink :to="{ name: 'commu' }">
                     <span :class="selected">홈</span>
@@ -112,7 +114,6 @@ const logout = function () {
 }
 
 const islogin = computed(() => {
-
     if (sessionStorage.getItem("loginUser") == null)
         return false;
     else
@@ -200,16 +201,33 @@ const selected15 = computed(() => {
     }
 })
 
-const flag = computed(() => {
-    return route.fullPath == "/" ? true : false;
-})
+const commuflag = computed(() => {
+    const pathsToCheck = ["/homeTraining", "/popluar", "/running", "/three", "/today", "/tip"];
+    if(route.fullPath === "/"){
+        return true;
+    }
+    else if(pathsToCheck.some(path => route.fullPath.includes(path))){
+        return true;
+    }
+    else if(route.fullPath.startsWith('/storydetail')){
+        return true;
+    }
+    return false;
+});
 
 const shopFlag = computed(() => {
-    return route.fullPath == "/shop" ? true : false;
+    const pathsToCheck = ["/shop", "/clothes", "/diet", "/protein"];
+    if(pathsToCheck.some(path => route.fullPath.includes(path))){
+        return true;
+    }
+    else if(route.fullPath.startsWith('/productdetail')){
+        return true;
+    }
+    return false;
 })
 
 const mypageFlag = computed(() => {
-    return (!flag.value && !shopFlag.value)
+    return (!commuflag.value && !shopFlag.value)
 })
 
 const registForm = function () {
