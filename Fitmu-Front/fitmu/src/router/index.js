@@ -29,6 +29,9 @@ import Today from '@/components/commu/Today.vue'
 import Clothes from '@/components/shop/Clothes.vue'
 import Diet from '@/components/shop/Diet.vue'
 import Protein from '@/components/shop/Protein.vue'
+import MyOrder from '@/components/MyOrder.vue'
+import MyReview from '@/components/MyReview.vue'
+import MyInquiry from '@/components/MyInquiry.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -159,6 +162,21 @@ const router = createRouter({
           path:"/seller-regist",
           name : "seller-regist",
           component: SellerRegist
+        },
+        {
+          path:"/my-order",
+          name : "my-order",
+          component : MyOrder,
+        },
+        {
+          path : "/my-review",
+          name : "my-review",
+          component : MyReview,
+        },
+        {
+          path : "/my-inquiry",
+          name : "my-inquiry",
+          component : MyInquiry,
         }
       ]
     },
