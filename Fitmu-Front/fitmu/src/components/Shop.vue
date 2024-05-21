@@ -22,7 +22,7 @@
                     <span>파격적인 할인 상품을 추천합니다</span>
                 </div>
                 <div>
-                    <a>더보기</a>
+                    <a @click="goSale()">더보기</a>
                 </div>
             </div>
 
@@ -78,7 +78,7 @@
                     <span>지금 가장 인기있는 상품이에요</span>
                 </div>
                 <div>
-                    <a>더보기</a>
+                    <a @click="goPopular()">더보기</a>
                 </div>
             </div>
 
@@ -87,7 +87,7 @@
                 <div v-for="product in popular6List" :key="product">
                     <div class="popular-pic">
                         <img v-if="getProductMainImage(product.productId)" class="pic"
-                            :src="`src/assets/image/product/${getProductMainImage(product.productId)}`" alt="이미지">
+                            :src="`src/assets/image/product/${getProductMainImage(product.productId)}`" alt="이미지" @click="productDetail(product.productId)">
                     </div>
                     <div class="product-info">
                         <div class="brand">
@@ -207,11 +207,15 @@ const getProductMainImage = function (productId) {
     return '';
 }
 
-
-
-
 const productDetail = function (productId) {
     router.push({ name: 'productDetail', params: { 'productId': productId } })
+}
+
+const goPopular = function(){
+    router.push({name: 'reviewPopular'})
+}
+const goSale = function(){
+    router.push({name: 'sale'})
 }
 
 </script>
