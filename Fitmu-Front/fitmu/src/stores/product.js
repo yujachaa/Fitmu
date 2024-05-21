@@ -19,6 +19,14 @@ export const useProductStore = defineStore('product', () => {
   const searchProducts = ref([])
   const selectedProduct = ref([])
 
+
+  const getProducts = function(){
+    axios.get("http://localhost:8080/product-api/product")
+   .then((response)=>{
+    products.value = response.data
+   })
+  }
+
   const getProductALLImages = function(){
     axios.get("http://localhost:8080/product-api/image")
     .then((response)=>{
@@ -215,8 +223,9 @@ export const useProductStore = defineStore('product', () => {
     getProductALLImages,
     productAllImages,
     selectedProduct,
+    getProducts,
     getSaleList,
     saleList,
-    
+
    }
 }, {persist : true})

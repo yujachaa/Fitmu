@@ -91,12 +91,12 @@
   </div>
   <div v-if="TAGS">
     <div v-for="(tag, index) in tags" :key="tag.tagId"
-      :style="{ position: 'absolute', left: tag.left + elementPositionX + 'px', top: tag.top + elementPositionY + 'px' , zIndex:999}">
+      :style="{ position: 'absolute', left: tag.left/100 * width + elementPositionX + 'px', top: tag.top/100 * height + elementPositionY + 'px' , zIndex:999}">
       <Popper :hover=true interactive disableClickAway>
         <button id="btn" ref="autobtn">+</button>
         <label class="btn" for="btn">+</label>
         <template #content>
-          <div class="content2">
+          <div class="content2" @click = "goProductDetail(tag.productId)">
             <div class="garo">
               <img class="mini-img" :src="`/src/assets/image/product/${getProductImage(tag.productId)}`" alt="이미지">
               <div class="productInfo">
@@ -112,7 +112,7 @@
 </template>
 
 <script setup>
-import { useMouseInElement, watchDebounced } from '@vueuse/core'
+import { useMouseInElement, watchDebounced, useElementBounding } from '@vueuse/core'
 import { ref, onMounted, computed, onBeforeMount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useStoryStore } from '@/stores/story'
@@ -130,6 +130,7 @@ const storyStore = useStoryStore()
 const productStore = useProductStore()
 const userStore = useUserStore()
 const commentStore = useCommentStore()
+const { top, right, bottom, left, width, height } = useElementBounding(img)
 
 
 //제일 먼저 실행되도록 setup으로 옮김
@@ -139,6 +140,7 @@ storyStore.getStoryScrapCount(route.params.storyId)
 userStore.getUserList()
 storyStore.getTags()
 productStore.getProductALLImages()
+productStore.getProducts()
 // storyId.value = route.params.storyId
 
 
@@ -163,6 +165,10 @@ const tags = computed(()=>{
   return storyStore.tags
 })
 
+const products = computed(()=> {
+  return productStore.products
+})
+
 
 const comment = ref({
   storyId: route.params.storyId,
@@ -181,8 +187,16 @@ const getProductImage = function (productId) {
   return productStore.productAllImages.filter(image => image.productId == productId)[0].fileName
 }
 
+// const selectedProduct = computed(()=>{
+//   return productStore.selectedProduct
+// })
+
 const getSelectedProductInfo = function (id) {
-  return productStore.selectedProduct.find(product => product.productId == id)
+  if(products.value.length > 0){
+    return products.value.find(product => product.productId === id)
+  }else{
+    return {brand : "오류", name : "오류"}
+  }
 }
 
 
@@ -244,6 +258,10 @@ const onScroll = function () {
   }
 }
 
+const goProductDetail = function(id){
+  router.push({name : "productinfo", params : {productId : id}})
+}
+
 </script>
 <script>
 import { defineComponent, ref } from "vue"
@@ -258,6 +276,71 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.content2{
+  display: flex;
+  width: 400px;
+  height: 120px;
+  padding: 20px;
+  background-color: white;
+  border: 1px solid #DBDDE0;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.content2:hover{
+  display: flex;
+  width: 400px;
+  height: 120px;
+  padding: 20px;
+  background-color: #edeff2;
+  border: 1px solid #edeff2;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+#btn {
+  display: none;
+}
+
+.btn {
+  display: flex;
+  border: 1px solid #34C5F0;
+  width: 25px;
+  height: 25px;
+  justify-content: center;
+  align-items: center;
+  padding-left: 5px;
+  padding-right: 6px;
+  background-color: rgb(52, 197, 240 , 0.7);
+  color: white;
+  font-weight: bold;
+  border-radius : 20px;
+}
+.mini-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 8px;
+  margin-right: 15px;
+}
+.garo {
+  display: flex;
+}
+
+.productBrand {
+  color: #DBDDE0;
+  font-weight: bold;
+}
+
+.productName {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.productInfo {
+  display: flex;
+  flex-direction: column;
+}
 .container {
   margin-top: 40px;
   width: 50%;
