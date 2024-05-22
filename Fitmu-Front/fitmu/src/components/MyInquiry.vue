@@ -48,8 +48,8 @@
                         </div>
                         <!-- v-for 넣기 -->
                         <div v-else>
+                            <span class = "ordernum">문의 {{userInquiry.length}}건</span>
                             <div class = "boxbox">
-                                <span class = "ordernum">문의 {{userInquiry.length}}건</span>
                                 <div v-for = "inquiry in userInquiry" class="orderList">
                                     <div class="orderInfo">
                                         <p class="confirm">
@@ -61,16 +61,24 @@
                                             <div class="ordergaro2">
                                                 <img class="orderimg" :src="`/src/assets/image/product/${getImage(inquiry.productId)}`" alt="이미지">
                                                 <div class="ordersero">
-                                                    <span class="price">
-                                                        {{ inquiry.context }}
-                                                    </span>
-                                                    <span v-if = "inquiry.answer != ''" class="name">{{ inquiry.answer }}</span>
-                                                    <span v-else class="name">답변 대기중!!</span>
+                                                    <div>
+                                                        <span class = "Q">Q.</span>
+                                                        <span class="price">
+                                                            {{ inquiry.context }}
+                                                        </span>
+                                                    </div>
+                                                    <div class = "garogaro">
+                                                        <span class = "A">A.</span>
+                                                        <span v-if = "inquiry.answer != ''" class="name">{{ inquiry.answer }}</span>
+                                                        <div v-else>
+                                                            <span class="name">답변 대기중!!</span>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <button class = "inquiry" @click = "deleteInquiry(inquiry.inquiryId)">삭제</button>
+                                                        <button class = "review" @click = "goProduct(inquiry.productId)">상품보러가기</button>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                            <div>
-                                                <button class = "inquiry" @click = "deleteInquiry(inquiry.inquiryId)">삭제</button>
-                                                <button class = "review" @click = "goProduct(inquiry.productId)">상품보러가기</button>
                                             </div>
                                         </div>
                                     </div>
@@ -228,27 +236,42 @@ const storyDetail = function (storyId) {
 </script>
 
 <style scoped>
+.garogaro{
+    display : flex;
+    align-items: center;
+}
+.Q{
+    margin-right : 10px;
+    font-weight : bold;
+    font-size : 25px;
+    color : blue;
+}
+.A{
+    margin-right : 10px;
+    font-weight : bold;
+    font-size : 25px;
+    color : green;
+}
 .boxbox{
     width : 100%;
     overflow-y: scroll; 
     height : 450px;
+    padding-right : 30px;
 }
 .inquiry{
     width : 150px;
     height : 35px;
-    border : 1px solid red;
+    border : 1px solid #999999;
     border-radius: 5px;
     background-color: white;
-    margin : 15px;
-    margin-top : 70px;
+    margin-left : 350px;
 }
 .inquiry:hover{
     width : 150px;
     height : 35px;
-    border : 1px solid red;
+    border : 1px solid #999999;
     border-radius: 5px;
-    background-color: red;
-    margin : 15px;
+    background-color: #999999;
     color : white;
 }
 .review{
@@ -258,8 +281,8 @@ const storyDetail = function (storyId) {
     border-radius: 5px;
     background-color: white;
     color : #34C5F0;
-    margin : 15px;
-    margin-top : 70px;
+    margin-left : 15px;
+    margin-bottom : 10px;
 }
 .review:hover{
     width : 150px;
@@ -268,7 +291,6 @@ const storyDetail = function (storyId) {
     border-radius: 5px;
     background-color: #34C5F0;
     color : white;
-    margin : 15px;
 }
 .ordernum{
     color : #999999;
@@ -330,6 +352,7 @@ const storyDetail = function (storyId) {
     width: 800px;
     margin-top : 10px;
     border-radius : 10px;
+
 }
 
 .no-story {

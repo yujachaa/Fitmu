@@ -44,7 +44,7 @@
                         <div class="main-img-info2">
                             <div class="user-info2">
                                 <img class="mini-img2" src="@/assets/2.jpg" alt="하이루">
-                                <p v-if="popularNick(index)">{{ popularNick(index) }}</p>
+                                <p class = "ninckname" v-if="popularNick(index)">{{ popularNick(index) }}</p>
                                 <div class="bookmark">
                                     <i id="book" :class="{setBlue : isScrap(story.storyId)}" @click = "YesBook(story.storyId, story)" class="bi bi-bookmark-fill"></i>
                                     <i id="book2" :class="{setBlue : isScrap(story.storyId)}" @click = "YesBook(story.storyId, story)" class="bi bi-bookmark"></i>
@@ -236,6 +236,9 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.ninckname{
+    width : 100px;
+}
 .setBlue{
     color : #34C5F0;
 }
@@ -258,7 +261,6 @@ export default defineComponent({
 }
 
 .bookmark {
-    margin-left: 40px;
     color: white;
 }
 
@@ -341,7 +343,7 @@ export default defineComponent({
 .main-img-info2 {
     position: absolute;
     top: 85%;
-    left: 5%;
+    left: 10%;
     color: white;
     font-weight: bold;
 }
@@ -349,7 +351,7 @@ export default defineComponent({
 .main-img-info3 {
     position: absolute;
     top: 85%;
-    left: 88%;
+    left: 90%;
     color: white;
 }
 
