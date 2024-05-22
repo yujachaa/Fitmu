@@ -35,7 +35,6 @@ import MyInquiry from '@/components/MyInquiry.vue'
 import Sale from '@/components/shop/Sale.vue'
 import ReviewPopluar from '@/components/shop/ReviewPopluar.vue'
 import MyScrapbook from '@/components/MyScrapbook.vue'
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [

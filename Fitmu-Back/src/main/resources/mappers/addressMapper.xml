@@ -16,12 +16,12 @@
 	
 	<insert id="insertAddress" parameterType = "Address">
 		INSERT INTO address
-		VALUES (0, #{userId}, #{addressName}, #{receiver}, #{phoneNumber}, #{address1}, #{address2}, #{isDefault})
+		VALUES (0, #{userId}, #{addressName}, #{receiver}, #{phoneNumber}, #{address1}, #{address2}, #{isDefault}, #{postcode})
 	</insert>
 	
 	<update id="updateAddress" parameterType = "Address">
 		UPDATE address
-		SET address_name = #{addressName}, receiver = #{receiver}, phone_number = #{phoneNumber}, address1 = #{address1}, address2 = #{address2}, is_default = #{isDefault} 
+		SET address_name = #{addressName}, receiver = #{receiver}, phone_number = #{phoneNumber}, address1 = #{address1}, address2 = #{address2}, is_default = #{isDefault}, postcode = #{postcode} 
 		WHERE address_id = #{addressId}
 	</update>
 	

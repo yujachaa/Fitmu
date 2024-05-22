@@ -1,7 +1,7 @@
 <template>
 
   <div class="total">
-    <div class="container d-flex flex-column align-items-center align-items-stretch">
+    <div class="container d-flex flex-column align-items-stretch">
       <div class="title">
         <h2>{{ story.title }}</h2>
       </div>
@@ -60,7 +60,6 @@
               v-model="comment.content" @keyup.enter="registComment()">
           </div>
         </div>
-
         <!-- v-for 넣기 -->
         <div class="comment-list" v-for="comment in commentList" :key="comment">
           <div class="one-comment d-flex">
@@ -79,15 +78,9 @@
               </div>
             </div>
           </div>
-
         </div>
       </div>
-
     </div>
-  </div>
-  <div class="screen">
-    <div class="to-top" @click="toTop">맨위로</div>
-
   </div>
   <div v-if="TAGS">
     <div v-for="(tag, index) in tags" :key="tag.tagId"
@@ -276,6 +269,20 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.displayNone{
+  width : 25%;
+  justify-content: start;
+}
+.aside{
+  display : flex;
+  justify-content: start;
+}
+#sticky{
+  position : sticky;
+  width : 80px;
+  top : 100px;
+  z-index: 1000;
+}
 .content2{
   display: flex;
   width: 400px;
@@ -347,27 +354,22 @@ export default defineComponent({
 }
 
 .total {
-  position: absolute;
   width: 100%;
-  z-index: 0;
+  display : flex;
 }
 
 .to-top {
   position: sticky;
   top: 100px;
-  z-index: 999;
 
 }
 
 .screen {
-  position: relative;
   height: 1000px;
   width: 100%;
-  z-index: 0;
 }
 
 .area {
-  position: absolute;
   top: 100%;
   left: 100%;
   width: 10000px;
@@ -381,7 +383,6 @@ export default defineComponent({
   width: 100px;
   height: 100px;
   background: red;
-  z-index: 999;
 }
 
 .title>h2 {
@@ -455,6 +456,7 @@ export default defineComponent({
 
 .comment-box {
   width: 100%;
+  height : 100%;
 }
 
 .comment-count {
@@ -517,11 +519,5 @@ export default defineComponent({
 
 .blue {
   color: #34C5F0;
-}
-
-#aside {
-  width: 10000px;
-  height: 10000px;
-  ;
 }
 </style>
