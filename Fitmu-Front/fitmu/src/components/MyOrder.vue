@@ -48,8 +48,8 @@
                         </div>
                         <!-- v-for 넣기 -->
                         <div v-else>
+                            <span class = "ordernum">주문 {{orders.length}}건</span>
                             <div class = "boxbox">
-                                <span class = "ordernum">주문 {{orders.length}}건</span>
                                 <div v-for = "order in orders" class="orderList">
                                     <div class="orderInfo">
                                         <p class="confirm">구매확정</p>
@@ -203,6 +203,7 @@ const storyDetail = function (storyId) {
     width : 100%;
     overflow-y: scroll; 
     height : 450px;
+    padding-right : 30px;
 }
 .inquiry{
     width : 150px;

@@ -40,9 +40,6 @@
             <div class="small-title">
               <h4>나의 상품 스크랩북</h4>
             </div>
-            <div>
-              <a>더보기</a>
-            </div>
           </div>
 
 

@@ -40,9 +40,6 @@
             <div class="small-title">
               <h4>나의 게시글 스크랩북</h4>
             </div>
-            <div>
-              <a>더보기</a>
-            </div>
           </div>
 
 
@@ -51,7 +48,7 @@
               <p>아직 작성한 게시글이 없어요.😅</p>
             </div>
             <!-- v-for 넣기 -->
-            <div v-for="story in storyScrapList6" :key="story.storyId" v-else>
+            <div v-for="story in storyScrapList" :key="story.storyId" v-else>
               <div class="popular-pic">
                 <img class="pic" :src="`src/assets/image/story/${story.image}`" alt="이미지"
                   @click="storyDetail(story.storyId)">

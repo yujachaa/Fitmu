@@ -48,8 +48,8 @@
                         </div>
                         <!-- v-for 넣기 -->
                         <div v-else>
+                            <span class = "ordernum">주문 {{userReviews.length}}건</span>
                             <div class = "boxbox">
-                                <span class = "ordernum">주문 {{userReviews.length}}건</span>
                                 <div v-for = "review in userReviews" class="orderList">
                                     <div class="orderInfo">
                                         <p class="confirm">{{review.createdAt}}</p>
@@ -219,11 +219,12 @@ const storyDetail = function (storyId) {
     width : 100%;
     overflow-y: scroll; 
     height : 450px;
+    padding-right : 30px;
 }
 .inquiry{
     width : 150px;
     height : 35px;
-    border : 1px solid red;
+    border : 1px solid #999999;
     border-radius: 5px;
     background-color: white;
     margin : 15px;
@@ -232,9 +233,9 @@ const storyDetail = function (storyId) {
 .inquiry:hover{
     width : 150px;
     height : 35px;
-    border : 1px solid red;
+    border : 1px solid #999999;
     border-radius: 5px;
-    background-color: red;
+    background-color: #999999;
     margin : 15px;
     color : white;
 }

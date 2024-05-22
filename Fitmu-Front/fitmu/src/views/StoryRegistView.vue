@@ -58,8 +58,8 @@
               <button class="deletebtn" @click="deleteTag(tag.tagId, index)">취소</button>
             </div>
             <div v-if="search == '' || productStore.searchProducts.length == 0" class="noproduct">
-              <span>최근 구매한 상품이 없어요.</span><br>
-              <span>구매한 상품이 있다면 여기에 표시됩니다.</span>
+              <span>검색된 상품이 없습니다.</span><br>
+              <span>검색 내용을 확인해주세요.</span>
             </div>
             <div class="croll" v-else>
               <div v-for="product in productStore.searchProducts" class="productList">
@@ -117,7 +117,7 @@ const selectedProduct = ref([])
 const search = ref("")
 watchDebounced(search, () => {
   productStore.searchProductforTag(search.value)
-}, { debounce: 1000, maxWait: 3000 })
+}, { debounce: 500, maxWait: 2000 })
 
 const getProductImage = function (productId) {
   if (productStore.productAllImages.filter(image => image.productId == productId).length == 0) {
@@ -303,7 +303,6 @@ export default defineComponent({
 .deletebtn {
   border: 1px solid white;
   background-color: white;
-  margin-left: 7px
 }
 
 .input {
@@ -327,6 +326,7 @@ export default defineComponent({
 
 .content2{
   display: flex;
+  justify-content: space-between;
   width: 400px;
   height: 120px;
   padding: 20px;
@@ -401,6 +401,7 @@ export default defineComponent({
   display: flex;
   padding-left: 50px;
   padding-right: 50px;
+  padding-bottom : 300px;
 }
 
 .PC {
