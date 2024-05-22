@@ -8,11 +8,11 @@
             <input class="pw" type="password" placeholder="비밀번호" v-model="user.password" @keyup.enter="login" />
         </div>
         <button id="btn-login" @click="login">로그인</button>
+        <div class = "kakao1">
+            <img class = "kakao2" src="@/assets/image/kakao.png" @click="kakaoLogin" />
+        </div>
         <RouterLink class="regist" :to="{ name: 'regist' }">회원가입</RouterLink>
         <span class="problem">로그인에 문제가 있으신가요?</span>
-    </div>
-    <div>
-        <<img src="@/assets/image/kakao.png" @click = "kakaoLogin" />
     </div>
 </template>
 
@@ -44,15 +44,27 @@ const kakaoLogin = function () {
     const clientId = "f89ff99ae64a8e6d277fb70f0a744b75"
     const Auth_url = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirect_uri}`
     window.location.href = Auth_url
-    
-    router.push({name: 'commu'})
+
+    router.push({ name: 'commu' })
 }
 
 </script>
 
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Jua&display=swap');
-
+.kakao1{
+    width : 270px;
+    display : flex;
+    justify-content : center;
+}
+.kakao2{
+    margin-top : 20px;
+    width : 100%;
+    display : flex;
+    justify-content : center;
+    height : 40px;
+    cursor : pointer;
+}
 .jua-regular {
     font-family: "Jua", sans-serif;
     font-weight: 100;
