@@ -265,6 +265,44 @@ export const useStoryStore = defineStore(
       });
     }
 
+      //게시글 검색 리스트 가져오기 -> 제목, 내용
+  const searchList = ref([])
+  const getSearchList = function(word){
+    searchList.value = []
+    axios({
+      url:REST_STORY_API + "/search",
+      method:"GET",
+      params:{
+        key: "title",
+        word:word
+      }
+    })
+    .then((res) =>{
+      searchList.value = res.data
+    })
+    .then((res)=>{
+      axios({
+        url:REST_STORY_API + "/search",
+        method:"GET",
+        params:{
+          key: "content",
+          word:word
+        }
+    })
+    .then((res)=>{
+      searchList.value.push(...res.data);
+      console.log(searchList.value)
+
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+  })
+    .catch((err)=>{
+      console.log(err)
+    })
+  }
+
   return {
     registStory,
     userStoryList,
@@ -294,6 +332,8 @@ export const useStoryStore = defineStore(
     getCategoryList,
     getCategoryScrapCntList,
     getPopularScrapCntList,
+    searchList,
+    getSearchList,
 
     };
   },

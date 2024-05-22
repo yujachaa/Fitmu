@@ -84,7 +84,7 @@
 
             <div class="popular d-flex justify-content-between">
                 <!-- v-for 넣기 -->
-                <div v-for="product in popular6List" :key="product">
+                <div v-for="product in popularList.slice(0,12)" :key="product">
                     <div class="popular-pic">
                         <img v-if="getProductMainImage(product.productId)" class="pic"
                             :src="`src/assets/image/product/${getProductMainImage(product.productId)}`" alt="이미지" @click="productDetail(product.productId)">
@@ -187,8 +187,8 @@ const sale8List = computed(() => {
     return productStore.sale8List
 })
 
-const popular6List = computed(() => {
-    return productStore.popular12ProductList
+const popularList = computed(() => {
+    return productStore.popularProductList
 })
 
 

@@ -35,190 +35,201 @@ import MyInquiry from '@/components/MyInquiry.vue'
 import Sale from '@/components/shop/Sale.vue'
 import ReviewPopluar from '@/components/shop/ReviewPopluar.vue'
 import MyScrapbook from '@/components/MyScrapbook.vue'
+import SearchView from '@/views/SearchView.vue'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path : '/',
-      name : 'home',
-      component : HomeView,
-      children : [
+      path: '/',
+      name: 'home',
+      component: HomeView,
+      children: [
         {
-          path : '/',
-          name : 'commu',
-          component : Commu,
+          path: '/',
+          name: 'commu',
+          component: Commu,
         },
         {
-          path : 'shop',
-          name : 'shop',
-          component : Shop
+          path: 'shop',
+          name: 'shop',
+          component: Shop
         },
         {
-          path : '/productdetail/:productId',
-          name : 'productDetail',
-          component : ProductDetail,
-          children : [{
-            path : '',
-            name : 'productinfo',
-            component : ProductInfo
+          path: "/search",
+          name: "search",
+          component: SearchView
+        },
+        {
+          path: '/productdetail/:productId',
+          name: 'productDetail',
+          component: ProductDetail,
+          children: [{
+            path: '',
+            name: 'productinfo',
+            component: ProductInfo
           },
           {
-            path : 'review',
-            name : 'productreview',
-            component : ProductReview
+            path: 'review',
+            name: 'productreview',
+            component: ProductReview
           },
           {
-            path : 'inquiry',
-            name : 'productinquiry',
-            component : ProductInquiry
+            path: 'inquiry',
+            name: 'productinquiry',
+            component: ProductInquiry
           }]
         },
         {
-          path : '/storydetail/:storyId',
-          name:'storyDetail',
-          component:StoryDetail
+          path: '/storydetail/:storyId',
+          name: 'storyDetail',
+          component: StoryDetail
         },
         {
-          path:'popular',
-          name:'popular',
-          component:Popular
+          path: 'popular',
+          name: 'popular',
+          component: Popular
         },
         {
-          path:'homeTraining',
-          name:'homeTraining',
-          component:HomeTraining
+          path: 'homeTraining',
+          name: 'homeTraining',
+          component: HomeTraining
         },
         {
-          path:'running',
-          name:'running',
-          component:Running
+          path: 'running',
+          name: 'running',
+          component: Running
         },
         {
-          path:'three',
-          name:'three',
-          component:Three
+          path: 'three',
+          name: 'three',
+          component: Three
         },
         {
-          path:'tip',
-          name:'tip',
-          component:Tip
+          path: 'tip',
+          name: 'tip',
+          component: Tip
         },
         {
-          path:'today',
-          name:'today',
-          component:Today
+          path: 'today',
+          name: 'today',
+          component: Today
         },
         {
-          path:'clothes',
-          name:'clothes',
-          component:Clothes
+          path: 'clothes',
+          name: 'clothes',
+          component: Clothes
         },
         {
-          path:'diet',
-          name:'diet',
-          component:Diet
+          path: 'diet',
+          name: 'diet',
+          component: Diet
         },
         {
-          path:'protein',
-          name:'protein',
-          component:Protein
+          path: 'protein',
+          name: 'protein',
+          component: Protein
         },
         {
-          path:'reviewPopular',
-          name:'reviewPopular',
-          component:ReviewPopluar
+          path: 'reviewPopular',
+          name: 'reviewPopular',
+          component: ReviewPopluar
         },
         {
-          path:'sale',
-          name:'sale',
-          component:Sale
+          path: 'sale',
+          name: 'sale',
+          component: Sale
         },
       ]
     },
     {
-      path : "/login",
-      name : "login",
-      component : LoginView
+      path: "/login",
+      name: "login",
+      component: LoginView
     },
     {
-      path : "/regist",
-      name : "regist",
-      component : RegistView
+      path: "/regist",
+      name: "regist",
+      component: RegistView
     },
     {
-      path : '/mypage',
-      name : "mypage",
-      component : MypageView,
-      children:[
+      path: '/mypage',
+      name: "mypage",
+      component: MypageView,
+      children: [
         {
-          path:'',
-          name:"profile",
-          component:Profile
+          path: '',
+          name: "profile",
+          component: Profile
         },
         {
-          path:"/scrapbook",
-          name:"scrapbook",
+          path: "/scrapbook",
+          name: "scrapbook",
           component: Scrapbook
         },
         {
-          path:"/zzim",
-          name:"zzim",
+          path: "/zzim",
+          name: "zzim",
           component: Zzim
         },
         {
-          path:"/setting",
-          name:"setting",
+          path: "/setting",
+          name: "setting",
           component: Setting
         },
         {
-          path:"/seller-regist",
-          name : "seller-regist",
+          path: "/seller-regist",
+          name: "seller-regist",
           component: SellerRegist
         },
         {
-          path:"/my-order",
-          name : "my-order",
-          component : MyOrder,
+          path: "/my-order",
+          name: "my-order",
+          component: MyOrder,
         },
         {
-          path : "/my-review",
-          name : "my-review",
-          component : MyReview,
+          path: "/my-review",
+          name: "my-review",
+          component: MyReview,
         },
         {
-          path : "/my-inquiry",
-          name : "my-inquiry",
-          component : MyInquiry,
+          path: "/my-inquiry",
+          name: "my-inquiry",
+          component: MyInquiry,
         },
         {
-          path : "/my-scrapbook",
-          name : "my-scrapbook",
-          component : MyScrapbook,
+          path: "/my-scrapbook",
+          name: "my-scrapbook",
+          component: MyScrapbook,
         }
       ]
     },
     {
-      path : "/storyregist",
-      name : "storyregist",
-      component : StoryRegistView,
+      path: "/storyregist",
+      name: "storyregist",
+      component: StoryRegistView,
     },
     {
-      path : "/productregist",
-      name : "productRegist",
-      component : ProductRegistView,
+      path: "/productregist",
+      name: "productRegist",
+      component: ProductRegistView,
     },
     {
-      path :"/kakaologin",
-      name : "kakaoLogin",
-      component : KakaoLoginView,
+      path: "/kakaologin",
+      name: "kakaoLogin",
+      component: KakaoLoginView,
     },
     {
-      path : "/order/:productId/:quantity",
-      name : "order",
-      component : OrderView
+      path: "/order/:productId/:quantity",
+      name: "order",
+      component: OrderView
     },
 
-  ]
+
+  ],
+  scrollBehavior() {
+    return { top: 0 }
+  }
 })
 
 export default router

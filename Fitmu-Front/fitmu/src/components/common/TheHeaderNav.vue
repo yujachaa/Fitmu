@@ -16,10 +16,10 @@
             </div>
             <div class="search">
                 <i class="bi bi-search search-icon"></i>
-                <!-- <div class="flex-fill"> -->
-                <input type="text" id="comment" class="input" placeholder="검색어를 입력하세요." @keyup.enter="">
-                <!-- </div> -->
-                <!-- <input type="text" id="searchbar" class="form-control" placeholder="검색어를 입력하세요."> -->
+                <input type="text" id="comment" class="input" placeholder="검색어를 입력하세요." v-model.trim="searchWord"
+                    @keyup.enter="goSearch()">
+                <button v-if="searchWord" type="reset" class="reset-button" @click="resetSearch"><i
+                        class="bi bi-x-circle-fill x-mark"></i></button>
             </div>
             <div class="users">
                 <div class="login-users" v-if="islogin">
@@ -64,19 +64,19 @@
                 <RouterLink :to="{ name: 'commu' }">
                     <span class="commu-category-second" :class="selected">홈</span>
                 </RouterLink>
-                <RouterLink :to="{name:'homeTraining'}">
+                <RouterLink :to="{ name: 'homeTraining' }">
                     <span class="commu-category-second" :class="selected1">홈트레이닝</span>
                 </RouterLink>
-                <RouterLink :to="{name:'today'}">
+                <RouterLink :to="{ name: 'today' }">
                     <span class="commu-category-second" :class="selected2">오운완</span>
                 </RouterLink>
-                <RouterLink :to="{name:'three'}">
-                <span class="commu-category-second" :class="selected3">3대몇</span>
+                <RouterLink :to="{ name: 'three' }">
+                    <span class="commu-category-second" :class="selected3">3대몇</span>
                 </RouterLink>
-                <RouterLink :to="{name:'tip'}">
-                <span class="commu-category-second" :class="selected4">운동팁</span>
+                <RouterLink :to="{ name: 'tip' }">
+                    <span class="commu-category-second" :class="selected4">운동팁</span>
                 </RouterLink>
-                <RouterLink :to="{name:'running'}">
+                <RouterLink :to="{ name: 'running' }">
                     <span class="commu-category-second" :class="selected5">러닝</span>
                 </RouterLink>
             </div>
@@ -86,16 +86,17 @@
                 <RouterLink :to="{ name: 'shop' }">
                     <span class="shop-category-second" :class="selected9">쇼핑홈</span>
                 </RouterLink>
-                <RouterLink :to="{ name: 'protein'}">
+                <RouterLink :to="{ name: 'protein' }">
                     <span class="shop-category-second" :class="selected6">단백질/보충제</span>
                 </RouterLink>
-                <RouterLink :to="{ name: 'diet'}">
+                <RouterLink :to="{ name: 'diet' }">
                     <span class="shop-category-second" :class="selected7">다이어트식단</span>
                 </RouterLink>
-                <RouterLink :to="{ name: 'clothes'}">
+                <RouterLink :to="{ name: 'clothes' }">
                     <span class="shop-category-second" :class="selected8">의류</span>
                 </RouterLink>
-                <RouterLink :to="{ name: 'productRegist' }" class="for-seller">상품등록</RouterLink>
+                <RouterLink :to="{ name: 'productRegist' }" class="for-seller" v-if="role == 's' || role == 'a'">상품등록
+                </RouterLink>
             </div>
         </div>
         <div v-else-if="mypageFlag" class="top">
@@ -106,13 +107,13 @@
                 <RouterLink :to="{ name: 'my-order' }">
                     <span class="mypage-category-second" :class="selected11">나의 쇼핑</span>
                 </RouterLink>
-                <RouterLink :to="{name: 'my-review'}">
+                <RouterLink :to="{ name: 'my-review' }">
                     <span class="mypage-category-second" :class="selected12">나의 리뷰</span>
                 </RouterLink>
-                <RouterLink :to="{name: 'my-scrapbook'}">
+                <RouterLink :to="{ name: 'my-scrapbook' }">
                     <span class="mypage-category-second" :class="selected13">스크랩북</span>
                 </RouterLink>
-                <RouterLink :to="{name: 'my-inquiry'}">
+                <RouterLink :to="{ name: 'my-inquiry' }">
                     <span class="mypage-category-second" :class="selected14">나의 문의</span>
                 </RouterLink>
                 <RouterLink :to="{ name: 'setting' }">
@@ -121,19 +122,26 @@
             </div>
         </div>
     </div>
-    <hr class="under-hr">
+    <hr class="under-hr" v-if="route.name !== 'search'">
 </template>
 
 <script setup>
-import { RouterLink, RouterView, useRoute, useRouter } from "vue-router";
+import { RouterLink, RouterView, onBeforeRouteLeave, useRoute, useRouter } from "vue-router";
 import { ref, computed } from "vue";
 import { useUserStore } from "@/stores/user"
+import { useStoryStore } from "@/stores/story";
+import { useProductStore } from "@/stores/product";
 
 const router = useRouter();
 const route = useRoute();
 const userStore = useUserStore();
+const storyStore = useStoryStore()
+const productStore = useProductStore();
 
 const role = ref(sessionStorage.getItem("role"))
+
+const searchWord = ref("")
+
 
 const logout = function () {
     console.log(sessionStorage.getItem("loginUser"))
@@ -152,29 +160,29 @@ const selected = computed(() => {
         return { blue: true }
     }
 })
-const selected1 = computed(()=>{
-    if(route.name === "homeTraining"){
-        return {blue : true}
+const selected1 = computed(() => {
+    if (route.name === "homeTraining") {
+        return { blue: true }
     }
 })
-const selected2 = computed(()=>{
-    if(route.name === "today"){
-        return {blue : true}
+const selected2 = computed(() => {
+    if (route.name === "today") {
+        return { blue: true }
     }
 })
-const selected3 = computed(()=>{
-    if(route.name === "three"){
-        return {blue : true}
+const selected3 = computed(() => {
+    if (route.name === "three") {
+        return { blue: true }
     }
 })
-const selected4 = computed(()=>{
-    if(route.name === "tip"){
-        return {blue : true}
+const selected4 = computed(() => {
+    if (route.name === "tip") {
+        return { blue: true }
     }
 })
-const selected5 = computed(()=>{
-    if(route.name === "running"){
-        return {blue : true}
+const selected5 = computed(() => {
+    if (route.name === "running") {
+        return { blue: true }
     }
 })
 const selected9 = computed(() => {
@@ -182,19 +190,19 @@ const selected9 = computed(() => {
         return { blue: true }
     }
 })
-const selected6 = computed(()=>{
-    if(route.name === "protein"){
-        return {blue : true}
+const selected6 = computed(() => {
+    if (route.name === "protein") {
+        return { blue: true }
     }
 })
-const selected7 = computed(()=>{
-    if(route.name === "diet"){
-        return {blue : true}
+const selected7 = computed(() => {
+    if (route.name === "diet") {
+        return { blue: true }
     }
 })
-const selected8 = computed(()=>{
-    if(route.name === "clothes"){
-        return {blue : true}
+const selected8 = computed(() => {
+    if (route.name === "clothes") {
+        return { blue: true }
     }
 })
 const selected10 = computed(() => {
@@ -207,19 +215,19 @@ const selected11 = computed(() => {
         return { blue: true }
     }
 })
-const selected12 = computed(()=>{
-    if(route.name === "my-review"){
-        return {blue : true}
+const selected12 = computed(() => {
+    if (route.name === "my-review") {
+        return { blue: true }
     }
 })
-const selected13 = computed(()=>{
-    if(route.name === "my-scrapbook"){
-        return {blue : true}
+const selected13 = computed(() => {
+    if (route.name === "my-scrapbook") {
+        return { blue: true }
     }
 })
-const selected14 = computed(()=>{
-    if(route.name === "my-inquiry"){
-        return {blue : true}
+const selected14 = computed(() => {
+    if (route.name === "my-inquiry") {
+        return { blue: true }
     }
 })
 const selected15 = computed(() => {
@@ -254,6 +262,10 @@ const shopFlag = computed(() => {
 })
 
 const mypageFlag = computed(() => {
+    if(route.fullPath.startsWith('/search')){
+        console.log(route.fullPath)
+        return false;
+    }
     return (!commuflag.value && !shopFlag.value)
 })
 
@@ -261,6 +273,25 @@ const registForm = function () {
     router.push({ name: "storyregist" })
 }
 
+const goSearch = function () {
+    console.log(searchWord.value)
+    if (searchWord.value == "") {
+        window.alert("검색어를 입력해주세요!")
+        return
+    }
+
+    storyStore.getSearchList(searchWord.value);
+    productStore.getSearchList(searchWord.value);
+    router.push({ name: 'search' })
+}
+
+const resetSearch = function () {
+    searchWord.value = ''
+}
+
+onBeforeRouteLeave(()=>{
+    searchWord.value = ''
+})
 
 </script>
 
@@ -323,6 +354,7 @@ const registForm = function () {
     font-weight: bold;
     font-size: 19px;
 }
+
 .commu-category-second:hover {
     color: #34C5F0;
 }
@@ -364,7 +396,7 @@ const registForm = function () {
     color: black;
 }
 
-.shop-category-second:hover{
+.shop-category-second:hover {
     color: #34C5F0;
 }
 
@@ -381,7 +413,7 @@ const registForm = function () {
     color: black;
 }
 
-.mypage-category-second:hover{
+.mypage-category-second:hover {
     color: #34C5F0;
 }
 
@@ -520,7 +552,22 @@ const registForm = function () {
     border-color: #72cae6;
 }
 
-.for-seller:hover{
-    color:pink;
+.for-seller:hover {
+    color: pink;
 }
+
+.reset-button {
+    border: none;
+    background-color: transparent;
+    padding: 0;
+    /* visibility: hidden;    */
+}
+
+.x-mark {
+    color: rgb(173, 173, 173);
+    position: absolute;
+    right: 5%;
+    top: 30%;
+}
+
 </style>

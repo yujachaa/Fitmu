@@ -11,7 +11,7 @@ export const useProductStore = defineStore('product', () => {
   const productImages = ref([])
   const productAllImages = ref([])
   const products = ref([])
-  const popular12ProductList = ref([])
+  const popularProductList = ref([])
   const reviews = ref([])
   const users = ref([])
   const inquirys = ref([])
@@ -97,7 +97,7 @@ export const useProductStore = defineStore('product', () => {
         products.value = response.data
       })
       .then((res) => {
-        popular12ProductList.value = products.value.sort((a, b) => b.ratingCnt - a.ratingCnt).slice(0, 12);
+        popularProductList.value = products.value.sort((a, b) => b.ratingCnt - a.ratingCnt);
       })
   }
 
@@ -286,6 +286,43 @@ export const useProductStore = defineStore('product', () => {
     })
   }
 
+  //상품 검색 리스트 가져오기 -> 브랜드 + 네임
+  const searchList = ref([])
+  const getSearchList = function(word){
+    searchList.value = []
+    axios({
+      url:"http://localhost:8080/product-api/search",
+      method:"GET",
+      params:{
+        key: "brand",
+        word:word
+      }
+    })
+    .then((res) =>{
+      searchList.value = res.data
+    })
+    .then((res)=>{
+      axios({
+        url:"http://localhost:8080/product-api/search",
+        method:"GET",
+        params:{
+          key: "name",
+          word:word
+        }
+    })
+    .then((res)=>{
+      searchList.value.push(...res.data);
+      console.log(searchList.value)
+    })
+    .catch((err)=>{
+      console.log(err)
+    })
+  })
+    .catch((err)=>{
+      console.log(err)
+    })
+  }
+
   return {
     deleteAddress,
     registProduct,
@@ -324,7 +361,7 @@ export const useProductStore = defineStore('product', () => {
     getSaleList,
     saleList,
     sale8List,
-    popular12ProductList,
+    popularProductList,
     getOrders,
     orders,
     finish,
@@ -337,6 +374,9 @@ export const useProductStore = defineStore('product', () => {
     categoryList,
     getCategoryList,
     category,
+    searchList,
+    getSearchList,
+
 
   }
 }, { persist: true })
