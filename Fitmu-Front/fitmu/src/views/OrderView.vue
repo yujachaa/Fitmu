@@ -56,8 +56,8 @@
                             <div class="sero">
                                 <div class="inputgaro">
                                     <label class="label" for="phonenumber">주소</label>
-                                    <button class="addressbtn">주소찾기</button>
-                                    <input class="addressinput1" type="text">
+                                    <button class="addressbtn" @click = "openaddress">주소찾기</button>
+                                    <input class="addressinput1" type="text" v-model = "postcode">
                                 </div>
                                 <div class="sero">
                                     <div class="inputgaro">
@@ -111,8 +111,8 @@
                             <div class="sero">
                                 <div class="inputgaro">
                                     <label class="label" for="phonenumber">주소</label>
-                                    <button class="addressbtn">주소찾기</button>
-                                    <input class="addressinput1" type="text" disabled>
+                                    <button class="addressbtn" @click = "openaddress">주소찾기</button>
+                                    <input class="addressinput1" type="text" :value="productStore.defaultAddress.postcode" disabled>
                                 </div>
                                 <div class="sero">
                                     <div class="inputgaro">
@@ -261,6 +261,7 @@ const receiver = ref("")
 const phoneNumber = ref("")
 const address1 = ref("")
 const address2 = ref("")
+const postcode = ref("")
 const isdefault = ref(0)
 const memo = ref("")
 
@@ -280,7 +281,7 @@ const selectaddress = function (address) {
     address1.value = address.address1
     address2.value = address.address2
     isdefault.value = address.isDefault==1 ? true : false
-    console.log(123)
+    postcode.value = address.postcode
 }
 
 const deleteaddress = function(id){
@@ -292,7 +293,7 @@ const defaultAddress = computed(()=>{
 })
 
 const registAddress = function () {
-    if (addressName.value == "" || receiver.value == "" || phoneNumber.value == "" || address1.value == "" || phoneNumber.value == "" || address2.value == "") {
+    if (addressName.value == "" || receiver.value == "" || phoneNumber.value == "" || address1.value == "" || phoneNumber.value == "" || address2.value == "" || postcode.value == "") {
         window.alert("빈칸을 채워주세요.")
         return
     }
@@ -305,11 +306,26 @@ const registAddress = function () {
         address1: address1.value,
         address2: address2.value,
         isDefault: isdefault.value ? 1 : 0,
+        postcode : postcode.value
     }
     productStore.registAddress(address)
 }
 
+const openaddress = function(){
+    new window.daum.Postcode({
+        oncomplete: function(data) {
+            postcode.value = data.zonecode
+            if(data.addressType == "R"){
+                address1.value = data.roadAddress
+            }else{
+                address1.value = data.jibunAddress
+            }
+        }
+    }).open()
+}
+    
 </script>
+
 <style scoped>
 .defaultAddress{
     display : flex;

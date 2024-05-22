@@ -249,6 +249,9 @@ export const useProductStore = defineStore('product', () => {
         })
         return Promise.all(uploadPromises)
       })
+      .then((response)=>{
+        router.push({name : "productDetail", params : {productId : productId.value}})
+      })
   }
 
   const getProductReviews = function (productId) {

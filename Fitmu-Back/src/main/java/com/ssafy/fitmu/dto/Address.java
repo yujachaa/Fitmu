@@ -8,6 +8,7 @@ public class Address {
 	private String phoneNumber;
 	private String address1;
 	private String address2;
+	private String postcode;
 	private int isDefault;
 	
 	public Address() {
@@ -15,7 +16,7 @@ public class Address {
 	}
 	
 	public Address(int addressId, int userId, String addressName, String receiver, String phoneNumber, String address1,
-			String address2, int isDefault) {
+			String address2, String postcode, int isDefault) {
 		this.addressId = addressId;
 		this.userId = userId;
 		this.addressName = addressName;
@@ -23,6 +24,7 @@ public class Address {
 		this.phoneNumber = phoneNumber;
 		this.address1 = address1;
 		this.address2 = address2;
+		this.postcode = postcode;
 		this.isDefault = isDefault;
 	}
 	
@@ -62,6 +64,14 @@ public class Address {
 	public void setAddress1(String address1) {
 		this.address1 = address1;
 	}
+	public String getPostcode() {
+		return postcode;
+	}
+
+	public void setPostcode(String postcode) {
+		this.postcode = postcode;
+	}
+
 	public String getAddress2() {
 		return address2;
 	}

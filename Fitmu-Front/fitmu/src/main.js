@@ -10,6 +10,8 @@ import { createPinia } from 'pinia'
 import App from './App.vue'
 import Chat from 'vue3-beautiful-chat'
 import router from './router'
+import VueDaumPostcode from "vue-daum-postcode"
+import DaumPostcode from "vuejs-daum-postcode"
 
 const app = createApp(App)
 const pinia = createPinia()
@@ -19,5 +21,7 @@ pinia.use(piniaPluginPersistedstate)
 app.use(pinia)
 app.use(router)
 app.use(Chat)
+app.use(VueDaumPostcode)
+app.use(DaumPostcode)
 
 app.mount('#app')
