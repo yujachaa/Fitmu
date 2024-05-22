@@ -121,8 +121,7 @@ const YesBook = function (id, story) {
         let index = storyScrap.value.findIndex((scrap) => scrap.storyId == id)
         storyScrap.value.splice(index, 1)
         storyStore.NoBook(id)
-    } else {
-        console.log(storyScrap.value)
+    }else{
         storyScrap.value.push(story)
         storyStore.YesBook(id)
     }
