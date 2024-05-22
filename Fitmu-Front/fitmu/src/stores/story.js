@@ -161,6 +161,7 @@ export const useStoryStore = defineStore(
     const scrapCntList = ref([])
     //인기 리스트의 스크랩수 배열 가져오기
     const getPopularScrapCntList = function(){
+      scrapCntList.value=[]
       axios
       .get(REST_STORY_API + "/story/latest")
       .then((res) => {
@@ -184,6 +185,7 @@ export const useStoryStore = defineStore(
     }
     //카테고리별 스토리의 스크랩 개수 배열 가져오기
     const getCategoryScrapCntList = function(categoryId){
+      scrapCntList.value=[]
       axios({
         url:REST_STORY_API + "/search", 
         params : {key:"category", word: categoryId}})
@@ -205,6 +207,22 @@ export const useStoryStore = defineStore(
       .catch((err) => {
         console.log(err);
       });
+    }
+    //검색결과 스토리의 스크랩 개수 배열 가져오기
+    const getSearchScrapCntList = function(){
+      scrapCntList.value=[]
+      if(searchList){
+        searchList.value.forEach((story, index) =>{
+          axios
+          .get(REST_STORY_API + "/scrap/" + story.storyId)
+          .then((res) => {
+            scrapCntList.value[index] = res.data;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        })
+      }
     }
 
     //최신글 가져오기
@@ -291,8 +309,6 @@ export const useStoryStore = defineStore(
     })
     .then((res)=>{
       searchList.value.push(...res.data);
-      console.log(searchList.value)
-
     })
     .catch((err)=>{
       console.log(err)
@@ -302,6 +318,8 @@ export const useStoryStore = defineStore(
       console.log(err)
     })
   }
+
+  const searchWord = ref('')
 
   return {
     registStory,
@@ -334,6 +352,9 @@ export const useStoryStore = defineStore(
     getPopularScrapCntList,
     searchList,
     getSearchList,
+    getSearchScrapCntList,
+    searchWord,
+
 
     };
   },

@@ -16,9 +16,9 @@
             </div>
             <div class="search">
                 <i class="bi bi-search search-icon"></i>
-                <input type="text" id="comment" class="input" placeholder="검색어를 입력하세요." v-model.trim="searchWord"
+                <input type="text" id="comment" class="input" placeholder="검색어를 입력하세요." v-model.trim="storyStore.searchWord"
                     @keyup.enter="goSearch()">
-                <button v-if="searchWord" type="reset" class="reset-button" @click="resetSearch"><i
+                <button v-if="storyStore.searchWord" type="reset" class="reset-button" @click="resetSearch"><i
                         class="bi bi-x-circle-fill x-mark"></i></button>
             </div>
             <div class="users">
@@ -140,7 +140,7 @@ const productStore = useProductStore();
 
 const role = ref(sessionStorage.getItem("role"))
 
-const searchWord = ref("")
+const searchWord = ref(storyStore.searchWord)
 
 
 const logout = function () {
@@ -263,7 +263,6 @@ const shopFlag = computed(() => {
 
 const mypageFlag = computed(() => {
     if(route.fullPath.startsWith('/search')){
-        console.log(route.fullPath)
         return false;
     }
     return (!commuflag.value && !shopFlag.value)
@@ -274,24 +273,19 @@ const registForm = function () {
 }
 
 const goSearch = function () {
-    console.log(searchWord.value)
     if (searchWord.value == "") {
         window.alert("검색어를 입력해주세요!")
         return
     }
-
+    // storyStore.searchWord = searchWord.value
     storyStore.getSearchList(searchWord.value);
     productStore.getSearchList(searchWord.value);
     router.push({ name: 'search' })
 }
 
 const resetSearch = function () {
-    searchWord.value = ''
+    storyStore.searchWord = ''
 }
-
-onBeforeRouteLeave(()=>{
-    searchWord.value = ''
-})
 
 </script>
 
