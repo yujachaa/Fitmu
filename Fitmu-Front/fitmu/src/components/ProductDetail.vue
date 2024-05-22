@@ -29,7 +29,7 @@
             <div class = "btndiv">
                 <label for="quantity">수량</label>
                 <select name="quantity" id="quantity" v-model = "quantity">
-                    <option value="1">1</option>
+                    <option value="1" selected>1</option>
                     <option value="2">2</option>
                     <option value="3">3</option>
                     <option value="4">4</option>
@@ -40,9 +40,10 @@
                     <option value="9">9</option>
                     <option value="10">10</option>
                 </select>
+                <span class="max-quantity">최대 주문 가능 수량 : 10개</span>
                 <div class = "totalPrice">
                     <p>주문금액</p>
-                    <p>{{ productStore.product.specialPrice * quantity }}원</p>
+                    <p>{{ (productStore.product.specialPrice * quantity).toLocaleString('ko-KR') }}원</p>
                 </div>
                 <button class = "buybtn" @click="goOrder">바로 구매</button>
             </div>
@@ -91,7 +92,7 @@ const productLike = computed(()=>{
     return productStore.productLike
 })
 
-const quantity = ref(0)
+const quantity = ref(1)
 
 const YesProduct = function(id){
     if(isLike(id)){
@@ -138,7 +139,7 @@ const goOrder = function(){
 .totalPrice{
     display : flex;
     justify-content : space-between;
-    margin-top : 100px
+    margin-top : 68px
 }
 #quantity{
     height : 35px;
@@ -166,6 +167,9 @@ const goOrder = function(){
     flex-direction: column;
     padding-top : 20px;
     font-weight: bold;
+}
+.btndiv label{
+    margin-bottom: 5px;
 }
 .router {
     display: flex;
@@ -215,7 +219,7 @@ hr {
     color: white;
     font-size: 12px;
     background-color: #FF7777;
-    padding: 5px;
+    padding: 5px 7px 5px 5px;
     border-radius: 10px;
     font-weight: bold;
     margin-left: 6px;
@@ -309,5 +313,12 @@ hr {
     font-size: 17px;
     margin-left: 10px;
     font-weight: bold;
+}
+
+.max-quantity{
+    color: rgb(177, 177, 177);
+    margin-top: 5px;
+    font-size: 13px; 
+    font-weight: 400;  
 }
 </style>

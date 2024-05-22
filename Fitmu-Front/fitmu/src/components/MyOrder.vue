@@ -58,7 +58,7 @@
                                                 <img class="orderimg" :src="`/src/assets/image/product/${getImage(order.productId)}`" alt="이미지">
                                                 <div class="ordersero">
                                                     <span class="name">{{getProduct(order.productId).name}}</span>
-                                                    <span class="price">{{getProduct(order.productId).specialPrice}}원 , {{order.quantity}}개</span>
+                                                    <span class="price">{{getProduct(order.productId).specialPrice.toLocaleString('ko-KR')}}원 , {{order.quantity}}개</span>
                                                 </div>
                                             </div>
                                             <div>
@@ -208,21 +208,20 @@ const storyDetail = function (storyId) {
 .inquiry{
     width : 150px;
     height : 35px;
-    border : 1px solid #999999;
+    border : 1px solid #c0c0c0;
     border-radius: 5px;
     background-color: white;
-    margin : 15px;
+    color: #c0c0c0;
+    margin : 15px 5px;
     margin-top : 70px;
 }
 .inquiry:hover{
     width : 150px;
     height : 35px;
-    border : 1px solid #999999;
+    border : 1px solid #c0c0c0;
     border-radius: 5px;
     background-color: white;
-    margin : 15px;
-    color : white;
-    background-color: #999999;
+    background-color: #ebebeb;
 }
 .review{
     width : 150px;

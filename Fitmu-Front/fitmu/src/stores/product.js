@@ -193,7 +193,7 @@ export const useProductStore = defineStore('product', () => {
   const getProduct = function (productId) {
     axios.get("http://localhost:8080/product-api/" + productId)
       .then((response) => {
-        console.log(response.data)
+        // console.log(response.data)
         product.value = response.data
       })
   }
@@ -273,6 +273,16 @@ export const useProductStore = defineStore('product', () => {
       })
   }
 
+  //카테고리별 상품리스트 가져오기
+  const category = ref()
+  const categoryList = ref([])
+  const getCategoryList = function(category){
+    axios.get("http://localhost:8080/product-api/category/" + category)
+    .then((res)=>{
+      categoryList.value = res.data
+    })
+  }
+
   return {
     deleteAddress,
     registProduct,
@@ -320,6 +330,10 @@ export const useProductStore = defineStore('product', () => {
     deleteReview,
     getUserInquiry,
     userInquiry,
-    deleteInquiry
+    deleteInquiry,
+    categoryList,
+    getCategoryList,
+    category,
+
   }
 }, { persist: true })

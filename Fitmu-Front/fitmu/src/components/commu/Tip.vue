@@ -10,7 +10,7 @@
         </div>
       </div>
       <div class="test2">
-        <div class="one-pic" v-for="(story, index) in recentList.slice(0, 18)" :key="story">
+        <div class="one-pic" v-for="(story, index) in categoryStoryList.slice(0, 18)" :key="story">
           <div class="sub-img">
             <img class="subimg" :src="`src/assets/image/story/${story.image}`" alt="" @click="goDetail(story.storyId)">
             <div class="main-img-info3">
@@ -27,7 +27,7 @@
                 <img class="story-profile-img" src="@/assets/image/profile.png" alt="댓글프로필이미지">
               </div>
               <div class="user-nickname">
-                <div v-if="recentNick(index)">{{ recentNick(index) }}</div>
+                <div v-if="nick(index)">{{ nick(index) }}</div>
               </div>
             </div>
             <div class="story-info-box">
@@ -55,11 +55,10 @@ const userStore = useUserStore()
 const router = useRouter()
 
 storyStore.getRandom()
-storyStore.getPopularList()
-storyStore.getRecentList()
 userStore.getUserList()
 storyStore.getStoryScrap()
-storyStore.getScrapCntList(storyStore.recentList)
+storyStore.getCategoryList("4")
+storyStore.getCategoryScrapCntList("4")
 // onBeforeMount(() => {
 // })
 
@@ -68,7 +67,7 @@ const scrapCntList = computed(()=>{
 })
 
 const totalStoryLength = computed(() => {
- return storyStore.recentList.length
+ return storyStore.categoryStoryList.length
 })
 
 const storyScrap = computed(() => {
@@ -97,8 +96,8 @@ const isScrap = function (id) {
   return false
 }
 
-const recentList = computed(() => {
-  return storyStore.recentList
+const categoryStoryList = computed(() => {
+  return storyStore.categoryStoryList
 })
 
 const getUserNick = (userId) => {
@@ -107,9 +106,9 @@ const getUserNick = (userId) => {
 };
 
 
-const recentNick = function (idx) {
+const nick = function (idx) {
   if (userStore.userList.length > 0) {
-    return getUserNick(storyStore.recentList[idx].userId);
+    return getUserNick(storyStore.categoryStoryList[idx].userId);
   }
   return '';
 }
