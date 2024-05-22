@@ -37,11 +37,11 @@
           •
           <span>수정 </span><span>{{ story.modifiedDate }}</span>
           •
-          <span>좋아요 </span><span>{{ story.liked }}</span>
+          <span>좋아요 </span><span>{{ story.liked.toLocaleString('ko-KR') }}</span>
           •
-          <span>스크랩 </span><span>{{ storyScrapCnt }}</span>
+          <span>스크랩 </span><span>{{ storyScrapCnt.toLocaleString('ko-KR') }}</span>
           •
-          <span>조회 </span><span>{{ story.viewCnt }}</span>
+          <span>조회 </span><span>{{ story.viewCnt.toLocaleString('ko-KR') }}</span>
         </div>
         <!-- user-info 복붙해서 한번 더 넣기 -->
       </div>

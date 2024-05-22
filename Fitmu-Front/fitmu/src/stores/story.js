@@ -17,6 +17,8 @@ export const useStoryStore = defineStore(
     const storyScrap = ref([])
     const productScrap = ref([])
 
+
+    //유저의 게시글 스크랩 목록 가져오기
     const getStoryScrap = function(){
       if(sessionStorage.getItem("loginUser") == null){
         return
@@ -26,6 +28,7 @@ export const useStoryStore = defineStore(
       storyScrap.value = response.data
      })
     }
+    
 
     const YesBook = function(id){
       axios.post("http://localhost:8080/story-api/story/" + id + "/user/" + sessionStorage.getItem("loginUser"))
@@ -154,6 +157,31 @@ export const useStoryStore = defineStore(
         });
     };
 
+    //최신순 리스트의 스크랩수 배열 가져오기
+    const scrapCntList = ref([])
+    const getScrapCntList = function(){
+      axios
+      .get(REST_STORY_API + "/story/latest")
+      .then((res) => {
+        recentList.value = res.data;
+      })
+      .then((res) => {
+        recentList.value.forEach((story, index) =>{
+          axios
+          .get(REST_STORY_API + "/scrap/" + story.storyId)
+          .then((res) => {
+            scrapCntList.value[index] = res.data;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        })
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    }
+
     //최신글 가져오기
     const recentList = ref([]);
     const recent4List = ref([]);
@@ -221,7 +249,10 @@ export const useStoryStore = defineStore(
     YesBook,
     getStoryScrap,
     storyScrap,
-    NoBook
+    NoBook,
+    getScrapCntList,
+    scrapCntList,
+
     };
   },
   { persist: true }
