@@ -34,7 +34,6 @@ export const useUserStore = defineStore('user', () => {
     })
       .then((res) => {
         sessionStorage.clear();
-        console.log(route.fullPath)
         if (route.fullPath == '/') {
           location.reload()
         } else {

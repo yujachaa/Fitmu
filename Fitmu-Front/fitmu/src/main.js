@@ -12,6 +12,7 @@ import Chat from 'vue3-beautiful-chat'
 import router from './router'
 import VueDaumPostcode from "vue-daum-postcode"
 import DaumPostcode from "vuejs-daum-postcode"
+import Sticky from 'vue3-sticky-directive'
 
 const app = createApp(App)
 const pinia = createPinia()
@@ -23,5 +24,6 @@ app.use(router)
 app.use(Chat)
 app.use(VueDaumPostcode)
 app.use(DaumPostcode)
+app.use(Sticky)
 
 app.mount('#app')
