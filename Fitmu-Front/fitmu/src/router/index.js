@@ -36,6 +36,7 @@ import Sale from '@/components/shop/Sale.vue'
 import ReviewPopluar from '@/components/shop/ReviewPopluar.vue'
 import MyScrapbook from '@/components/MyScrapbook.vue'
 import SearchView from '@/views/SearchView.vue'
+import { useStoryStore } from '@/stores/story'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -62,11 +63,11 @@ const router = createRouter({
         },
         {
           path: '/productdetail/:productId',
-          name: 'productDetail',
+          name: 'productinfo',
           component: ProductDetail,
           children: [{
             path: '',
-            name: 'productinfo',
+            name: 'productDetail',
             component: ProductInfo
           },
           {
@@ -227,7 +228,16 @@ const router = createRouter({
 
 
   ],
-  scrollBehavior() {
+  scrollBehavior(to, from, savedPosition) {
+    const noResetRoutes = ['productinfo', 'productinquiry', 'productreview', 'storyDetail'];
+    if (noResetRoutes.includes(to.name)) {
+      if (savedPosition) {
+        return savedPosition;
+      }
+      return false; // 기본 스크롤 위치 유지
+    }
+
+    // 다른 라우트로 이동할 때는 스크롤을 최상단으로
     return { top: 0 }
   }
 })

@@ -312,7 +312,6 @@ export const useProductStore = defineStore('product', () => {
     })
     .then((res)=>{
       searchList.value.push(...res.data);
-      console.log(searchList.value)
     })
     .catch((err)=>{
       console.log(err)
