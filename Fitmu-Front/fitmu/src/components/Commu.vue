@@ -120,7 +120,6 @@ const YesBook = function(id, story){
         storyScrap.value.splice(index, 1)
         storyStore.NoBook(id)
     }else{
-        console.log(storyScrap.value)
         storyScrap.value.push(story)
         storyStore.YesBook(id)
     }
