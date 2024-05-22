@@ -230,8 +230,6 @@ public class UserController {
 		
 		if(followerList == null) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
-		}else if (followerList.size() == 0) {
-			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 		}else {
 			List<User> list = new ArrayList<>();
 			
@@ -252,8 +250,6 @@ public class UserController {
 		
 		if(followeeList == null) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
-		}else if (followeeList.size() == 0) {
-			return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
 		}else {
 			List<User> list = new ArrayList<>();
 			

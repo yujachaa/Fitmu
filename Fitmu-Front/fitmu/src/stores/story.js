@@ -41,7 +41,7 @@ export const useStoryStore = defineStore(
       axios.get("http://localhost:8080/tag-api/story/" + route.params.storyId)
       .then((response)=>{
         tags.value = response.data
-        console.log(tags.value)
+        // console.log(tags.value)
       })
     }
 

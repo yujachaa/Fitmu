@@ -7,7 +7,9 @@
             <p class="brand">{{ productStore.product.brand }}</p>
             <div class="namediv">
                 <h3 class="name">{{ productStore.product.name }}</h3>
-                <i :class = "{setRed : isLike(route.params.productId)}" @click = "YesProduct(route.params.productId)" class="heart bi bi-heart"></i>
+                <i v-if="isLike(route.params.productId)" class="bi bi-heart-fill heart setRed" @click = "YesProduct(route.params.productId)"></i>
+                <i v-else @click = "YesProduct(route.params.productId)" class="heart bi bi-heart"></i>
+
             </div>
             ⭐<span class="rating" v-if="productStore.reviews.length != 0">{{ rating }}</span>
             <span class="rating" v-else>0</span>
