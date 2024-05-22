@@ -6,11 +6,11 @@
           <h3>오늘의 운동 팁 대방출! 😊</h3>
         </div>
         <div class="total-number">
-          <span class="total-number">전체 </span> <span >{{ totalStoryLength.toLocaleString('ko-KR') }}</span>
+          <span class="total-number">전체 </span> <span v-if="totalStoryLength">{{ totalStoryLength.toLocaleString('ko-KR') }}</span>
         </div>
       </div>
       <div class="test2">
-        <div class="one-pic" v-for="(story, index) in recentList.slice(0, 16)" :key="story">
+        <div class="one-pic" v-for="(story, index) in recentList.slice(0, 18)" :key="story">
           <div class="sub-img">
             <img class="subimg" :src="`src/assets/image/story/${story.image}`" alt="" @click="goDetail(story.storyId)">
             <div class="main-img-info3">
@@ -22,13 +22,20 @@
           </div>
           <div class="infoo">
             <div class="font-bold">{{ story.title }}</div>
-            <div  v-if="recentNick(index)">{{ recentNick(index) }} 님의 </div>
-            <div class="story-in">
-              <span>스크랩</span>
-              <span>{{  }}</span>
+            <div class="profile-info">
+              <div class="profile-image">
+                <img class="story-profile-img" src="@/assets/image/profile.png" alt="댓글프로필이미지">
+              </div>
+              <div class="user-nickname">
+                <div v-if="recentNick(index)">{{ recentNick(index) }}</div>
+              </div>
+            </div>
+            <div class="story-info-box">
+              <span class="story-info">스크랩</span>
+              <span class="story-info" v-if="scrapCntList">{{ scrapCntList[index].toLocaleString('ko-KR')}}</span>
               •
-              <span>조회</span>
-              <span>{{ story.viewCnt }}</span>
+              <span class="story-info">조회</span>
+              <span class="story-info">{{ story.viewCnt.toLocaleString('ko-KR') }}</span>
             </div>
           </div>
         </div>
@@ -52,28 +59,22 @@ storyStore.getPopularList()
 storyStore.getRecentList()
 userStore.getUserList()
 storyStore.getStoryScrap()
+storyStore.getScrapCntList(storyStore.recentList)
 // onBeforeMount(() => {
 // })
 
-//여기서부터 확인하기
-const storyScrapCnt = function(storyId){
-  return storyStore.getStoryScrapCount(storyId)
-}
+const scrapCntList = computed(()=>{
+  return storyStore.scrapCntList
+})
 
-// const storyScrapCnt = computed(()=>{
-//   return storyStore.storyScrapCnt
-// })
-
-const totalStoryLength = computed(()=>{
-  return storyStore.recentList.length
+const totalStoryLength = computed(() => {
+ return storyStore.recentList.length
 })
 
 const storyScrap = computed(() => {
   return storyStore.storyScrap
 })
-// const testStory = computed(()=>{
-//     return storyStore.story
-// })
+
 
 const YesBook = function (id, story) {
   if (isScrap(id)) {
@@ -112,6 +113,11 @@ const recentNick = function (idx) {
   }
   return '';
 }
+
+const goDetail = function(storyId){
+    router.push({name: 'storyDetail', params: {'storyId' : storyId}})
+}
+
 </script>
 
 <style scoped>
@@ -162,8 +168,11 @@ const recentNick = function (idx) {
 }
 
 .one-pic {
+  display: flex;
   width: 32%;
   margin-bottom: 10px;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .sub-img {
@@ -190,15 +199,37 @@ const recentNick = function (idx) {
 }
 
 .infoo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-top: 10px;
 }
 
 .font-bold {
   font-weight: bold;
-  color: #34C5F0;
 }
 
-.total-number{
+.total-number {
   margin-right: 10px;
+}
+
+.story-profile-img {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px
+}
+
+.profile-info {
+  display: flex;
+}
+
+.story-info-box {
+  margin-top: 5px;
+  font-size: 14px;
+  color: rgb(122, 122, 122);
+}
+
+.story-info{
+  margin: 0 2px;
 }
 </style>
