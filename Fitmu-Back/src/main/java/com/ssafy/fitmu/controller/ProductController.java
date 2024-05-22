@@ -71,7 +71,7 @@ public class ProductController {
 		condition.setWord(categoryId);
 		List<Product> list = productService.searchByCondition(condition);
 		
-		if(list == null || list.size() == 0) {
+		if(list == null) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		} else {
 			return new ResponseEntity<List<Product>>(list, HttpStatus.OK);

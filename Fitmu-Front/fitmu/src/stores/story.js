@@ -157,16 +157,41 @@ export const useStoryStore = defineStore(
         });
     };
 
-    //최신순 리스트의 스크랩수 배열 가져오기
+    //스크랩수배열은 같이 사용
     const scrapCntList = ref([])
-    const getScrapCntList = function(){
+    //인기 리스트의 스크랩수 배열 가져오기
+    const getPopularScrapCntList = function(){
       axios
       .get(REST_STORY_API + "/story/latest")
       .then((res) => {
-        recentList.value = res.data;
+        popularList.value = res.data;
       })
       .then((res) => {
-        recentList.value.forEach((story, index) =>{
+        popularList.value.forEach((story, index) =>{
+          axios
+          .get(REST_STORY_API + "/scrap/" + story.storyId)
+          .then((res) => {
+            scrapCntList.value[index] = res.data;
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+        })
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    }
+    //카테고리별 스토리의 스크랩 개수 배열 가져오기
+    const getCategoryScrapCntList = function(categoryId){
+      axios({
+        url:REST_STORY_API + "/search", 
+        params : {key:"category", word: categoryId}})
+      .then((res) => {
+        categoryStoryList.value = res.data;
+      })
+      .then((res) => {
+        categoryStoryList.value.forEach((story, index) =>{
           axios
           .get(REST_STORY_API + "/scrap/" + story.storyId)
           .then((res) => {
@@ -226,6 +251,20 @@ export const useStoryStore = defineStore(
         });
     };
 
+    //카테고리별 게시글 가져오기
+    const categoryStoryList = ref([])
+    const getCategoryList = function(categoryId){
+      axios({
+        url:REST_STORY_API + "/search", 
+        params : {key:"category", word: categoryId}})
+      .then((res) => {
+        categoryStoryList.value = res.data;
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    }
+
   return {
     registStory,
     userStoryList,
@@ -250,8 +289,11 @@ export const useStoryStore = defineStore(
     getStoryScrap,
     storyScrap,
     NoBook,
-    getScrapCntList,
     scrapCntList,
+    categoryStoryList,
+    getCategoryList,
+    getCategoryScrapCntList,
+    getPopularScrapCntList,
 
     };
   },

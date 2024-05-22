@@ -3,12 +3,14 @@
     <div class="test">
       <div class="what-story">
         <div class="small-title">
-          <h3>지금 가장 인기있는 게시글 🔥</h3>
+          <h3>역대 인기 게시글 🔥</h3>
         </div>
-
+        <div class="total-number">
+          <span class="total-number">전체 </span> <span v-if="totalStoryLength">{{ totalStoryLength.toLocaleString('ko-KR') }}</span>
+        </div>
       </div>
       <div class="test2">
-        <div class="one-pic" v-for="(story, index) in popularList.slice(0, 16)" :key="story">
+        <div class="one-pic" v-for="(story, index) in popularList.slice(0, 18)" :key="story">
           <div class="sub-img">
             <img class="subimg" :src="`src/assets/image/story/${story.image}`" alt="" @click="goDetail(story.storyId)">
             <div class="main-img-info3">
@@ -19,8 +21,22 @@
             </div>
           </div>
           <div class="infoo">
-            <span class="font-bold" v-if="popularNick(index)">{{ popularNick(index) }} 님의 </span>
-            <span>{{ story.title }}</span>
+            <div class="font-bold">{{ story.title }}</div>
+            <div class="profile-info">
+              <div class="profile-image">
+                <img class="story-profile-img" src="@/assets/image/profile.png" alt="댓글프로필이미지">
+              </div>
+              <div class="user-nickname">
+                <div v-if="popularNick(index)">{{ popularNick(index) }}</div>
+              </div>
+            </div>
+            <div class="story-info-box">
+              <span class="story-info">스크랩</span>
+              <span class="story-info" v-if="scrapCntList">{{ scrapCntList[index].toLocaleString('ko-KR')}}</span>
+              •
+              <span class="story-info">조회</span>
+              <span class="story-info">{{ story.viewCnt.toLocaleString('ko-KR') }}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -40,18 +56,24 @@ const router = useRouter()
 
 storyStore.getRandom()
 storyStore.getPopularList()
-storyStore.getRecentList()
 userStore.getUserList()
 storyStore.getStoryScrap()
+storyStore.getPopularScrapCntList()
 // onBeforeMount(() => {
 // })
+
+const scrapCntList = computed(()=>{
+  return storyStore.scrapCntList
+})
+
+const totalStoryLength = computed(() => {
+ return storyStore.popularList.length
+})
 
 const storyScrap = computed(() => {
   return storyStore.storyScrap
 })
-// const testStory = computed(()=>{
-//     return storyStore.story
-// })
+
 
 const YesBook = function (id, story) {
   if (isScrap(id)) {
@@ -74,8 +96,8 @@ const isScrap = function (id) {
   return false
 }
 
-const popularList = computed(()=>{
-    return storyStore.popular10List
+const popularList = computed(() => {
+  return storyStore.popularList
 })
 
 const getUserNick = (userId) => {
@@ -83,20 +105,24 @@ const getUserNick = (userId) => {
   return user ? user.nickname : '';
 };
 
+
 const popularNick = function (idx) {
-    if (userStore.userList.length > 0) {
-        return getUserNick(storyStore.popular10List[idx].userId);
-    }
-    return '';
+  if (userStore.userList.length > 0) {
+    return getUserNick(storyStore.popularList[idx].userId);
+  }
+  return '';
+}
+
+const goDetail = function(storyId){
+    router.push({name: 'storyDetail', params: {'storyId' : storyId}})
 }
 
 </script>
 
 <style scoped>
-
 #book {
-    position: absolute;
-    opacity: 0.5;
+  position: absolute;
+  opacity: 0.5;
 }
 
 .container {
@@ -141,8 +167,11 @@ const popularNick = function (idx) {
 }
 
 .one-pic {
+  display: flex;
   width: 32%;
   margin-bottom: 10px;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .sub-img {
@@ -169,11 +198,37 @@ const popularNick = function (idx) {
 }
 
 .infoo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-top: 10px;
 }
 
 .font-bold {
   font-weight: bold;
-  color: #34C5F0;
+}
+
+.total-number {
+  margin-right: 10px;
+}
+
+.story-profile-img {
+  width: 20px;
+  height: 20px;
+  margin-right: 10px
+}
+
+.profile-info {
+  display: flex;
+}
+
+.story-info-box {
+  margin-top: 5px;
+  font-size: 14px;
+  color: rgb(122, 122, 122);
+}
+
+.story-info{
+  margin: 0 2px;
 }
 </style>

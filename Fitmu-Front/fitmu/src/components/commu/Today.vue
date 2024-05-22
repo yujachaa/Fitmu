@@ -1,30 +1,46 @@
 <template>
-  <div>
-    <h1>오운완</h1>
-  </div>
-
-  <div class="container">
+    <div class="container">
         <div class="test">
             <div class="what-story">
                 <div class="small-title">
-                    <h4>오늘의 운동 팁 대방출! 😊</h4>
+                    <h3>오운완📷</h3>
+                    <span>매일 매일 기록도 까먹지 말아요</span>
                 </div>
-                <div>
-                    <a @click="goTip">더보기</a>
+                <div class="total-number">
+                    <span class="total-number">전체 </span> <span v-if="totalStoryLength">{{
+                        totalStoryLength.toLocaleString('ko-KR') }}</span>
                 </div>
             </div>
             <div class="test2">
-                <div class="one-pic" v-for="(story,index) in recent4List" :key="story">
+                <div class="one-pic" v-for="(story, index) in categoryStoryList.slice(0, 18)" :key="story">
                     <div class="sub-img">
-                        <img class="subimg" :src="`src/assets/image/story/${story.image}`" alt="" @click="goDetail(story.storyId)">
+                        <img class="subimg" :src="`src/assets/image/story/${story.image}`" alt=""
+                            @click="goDetail(story.storyId)">
                         <div class="main-img-info3">
-                            <i id="book" :class="{setBlue : isScrap(story.storyId)}" class="bi bi-bookmark-fill" @click = "YesBook(story.storyId, story)"></i>
-                            <i id="book2" :class="{setBlue : isScrap(story.storyId)}" class="bi bi-bookmark" @click = "YesBook(story.storyId, story)"></i>
+                            <i id="book" :class="{ setBlue: isScrap(story.storyId) }" class="bi bi-bookmark-fill"
+                                @click="YesBook(story.storyId, story)"></i>
+                            <i id="book2" :class="{ setBlue: isScrap(story.storyId) }" class="bi bi-bookmark"
+                                @click="YesBook(story.storyId, story)"></i>
                         </div>
                     </div>
-                    <div class="infoo" >
-                        <span class="font-bold" v-if="recentNick(index)">{{ recentNick(index) }} 님의 </span>
-                        <span>{{ story.title }}</span>
+                    <div class="infoo">
+                        <div class="font-bold">{{ story.title }}</div>
+                        <div class="profile-info">
+                            <div class="profile-image">
+                                <img class="story-profile-img" src="@/assets/image/profile.png" alt="댓글프로필이미지">
+                            </div>
+                            <div class="user-nickname">
+                                <div v-if="nick(index)">{{ nick(index) }}</div>
+                            </div>
+                        </div>
+                        <div class="story-info-box">
+                            <span class="story-info">스크랩</span>
+                            <span class="story-info" v-if="scrapCntList">{{
+                                scrapCntList[index].toLocaleString('ko-KR')}}</span>
+                            •
+                            <span class="story-info">조회</span>
+                            <span class="story-info">{{ story.viewCnt.toLocaleString('ko-KR') }}</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -43,43 +59,49 @@ const userStore = useUserStore()
 const router = useRouter()
 
 storyStore.getRandom()
-storyStore.getPopularList()
-storyStore.getRecentList()
+storyStore.getCategoryList("2")
 userStore.getUserList()
 storyStore.getStoryScrap()
+storyStore.getCategoryScrapCntList("2")
 // onBeforeMount(() => {
 // })
 
-const storyScrap = computed(()=>{
+const scrapCntList = computed(() => {
+    return storyStore.scrapCntList
+})
+
+const totalStoryLength = computed(() => {
+    return storyStore.categoryStoryList.length
+})
+
+const storyScrap = computed(() => {
     return storyStore.storyScrap
 })
-// const testStory = computed(()=>{
-//     return storyStore.story
-// })
 
-const YesBook = function(id, story){
-    if(isScrap(id)){
-        let index = storyScrap.value.findIndex((scrap)=> scrap.storyId == id)
+
+const YesBook = function (id, story) {
+    if (isScrap(id)) {
+        let index = storyScrap.value.findIndex((scrap) => scrap.storyId == id)
         storyScrap.value.splice(index, 1)
         storyStore.NoBook(id)
-    }else{
+    } else {
         console.log(storyScrap.value)
         storyScrap.value.push(story)
         storyStore.YesBook(id)
     }
 }
 
-const isScrap = function(id){
-    for(let i=0; i<storyScrap.value.length; i++){
-        if(storyScrap.value[i].storyId == id){
+const isScrap = function (id) {
+    for (let i = 0; i < storyScrap.value.length; i++) {
+        if (storyScrap.value[i].storyId == id) {
             return true
         }
     }
     return false
 }
 
-const recent4List = computed(()=>{
-    return storyStore.recent4List
+const categoryStoryList = computed(() => {
+    return storyStore.categoryStoryList
 })
 
 const getUserNick = (userId) => {
@@ -88,21 +110,33 @@ const getUserNick = (userId) => {
 };
 
 
-const recentNick = function (idx) {
+const nick = function (idx) {
     if (userStore.userList.length > 0) {
-        return getUserNick(storyStore.recent4List[idx].userId);
+        return getUserNick(storyStore.categoryStoryList[idx].userId);
     }
     return '';
 }
+
+const goDetail = function (storyId) {
+    router.push({ name: 'storyDetail', params: { 'storyId': storyId } })
+}
+
 </script>
 
-<style  scoped>
+<style scoped>
+#book {
+    position: absolute;
+    opacity: 0.5;
+}
+
 .container {
+    margin-top: 45px;
     width: 100%;
     display: flex;
     padding-left: 80px;
     padding-right: 80px;
-    height: 400px;
+    height: 100%;
+    margin-bottom: 45px;
 }
 
 .test {
@@ -113,6 +147,7 @@ const recentNick = function (idx) {
     margin-top: 20px;
     width: 100%;
     display: flex;
+    flex-wrap: wrap;
     gap: 20px;
 }
 
@@ -130,18 +165,27 @@ const recentNick = function (idx) {
     font-weight: bold;
     color: #34C5F0;
 }
-.small-title>h4 {
+
+.small-title {
+    margin-bottom: 10px;
+}
+
+.small-title>h3 {
     font-weight: bold;
 }
 
-.one-pic{
-    width: 25%;
+.one-pic {
+    display: flex;
+    width: 32%;
+    margin-bottom: 10px;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .sub-img {
     position: relative;
     width: 100%;
-    height: 200px;
+    height: 250px;
     object-fit: cover;
     overflow: hidden;
     border-radius: 5px;
@@ -162,12 +206,37 @@ const recentNick = function (idx) {
 }
 
 .infoo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     margin-top: 10px;
 }
 
 .font-bold {
     font-weight: bold;
-    color: #34C5F0;
 }
 
+.total-number {
+    margin-right: 10px;
+}
+
+.story-profile-img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px
+}
+
+.profile-info {
+    display: flex;
+}
+
+.story-info-box {
+    margin-top: 5px;
+    font-size: 14px;
+    color: rgb(122, 122, 122);
+}
+
+.story-info {
+    margin: 0 2px;
+}
 </style>
