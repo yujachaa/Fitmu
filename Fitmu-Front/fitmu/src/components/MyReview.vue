@@ -203,8 +203,8 @@ const isSeller = computed(() => {
     return sessionStorage.getItem("role") == "s" ? true : false
 })
 
-const noOrder = computed(() => {
-    return orders.value.length == 0 ? true : false
+const noReview = computed(() => {
+    return userReviews.value.length == 0 ? true : false
 })
 
 const storyDetail = function (storyId) {
