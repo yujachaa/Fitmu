@@ -153,10 +153,11 @@ export const useUserStore = defineStore('user', () => {
   //유저가 팔로우하는 사람들 가져오기 (팔로잉)
   const followingList = ref([])
   const getFollowing = function(userId){
+    followingList.value = []
     axios.get(REST_USER_API + "/user/" + userId + "/follower")
     .then((res)=>{
-      followingList.value = []
       followingList.value = res.data
+      console.log(followingList.value)
     })
     .catch((err)=>{
       console.log(err)

@@ -1,7 +1,7 @@
 <template>
 
   <div class="total">
-    <div class = "width25">
+    <div class="width25">
 
     </div>
     <div class="container d-flex flex-column align-items-stretch">
@@ -18,9 +18,8 @@
           </h4>
         </div>
         <!-- 현재 사용자의 글이 아닐때만 팔로우 버튼 활성화 -->
-        <div class="follow-button-box flex-grow-1" v-if="!isSameUSer">
-          <button class="follow-btn" :class="{ followed: isFollowed }" @click="followToggle(story.userId)">{{ followMsg
-            }}</button>
+        <div class="follow-button-box flex-grow-1" v-if="!isSameUser">
+          <button class="follow-btn" :class="{ followed: isFollowed(story.userId) }" @click="followToggle(story)">{{ followMsg}}</button>
         </div>
       </div>
       <hr>
@@ -64,10 +63,10 @@
           </div>
         </div>
         <!-- v-for 넣기 -->
-        <div v-if = "commentList.length == 0">
+        <div v-if="commentList.length == 0">
           <p>첫번째 댓글의 주인공이 되어주세요!</p>
         </div>
-        <div v-else class = "comment">
+        <div v-else class="comment">
           <div class="comment-list" v-for="comment in commentList" :key="comment">
             <div class="one-comment d-flex">
               <div class="">
@@ -89,15 +88,21 @@
         </div>
       </div>
     </div>
-    <div class = "sticky-container" >
-      <div class = "sidebar">
-        <div class ="circle">
-          <i class="bi bi-bookmark"></i>
+    <div class="sticky-container">
+      <div class="sidebar">
+        <div class="circle">
+          <!-- <i class="bi bi-bookmark"></i> -->
+          <div class="bookmark">
+            <i id="book" v-if="isScrap(story.storyId)" @click="YesBook(story.storyId, story)"
+              class="bi bi-bookmark-fill blue"></i>
+            <i id="book2" v-else @click="YesBook(story.storyId, story)"
+              class="bi bi-bookmark"></i>
+          </div>
         </div>
-        <div class ="circle" @click = "goComment">
+        <div class="circle" @click="goComment">
           <i class="bi bi-chat"></i>
         </div>
-        <div class ="circle" @click = "goTop">
+        <div class="circle" @click="goTop">
           <i class="bi bi-arrow-up"></i>
         </div>
       </div>
@@ -125,7 +130,7 @@
   </div>
 </template>
 
-<script setup >
+<script setup>
 import { useMouseInElement, watchDebounced, useElementBounding } from '@vueuse/core'
 import { ref, onMounted, computed, onBeforeMount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -134,17 +139,17 @@ import { useUserStore } from '@/stores/user'
 import { useProductStore } from '@/stores/product'
 import { useCommentStore } from '@/stores/comment'
 import { useWindowScroll, useScroll } from '@vueuse/core'
-const el = ref<HTMLElement | null>(null)
-const { x, y } = useScroll(el, {behavior : "smooth"})
+const el = ref < HTMLElement | null > (null)
+const { x, y } = useScroll(el, { behavior: "smooth" })
 
-const goTop = function(){
+const goTop = function () {
   window.scrollTo({
     top: 0,
     behavior: 'smooth' // Smooth scroll animation
   });
 }
 
-const goComment = function(){
+const goComment = function () {
   window.scrollTo({
     top: 1000,
     behavior: 'smooth' // Smooth scroll animation
@@ -171,10 +176,19 @@ userStore.getUserList()
 storyStore.getTags()
 productStore.getProductALLImages()
 productStore.getProducts()
-// storyId.value = route.params.storyId
+storyStore.getStoryScrap()
+userStore.getFollowing(sessionStorage.getItem("loginUser"));
+
+
+const followingList = computed(()=>{
+  return userStore.followingList
+})
 
 
 
+const storyScrap = computed(() => {
+  return storyStore.storyScrap
+})
 
 const story = computed(() => {
   return storyStore.story
@@ -245,35 +259,56 @@ const getUserNick = function (userId) {
   return userStore.userList.filter((user) => user.userId == userId)[0].nickname
 }
 
-const isFollowed = ref(false)
+const isFollowed = function(followingId){
+  if(followingList.value.length > 0){
+    return followingList.value.some((user) => user.userId == followingId)
+  }
+  return false;
+}
+
+// const isFollowed = ref(false)
 const followMsg = ref("팔로우")
 
-const followToggle = function (followingId) {
-  if (isFollowed.value) {
-    userStore.unfollow(sessionStorage.getItem("loginUser"), followingId)
-    isFollowed.value = false
+const followToggle = function (followingStory) {
+  if (isFollowed(followingStory.userId)) {
+    let index = followingList.value.findIndex((user) => user.userId == followingStory.userId)
     followMsg.value = "팔로우"
+    followingList.value.splice(index, 1)
+    userStore.unfollow(sessionStorage.getItem("loginUser"), followingStory.userId)
   } else {
-    userStore.follow(sessionStorage.getItem("loginUser"), followingId)
-    isFollowed.value = true
+    followingList.value.push(followingStory)
     followMsg.value = "팔로잉"
+    userStore.follow(sessionStorage.getItem("loginUser"), followingStory.userId)
   }
 }
 
-const isSameUSer = computed(() => {
+const isSameUser = computed(() => {
   return storyStore.story.userId == sessionStorage.getItem('loginUser') ? true : false
 })
 
-const toTop = function () {
-  window.scrollTo({
-    top: 0,
-    left: 0,
-    behavior: "smooth"
-  })
-}
-
 const goProductDetail = function (id) {
   router.push({ name: "productinfo", params: { productId: id } })
+}
+
+const YesBook = function (id, story) {
+  if (isScrap(id)) {
+    let index = storyScrap.value.findIndex((scrap) => scrap.storyId == id)
+    storyScrap.value.splice(index, 1)
+    storyStore.NoBook(id)
+  } else {
+    console.log(storyScrap.value)
+    storyScrap.value.push(story)
+    storyStore.YesBook(id)
+  }
+}
+
+const isScrap = function (id) {
+  for (let i = 0; i < storyScrap.value.length; i++) {
+    if (storyScrap.value[i].storyId == id) {
+      return true
+    }
+  }
+  return false
 }
 
 </script>
@@ -290,66 +325,71 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.comment{
+
+.comment {
   overflow-y: auto;
-  height : 500px;
-}
-.circle{
-  display : flex;
-  width : 60px;
-  height : 60px;
-  border : 1px solid #C2C8CD;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius : 50px;
-  justify-content: center;
-  align-items: center;
-  margin-bottom : 20px;
-  cursor : pointer;
-}
-.circle2{
-  display : flex;
-  width : 60px;
-  height : 60px;
-  border : 1px solid #C2C8CD;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius : 50px;
-  justify-content: center;
-  align-items: center;
-  margin-bottom : 20px;
-  cursor : pointer;
-  position : fixed;
-  top : 77%;
-  left : 94%;
+  height: 500px;
 }
 
-.circle:hover{
-  display : flex;
-  width : 60px;
-  height : 60px;
-  border : 1px solid #74787a;
+.circle {
+  display: flex;
+  width: 60px;
+  height: 60px;
+  border: 1px solid #C2C8CD;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  border-radius : 50px;
+  border-radius: 50px;
   justify-content: center;
   align-items: center;
-  margin-bottom : 20px;
+  margin-bottom: 20px;
+  cursor: pointer;
 }
 
-.sidebar{
-  display : flex;
+.circle2 {
+  display: flex;
+  width: 60px;
+  height: 60px;
+  border: 1px solid #C2C8CD;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 50px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  cursor: pointer;
+  position: fixed;
+  top: 77%;
+  left: 94%;
+}
+
+.circle:hover {
+  display: flex;
+  width: 60px;
+  height: 60px;
+  border: 1px solid #74787a;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 50px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.sidebar {
+  display: flex;
   flex-direction: column;
-  position : sticky;
-  top : 200px;
-  bottom : 50px;
-  margin-left : 288px;
-  margin-right : 27px;
-  margin-top : 200px;
-  height : 300px;
+  position: sticky;
+  top: 200px;
+  bottom: 50px;
+  margin-left: 288px;
+  margin-right: 27px;
+  margin-top: 200px;
+  height: 300px;
 
 }
-.sticky-container{
-  width : 100%;
-  height : 1600px;
+
+.sticky-container {
+  width: 100%;
+  height: 1600px;
 }
+
 .displayNone {
   width: 25%;
   justify-content: start;
@@ -394,9 +434,10 @@ export default defineComponent({
   display: none;
 }
 
-.width25{
-  width : 100%;
+.width25 {
+  width: 100%;
 }
+
 .btn {
   display: flex;
   border: 1px solid #34C5F0;
@@ -440,15 +481,15 @@ export default defineComponent({
 
 .container {
   margin-top: 40px;
-  width : 2500px;
-  height : 100%;
-  margin-left : 0px;
-  margin-right : 0px;
+  width: 2500px;
+  height: 100%;
+  margin-left: 0px;
+  margin-right: 0px;
 }
 
 .total {
   width: 100%;
-  height : 100%;
+  height: 100%;
   display: flex;
 }
 
@@ -532,6 +573,7 @@ export default defineComponent({
 }
 
 .follow-btn {
+  width: 75px;
   margin-left: auto;
 
 }

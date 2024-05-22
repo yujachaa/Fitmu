@@ -40,14 +40,17 @@
                 :touchDrag="false">
                 <slide v-for="(story, index) in popular10List" :key="story">
                     <div class="slide1">
-                        <img class="product_carousel_pic" :src="`src/assets/image/story/${story.image}`" alt="이미지" @click="goDetail(story.storyId)">
+                        <img class="product_carousel_pic" :src="`src/assets/image/story/${story.image}`" alt="이미지"
+                            @click="goDetail(story.storyId)">
                         <div class="main-img-info2">
                             <div class="user-info2">
                                 <img class="mini-img2" src="@/assets/2.jpg" alt="하이루">
-                                <p class = "ninckname" v-if="popularNick(index)">{{ popularNick(index) }}</p>
+                                <p class="ninckname" v-if="popularNick(index)">{{ popularNick(index) }}</p>
                                 <div class="bookmark">
-                                    <i id="book" :class="{setBlue : isScrap(story.storyId)}" @click = "YesBook(story.storyId, story)" class="bi bi-bookmark-fill"></i>
-                                    <i id="book2" :class="{setBlue : isScrap(story.storyId)}" @click = "YesBook(story.storyId, story)" class="bi bi-bookmark"></i>
+                                    <i id="book" v-if="isScrap(story.storyId)" @click="YesBook(story.storyId, story)"
+                                        class="bi bi-bookmark-fill setBlue"></i>
+                                    <i id="book2" v-else @click="YesBook(story.storyId, story)"
+                                        class="bi bi-bookmark"></i>
                                 </div>
                             </div>
                         </div>
@@ -70,15 +73,17 @@
                 </div>
             </div>
             <div class="test2">
-                <div class="one-pic" v-for="(story,index) in recent4List" :key="story">
+                <div class="one-pic" v-for="(story, index) in recent4List" :key="story">
                     <div class="sub-img">
-                        <img class="subimg" :src="`src/assets/image/story/${story.image}`" alt="" @click="goDetail(story.storyId)">
+                        <img class="subimg" :src="`src/assets/image/story/${story.image}`" alt=""
+                            @click="goDetail(story.storyId)">
                         <div class="main-img-info3">
-                            <i id="book" :class="{setBlue : isScrap(story.storyId)}" class="bi bi-bookmark-fill" @click = "YesBook(story.storyId, story)"></i>
-                            <i id="book2" :class="{setBlue : isScrap(story.storyId)}" class="bi bi-bookmark" @click = "YesBook(story.storyId, story)"></i>
+                            <i id="book" v-if="isScrap(story.storyId)" @click="YesBook(story.storyId, story)"
+                                class="bi bi-bookmark-fill setBlue"></i>
+                            <i id="book2" v-else @click="YesBook(story.storyId, story)" class="bi bi-bookmark"></i>
                         </div>
                     </div>
-                    <div class="infoo" >
+                    <div class="infoo">
                         <span class="font-bold" v-if="recentNick(index)">{{ recentNick(index) }} 님의 </span>
                         <span>{{ story.title }}</span>
                     </div>
@@ -104,19 +109,16 @@ storyStore.getPopularList()
 storyStore.getRecentList()
 userStore.getUserList()
 storyStore.getStoryScrap()
-// onBeforeMount(() => {
-// })
 
-const storyScrap = computed(()=>{
+
+const storyScrap = computed(() => {
     return storyStore.storyScrap
 })
-// const testStory = computed(()=>{
-//     return storyStore.story
-// })
 
-const YesBook = function(id, story){
-    if(isScrap(id)){
-        let index = storyScrap.value.findIndex((scrap)=> scrap.storyId == id)
+
+const YesBook = function (id, story) {
+    if (isScrap(id)) {
+        let index = storyScrap.value.findIndex((scrap) => scrap.storyId == id)
         storyScrap.value.splice(index, 1)
         storyStore.NoBook(id)
     }else{
@@ -125,24 +127,24 @@ const YesBook = function(id, story){
     }
 }
 
-const isScrap = function(id){
-    for(let i=0; i<storyScrap.value.length; i++){
-        if(storyScrap.value[i].storyId == id){
+const isScrap = function (id) {
+    for (let i = 0; i < storyScrap.value.length; i++) {
+        if (storyScrap.value[i].storyId == id) {
             return true
         }
     }
     return false
 }
 
-const recent4List = computed(()=>{
+const recent4List = computed(() => {
     return storyStore.recent4List
 })
 
-const popular10List = computed(()=>{
+const popular10List = computed(() => {
     return storyStore.popular10List
 })
 
-const randomStory = computed(()=>{
+const randomStory = computed(() => {
     return storyStore.randomStory
 })
 
@@ -172,16 +174,16 @@ const recentNick = function (idx) {
     return '';
 }
 
-const goDetail = function(storyId){
-    router.push({name: 'storyDetail', params: {'storyId' : storyId}})
+const goDetail = function (storyId) {
+    router.push({ name: 'storyDetail', params: { 'storyId': storyId } })
 }
 
-const goPopular = function(){
-    router.push({name: 'popular'})
+const goPopular = function () {
+    router.push({ name: 'popular' })
 }
 
-const goTip = function(){
-    router.push({name: 'tip'})
+const goTip = function () {
+    router.push({ name: 'tip' })
 }
 
 </script>
@@ -235,16 +237,18 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.ninckname{
-    width : 100px;
+.ninckname {
+    width: 100px;
 }
-.setBlue{
-    color : #34C5F0;
+
+.setBlue {
+    color: #34C5F0;
 }
-#book {
+
+/* #book {
     position: absolute;
     opacity: 0.5;
-}
+} */
 
 .toptop {
     margin-top: 20px;
@@ -468,7 +472,7 @@ export default defineComponent({
     cursor: pointer;
 }
 
-.one-pic{
+.one-pic {
     width: 25%;
 }
 </style>
