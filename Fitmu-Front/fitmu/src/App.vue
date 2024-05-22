@@ -1,6 +1,6 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-import { watch } from 'vue'
+import { watch,computed, ref} from 'vue'
 import OpenAI from 'openai'
 import TheFooter from '@/components/common/TheFooter.vue'
 import {useRoute} from 'vue-router'
@@ -16,6 +16,12 @@ watch((idle), (newValue, oldValue)=>{
         window.alert("이용 시간이 만료되었습니다. 다시 로그인 해주세요.")
     }
 })
+
+const isflag = ref(false) // 어디 들어갈때마다 false로 유지하도록 가드 설정하기
+
+const change = function(){
+    isflag.value = !isflag.value
+}
 
 const route = useRoute()
 
@@ -138,18 +144,21 @@ export default {
         <RouterView />
         <TheFooter />
     </div>
-    <beautiful-chat :participants="participants" :titleImageUrl="titleImageUrl" :onMessageWasSent="onMessageWasSent"
+    <beautiful-chat @click = "change" :participants="participants" :titleImageUrl="titleImageUrl" :onMessageWasSent="onMessageWasSent"
         :messageList="messageList" :newMessagesCount="newMessagesCount" :isOpen="isChatOpen" :close="closeChat"
-        :icons="icons" :open="openChat" :showEmoji="true" :showEdition="true" :showDeletion="true"
+        :open="openChat" :showEmoji="true" :showEdition="true" :showDeletion="true"
         :deletionConfirmation="true" :showTypingIndicator="showTypingIndicator" :showLauncher="true"
         :showCloseButton="true" :colors="colors" :alwaysScrollToBottom="alwaysScrollToBottom"
         :disableUserListToggle="false" :messageStyling="messageStyling" @onType="handleOnType" @edit="editMessage" />
-    <div v-if="route.name != 'storyDetail'" class ="circle2" @click = "goTop">
+    <div v-if="route.name != 'storyDetail'" :class = "{displayNone : isflag}" class ="circle2" @click = "goTop">
         <i class="bi bi-arrow-up"></i>
     </div>
 </template>
 
 <style scoped>
+.displayNone{
+    visibility: hidden;
+}
 
 .circle2{
   display : flex;
@@ -165,5 +174,6 @@ export default {
   position : fixed;
   bottom : 90px;
   right : 27px;
+  z-index : 0;
 }
 </style>
