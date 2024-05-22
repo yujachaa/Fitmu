@@ -51,7 +51,7 @@
     </div>
     <div class="list">
         <div class="router">
-            <RouterLink :to="{ name: 'productinfo', params: { 'productId': productId } }">상품정보</RouterLink>
+            <RouterLink :to="{ name: 'productDetail', params: { 'productId': productId } }">상품정보</RouterLink>
             <RouterLink :to="{ name: 'productreview', params: { 'productId': productId } }">리뷰</RouterLink>
             <RouterLink :to="{ name: 'productinquiry', params: { 'productId': productId } }">문의</RouterLink>
         </div>

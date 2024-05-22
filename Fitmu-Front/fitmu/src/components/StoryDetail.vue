@@ -1,6 +1,9 @@
 <template>
 
   <div class="total">
+    <div class = "width25">
+
+    </div>
     <div class="container d-flex flex-column align-items-stretch">
       <div class="title">
         <h2>{{ story.title }}</h2>
@@ -16,8 +19,8 @@
         </div>
         <!-- 현재 사용자의 글이 아닐때만 팔로우 버튼 활성화 -->
         <div class="follow-button-box flex-grow-1" v-if="!isSameUSer">
-          <button class="follow-btn" :class="{ followed: isFollowed }"
-            @click="followToggle(story.userId)">{{ followMsg }}</button>
+          <button class="follow-btn" :class="{ followed: isFollowed }" @click="followToggle(story.userId)">{{ followMsg
+            }}</button>
         </div>
       </div>
       <hr>
@@ -61,35 +64,53 @@
           </div>
         </div>
         <!-- v-for 넣기 -->
-        <div class="comment-list" v-for="comment in commentList" :key="comment">
-          <div class="one-comment d-flex">
-            <div class="">
-              <img class="comment-profile-img" src="@/assets/image/profile.png" alt="댓글프로필이미지">
-            </div>
-            <div class="flex-fill">
-              <div class="comment-nickname">
-                <h4>{{ getUserNick(comment.userId) }}</h4>
+        <div v-if = "commentList.length == 0">
+          <p>첫번째 댓글의 주인공이 되어주세요!</p>
+        </div>
+        <div v-else class = "comment">
+          <div class="comment-list" v-for="comment in commentList" :key="comment">
+            <div class="one-comment d-flex">
+              <div class="">
+                <img class="comment-profile-img" src="@/assets/image/profile.png" alt="댓글프로필이미지">
               </div>
-              <div>
-                <p class="comment-content">{{ comment.content }}</p>
-              </div>
-              <div>
-                <span class="comment-info">{{ comment.createdDate }}</span>
+              <div class="flex-fill">
+                <div class="comment-nickname">
+                  <h4>{{ getUserNick(comment.userId) }}</h4>
+                </div>
+                <div>
+                  <p class="comment-content">{{ comment.content }}</p>
+                </div>
+                <div>
+                  <span class="comment-info">{{ comment.createdDate }}</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <div class = "sticky-container" >
+      <div class = "sidebar">
+        <div class ="circle">
+          <i class="bi bi-bookmark"></i>
+        </div>
+        <div class ="circle" @click = "goComment">
+          <i class="bi bi-chat"></i>
+        </div>
+        <div class ="circle" @click = "goTop">
+          <i class="bi bi-arrow-up"></i>
+        </div>
+      </div>
+    </div>
   </div>
   <div v-if="TAGS">
     <div v-for="(tag, index) in tags" :key="tag.tagId"
-      :style="{ position: 'absolute', left: tag.left/100 * width + elementPositionX - 10 + 'px', top: tag.top/100 * height + elementPositionY - 10 + 'px' , zIndex:999}">
+      :style="{ position: 'absolute', left: tag.left / 100 * width + elementPositionX - 10 + 'px', top: tag.top / 100 * height + elementPositionY - 10 + 'px', zIndex: 999 }">
       <Popper :hover=true interactive disableClickAway>
         <button id="btn" ref="autobtn">+</button>
         <label class="btn" for="btn">+</label>
         <template #content>
-          <div class="content2" @click = "goProductDetail(tag.productId)">
+          <div class="content2" @click="goProductDetail(tag.productId)">
             <div class="garo">
               <img class="mini-img" :src="`/src/assets/image/product/${getProductImage(tag.productId)}`" alt="이미지">
               <div class="productInfo">
@@ -104,7 +125,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup >
 import { useMouseInElement, watchDebounced, useElementBounding } from '@vueuse/core'
 import { ref, onMounted, computed, onBeforeMount } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -112,7 +133,23 @@ import { useStoryStore } from '@/stores/story'
 import { useUserStore } from '@/stores/user'
 import { useProductStore } from '@/stores/product'
 import { useCommentStore } from '@/stores/comment'
-import { useWindowScroll } from '@vueuse/core'
+import { useWindowScroll, useScroll } from '@vueuse/core'
+const el = ref<HTMLElement | null>(null)
+const { x, y } = useScroll(el, {behavior : "smooth"})
+
+const goTop = function(){
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth' // Smooth scroll animation
+  });
+}
+
+const goComment = function(){
+  window.scrollTo({
+    top: 1000,
+    behavior: 'smooth' // Smooth scroll animation
+  });
+}
 
 const img = ref(null)
 const { elementPositionX, elementPositionY } = useMouseInElement(img)
@@ -139,26 +176,26 @@ productStore.getProducts()
 
 
 
-const story = computed(()=>{
+const story = computed(() => {
   return storyStore.story
 })
-const storyScrapCnt = computed(()=>{
+const storyScrapCnt = computed(() => {
   return storyStore.storyScrapCnt
 })
 
-const commentListLength = computed(()=>{
+const commentListLength = computed(() => {
   return commentStore.commentList.length
 })
 
-const commentList = computed(()=>{
+const commentList = computed(() => {
   return commentStore.commentList
 })
 
-const tags = computed(()=>{
+const tags = computed(() => {
   return storyStore.tags
 })
 
-const products = computed(()=> {
+const products = computed(() => {
   return productStore.products
 })
 
@@ -185,10 +222,10 @@ const getProductImage = function (productId) {
 // })
 
 const getSelectedProductInfo = function (id) {
-  if(products.value.length > 0){
+  if (products.value.length > 0) {
     return products.value.find(product => product.productId === id)
-  }else{
-    return {brand : "오류", name : "오류"}
+  } else {
+    return { brand: "오류", name: "오류" }
   }
 }
 
@@ -235,24 +272,8 @@ const toTop = function () {
   })
 }
 
-//스크롤
-
-const { x, y } = useWindowScroll()
-// console.log(x.value) // read current x scroll value
-// y.value = 100 // scroll y to 100
-
-const btnShow = ref(false)
-
-const onScroll = function () {
-  if (window.scrollY > 200) {
-    btnShow.value = true
-  } else {
-    btnShow.value = false
-  }
-}
-
-const goProductDetail = function(id){
-  router.push({name : "productinfo", params : {productId : id}})
+const goProductDetail = function (id) {
+  router.push({ name: "productinfo", params: { productId: id } })
 }
 
 </script>
@@ -269,21 +290,84 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.displayNone{
-  width : 25%;
-  justify-content: start;
+.comment{
+  overflow-y: auto;
+  height : 500px;
 }
-.aside{
+.circle{
   display : flex;
+  width : 60px;
+  height : 60px;
+  border : 1px solid #C2C8CD;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius : 50px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom : 20px;
+  cursor : pointer;
+}
+.circle2{
+  display : flex;
+  width : 60px;
+  height : 60px;
+  border : 1px solid #C2C8CD;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius : 50px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom : 20px;
+  cursor : pointer;
+  position : fixed;
+  top : 77%;
+  left : 94%;
+}
+
+.circle:hover{
+  display : flex;
+  width : 60px;
+  height : 60px;
+  border : 1px solid #74787a;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius : 50px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom : 20px;
+}
+
+.sidebar{
+  display : flex;
+  flex-direction: column;
+  position : sticky;
+  top : 200px;
+  bottom : 50px;
+  margin-left : 288px;
+  margin-right : 27px;
+  margin-top : 200px;
+  height : 300px;
+
+}
+.sticky-container{
+  width : 100%;
+  height : 1600px;
+}
+.displayNone {
+  width: 25%;
   justify-content: start;
 }
-#sticky{
-  position : sticky;
-  width : 80px;
-  top : 100px;
+
+.aside {
+  display: flex;
+  justify-content: start;
+}
+
+#sticky {
+  position: sticky;
+  width: 80px;
+  top: 100px;
   z-index: 1000;
 }
-.content2{
+
+.content2 {
   display: flex;
   width: 400px;
   height: 120px;
@@ -294,7 +378,7 @@ export default defineComponent({
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-.content2:hover{
+.content2:hover {
   display: flex;
   width: 400px;
   height: 120px;
@@ -310,6 +394,9 @@ export default defineComponent({
   display: none;
 }
 
+.width25{
+  width : 100%;
+}
 .btn {
   display: flex;
   border: 1px solid #34C5F0;
@@ -319,17 +406,19 @@ export default defineComponent({
   align-items: center;
   padding-left: 5px;
   padding-right: 6px;
-  background-color: rgb(52, 197, 240 , 0.7);
+  background-color: rgb(52, 197, 240, 0.7);
   color: white;
   font-weight: bold;
-  border-radius : 20px;
+  border-radius: 20px;
 }
+
 .mini-img {
   width: 80px;
   height: 80px;
   border-radius: 8px;
   margin-right: 15px;
 }
+
 .garo {
   display: flex;
 }
@@ -348,14 +437,19 @@ export default defineComponent({
   display: flex;
   flex-direction: column;
 }
+
 .container {
   margin-top: 40px;
-  width: 50%;
+  width : 2500px;
+  height : 100%;
+  margin-left : 0px;
+  margin-right : 0px;
 }
 
 .total {
   width: 100%;
-  display : flex;
+  height : 100%;
+  display: flex;
 }
 
 .to-top {
@@ -456,7 +550,7 @@ export default defineComponent({
 
 .comment-box {
   width: 100%;
-  height : 100%;
+  height: 100%;
 }
 
 .comment-count {

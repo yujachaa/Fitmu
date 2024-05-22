@@ -3,7 +3,28 @@ import { RouterLink, RouterView } from 'vue-router'
 import { watch } from 'vue'
 import OpenAI from 'openai'
 import TheFooter from '@/components/common/TheFooter.vue'
+import {useRoute} from 'vue-router'
+import {useUserStore} from '@/stores/user'
 
+import { useIdle } from '@vueuse/core'
+
+const { idle, lastActive } = useIdle(60 * 60 * 1000) // 1시간
+const userStore = useUserStore()
+watch((idle), (newValue, oldValue)=>{
+    if(sessionStorage.getItem("loginUser") != null && idle){
+        userStore.logout()
+        window.alert("이용 시간이 만료되었습니다. 다시 로그인 해주세요.")
+    }
+})
+
+const route = useRoute()
+
+const goTop = function(){
+  window.scrollTo({
+    top: 0,
+    behavior: 'smooth' // Smooth scroll animation
+  });
+}
 </script>
 
 <script>
@@ -123,6 +144,26 @@ export default {
         :deletionConfirmation="true" :showTypingIndicator="showTypingIndicator" :showLauncher="true"
         :showCloseButton="true" :colors="colors" :alwaysScrollToBottom="alwaysScrollToBottom"
         :disableUserListToggle="false" :messageStyling="messageStyling" @onType="handleOnType" @edit="editMessage" />
+    <div v-if="route.name != 'storyDetail'" class ="circle2" @click = "goTop">
+        <i class="bi bi-arrow-up"></i>
+    </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+
+.circle2{
+  display : flex;
+  width : 60px;
+  height : 60px;
+  border : 1px solid #C2C8CD;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius : 50px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom : 20px;
+  cursor : pointer;
+  position : fixed;
+  bottom : 90px;
+  right : 27px;
+}
+</style>

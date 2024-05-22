@@ -163,7 +163,7 @@ const productScrapList = computed(()=>{
 })
 
 const productDetail = function (productId) {
-  router.push({ name: 'productinfo', params: { 'productId': productId } })
+  router.push({ name: 'productDetail', params: { 'productId': productId } })
 }
 </script>
 
