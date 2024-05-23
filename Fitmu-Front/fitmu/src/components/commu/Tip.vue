@@ -6,7 +6,8 @@
           <h3>오늘의 운동 팁 대방출! 😊</h3>
         </div>
         <div class="total-number">
-          <span class="total-number">전체 </span> <span v-if="totalStoryLength">{{ totalStoryLength.toLocaleString('ko-KR') }}</span>
+          <span class="total-number">전체 </span> <span v-if="totalStoryLength">{{
+            totalStoryLength.toLocaleString('ko-KR') }}</span>
         </div>
       </div>
       <div class="test2">
@@ -14,10 +15,9 @@
           <div class="sub-img">
             <img class="subimg" :src="`src/assets/image/story/${story.image}`" alt="" @click="goDetail(story.storyId)">
             <div class="main-img-info3">
-              <i id="book" :class="{ setBlue: isScrap(story.storyId) }" class="bi bi-bookmark-fill"
-                @click="YesBook(story.storyId, story)"></i>
-              <i id="book2" :class="{ setBlue: isScrap(story.storyId) }" class="bi bi-bookmark"
-                @click="YesBook(story.storyId, story)"></i>
+              <i id="book" v-if="isScrap(story.storyId)" @click="YesBook(story.storyId, story)"
+                class="bi bi-bookmark-fill setBlue"></i>
+              <i id="book2" v-else @click="YesBook(story.storyId, story)" class="bi bi-bookmark"></i>
             </div>
           </div>
           <div class="infoo">
@@ -32,7 +32,7 @@
             </div>
             <div class="story-info-box">
               <span class="story-info">스크랩</span>
-              <span class="story-info" v-if="scrapCntList">{{ scrapCntList[index].toLocaleString('ko-KR')}}</span>
+              <span class="story-info" v-if="scrapCntList">{{ scrapCntList[index].toLocaleString('ko-KR') }}</span>
               •
               <span class="story-info">조회</span>
               <span class="story-info">{{ story.viewCnt.toLocaleString('ko-KR') }}</span>
@@ -62,12 +62,12 @@ storyStore.getCategoryScrapCntList("4")
 // onBeforeMount(() => {
 // })
 
-const scrapCntList = computed(()=>{
+const scrapCntList = computed(() => {
   return storyStore.scrapCntList
 })
 
 const totalStoryLength = computed(() => {
- return storyStore.categoryStoryList.length
+  return storyStore.categoryStoryList.length
 })
 
 const storyScrap = computed(() => {
@@ -113,16 +113,19 @@ const nick = function (idx) {
   return '';
 }
 
-const goDetail = function(storyId){
-    router.push({name: 'storyDetail', params: {'storyId' : storyId}})
+const goDetail = function (storyId) {
+  router.push({ name: 'storyDetail', params: { 'storyId': storyId } })
 }
 
 </script>
 
 <style scoped>
+.setBlue {
+  color: #34C5F0;
+}
+
 #book {
   position: absolute;
-  opacity: 0.5;
 }
 
 .container {
@@ -190,6 +193,14 @@ const goDetail = function(storyId){
   transition: all 0.1s linear;
 }
 
+.sub-img:hover>.subimg {
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  transform : scale(1.1);
+  cursor : pointer;
+}
+
 .main-img-info3 {
   position: absolute;
   top: 85%;
@@ -228,7 +239,7 @@ const goDetail = function(storyId){
   color: rgb(122, 122, 122);
 }
 
-.story-info{
+.story-info {
   margin: 0 2px;
 }
 </style>

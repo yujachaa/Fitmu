@@ -7,18 +7,18 @@
           <span>헬스장에 못가더라도 운동은 멈출 수 없다!</span>
         </div>
         <div class="total-number">
-          <span class="total-number">전체 </span> <span v-if="totalStoryLength">{{ totalStoryLength.toLocaleString('ko-KR') }}</span>
+          <span class="total-number">전체 </span> <span v-if="totalStoryLength">{{
+            totalStoryLength.toLocaleString('ko-KR') }}</span>
         </div>
       </div>
       <div class="test2">
-        <div class="one-pic" v-for="(story, index) in popularList.slice(0, 18)" :key="story">
+        <div class="one-pic" v-for="(story, index) in categoryStoryList" :key="story">
           <div class="sub-img">
             <img class="subimg" :src="`src/assets/image/story/${story.image}`" alt="" @click="goDetail(story.storyId)">
             <div class="main-img-info3">
-              <i id="book" :class="{ setBlue: isScrap(story.storyId) }" class="bi bi-bookmark-fill"
-                @click="YesBook(story.storyId, story)"></i>
-              <i id="book2" :class="{ setBlue: isScrap(story.storyId) }" class="bi bi-bookmark"
-                @click="YesBook(story.storyId, story)"></i>
+              <i id="book" v-if="isScrap(story.storyId)" @click="YesBook(story.storyId, story)"
+                class="bi bi-bookmark-fill setBlue"></i>
+              <i id="book2" v-else @click="YesBook(story.storyId, story)" class="bi bi-bookmark"></i>
             </div>
           </div>
           <div class="infoo">
@@ -33,7 +33,7 @@
             </div>
             <div class="story-info-box">
               <span class="story-info">스크랩</span>
-              <span class="story-info" v-if="scrapCntList > 0">{{ scrapCntList[index].toLocaleString('ko-KR')}}</span>
+              <span class="story-info" v-if="scrapCntList > 0">{{ scrapCntList[index].toLocaleString('ko-KR') }}</span>
               •
               <span class="story-info">조회</span>
               <span class="story-info">{{ story.viewCnt.toLocaleString('ko-KR') }}</span>
@@ -64,12 +64,12 @@ storyStore.getCategoryScrapCntList("1")
 // onBeforeMount(() => {
 // })
 
-const scrapCntList = computed(()=>{
+const scrapCntList = computed(() => {
   return storyStore.scrapCntList
 })
 
 const totalStoryLength = computed(() => {
- return storyStore.categoryStoryList.length
+  return storyStore.categoryStoryList.length
 })
 
 const storyScrap = computed(() => {
@@ -98,8 +98,8 @@ const isScrap = function (id) {
   return false
 }
 
-const popularList = computed(() => {
-  return storyStore.popularList
+const categoryStoryList = computed(() => {
+  return storyStore.categoryStoryList
 })
 
 const getUserNick = (userId) => {
@@ -110,21 +110,24 @@ const getUserNick = (userId) => {
 
 const popularNick = function (idx) {
   if (userStore.userList.length > 0) {
-    return getUserNick(storyStore.popularList[idx].userId);
+    return getUserNick(storyStore.categoryStoryList[idx].userId);
   }
   return '';
 }
 
-const goDetail = function(storyId){
-    router.push({name: 'storyDetail', params: {'storyId' : storyId}})
+const goDetail = function (storyId) {
+  router.push({ name: 'storyDetail', params: { 'storyId': storyId } })
 }
 
 </script>
 
 <style scoped>
+.setBlue {
+  color: #34C5F0;
+}
+
 #book {
   position: absolute;
-  opacity: 0.5;
 }
 
 .container {
@@ -163,9 +166,11 @@ const goDetail = function(storyId){
   font-weight: bold;
   color: #34C5F0;
 }
-.small-title{
+
+.small-title {
   margin-bottom: 10px;
 }
+
 .small-title>h3 {
   font-weight: bold;
 }
@@ -192,6 +197,14 @@ const goDetail = function(storyId){
   height: 100%;
   border-radius: 5px;
   transition: all 0.1s linear;
+}
+
+.sub-img:hover>.subimg {
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  transform : scale(1.1);
+  cursor : pointer;
 }
 
 .main-img-info3 {
@@ -232,7 +245,7 @@ const goDetail = function(storyId){
   color: rgb(122, 122, 122);
 }
 
-.story-info{
+.story-info {
   margin: 0 2px;
 }
 </style>

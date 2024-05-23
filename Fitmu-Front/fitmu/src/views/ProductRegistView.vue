@@ -66,9 +66,17 @@
 </template>
 
 <script setup>
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute, useRouter, onBeforeRouteLeave } from 'vue-router'
 import { ref, computed, watch } from 'vue'
 import { useProductStore } from "@/stores/product"
+
+onBeforeRouteLeave((to, from) => {
+    if(to.name == 'productDetail'){
+        return true
+    }
+    const answer = window.confirm('작성한 내용이 모두 사라져요. 나갈까요?.')
+    return answer
+})
 
 const productStore = useProductStore()
 const route = useRoute()

@@ -1,6 +1,6 @@
 import { ref, computed } from "vue";
 import { defineStore } from "pinia";
-import {useRouter, useRoute} from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import axios from "axios";
 
 const REST_STORY_API = `http://localhost:8080/story-api`;
@@ -8,42 +8,56 @@ const REST_STORY_API = `http://localhost:8080/story-api`;
 export const useStoryStore = defineStore(
   "story",
   () => {
-    const router = useRouter()
-    const route = useRoute()
-    const registStoryId = ref(1)
-    const registFileName = ref("")
-    const imageId = ref(0)
-    const tags = ref([])
-    const storyScrap = ref([])
-    const productScrap = ref([])
-
+    const router = useRouter();
+    const route = useRoute();
+    const registStoryId = ref(1);
+    const registFileName = ref("");
+    const imageId = ref(0);
+    const tags = ref([]);
+    const storyScrap = ref([]);
+    const productScrap = ref([]);
 
     //유저의 게시글 스크랩 목록 가져오기
-    const getStoryScrap = function(){
-      if(sessionStorage.getItem("loginUser") == null){
-        return
+    const getStoryScrap = function () {
+      if (sessionStorage.getItem("loginUser") == null) {
+        return;
       }
-      axios.get("http://localhost:8080/user-api/user/" + sessionStorage.getItem("loginUser") + "/story-scrap")
-     .then((response)=>{
-      storyScrap.value = response.data
-     })
-    }
-    
+      axios
+        .get(
+          "http://localhost:8080/user-api/user/" +
+            sessionStorage.getItem("loginUser") +
+            "/story-scrap"
+        )
+        .then((response) => {
+          storyScrap.value = response.data;
+        });
+    };
 
-    const YesBook = function(id){
-      axios.post("http://localhost:8080/story-api/story/" + id + "/user/" + sessionStorage.getItem("loginUser"))
-    }
-    const NoBook = function(id){
-      axios.delete("http://localhost:8080/story-api/story/" + id + "/user/" + sessionStorage.getItem("loginUser"))
-    }
+    const YesBook = function (id) {
+      axios.post(
+        "http://localhost:8080/story-api/story/" +
+          id +
+          "/user/" +
+          sessionStorage.getItem("loginUser")
+      );
+    };
+    const NoBook = function (id) {
+      axios.delete(
+        "http://localhost:8080/story-api/story/" +
+          id +
+          "/user/" +
+          sessionStorage.getItem("loginUser")
+      );
+    };
 
-    const getTags = function(){
-      axios.get("http://localhost:8080/tag-api/story/" + route.params.storyId)
-      .then((response)=>{
-        tags.value = response.data
-        // console.log(tags.value)
-      })
-    }
+    const getTags = function () {
+      axios
+        .get("http://localhost:8080/tag-api/story/" + route.params.storyId)
+        .then((response) => {
+          tags.value = response.data;
+          // console.log(tags.value)
+        });
+    };
 
     const registStory = function (story, formData, tagList) {
       axios
@@ -62,7 +76,7 @@ export const useStoryStore = defineStore(
           return axios.post(REST_STORY_API + "/imageUpload", storyImage);
         })
         .then((response) => {
-          imageId.value = response.data
+          imageId.value = response.data;
           return axios.put(
             REST_STORY_API +
               "/updateFileName/" +
@@ -72,17 +86,20 @@ export const useStoryStore = defineStore(
           );
         })
         .then((response) => {
-          for(let i=0; i < tagList.length; i++){
-            tagList[i].imageId = imageId.value
-            tagList[i].storyId = registStoryId.value
+          for (let i = 0; i < tagList.length; i++) {
+            tagList[i].imageId = imageId.value;
+            tagList[i].storyId = registStoryId.value;
           }
           const promises = tagList.map((tag) =>
             axios.post("http://localhost:8080/tag-api/regist", tag)
-          )
+          );
           return Promise.all(promises);
         })
-        .then((response)=>{
-          router.push({name : "storyDetail", params : {storyId : registStoryId.value}})
+        .then((response) => {
+          router.push({
+            name: "storyDetail",
+            params: { storyId: registStoryId.value },
+          });
         })
         .catch((err) => {
           console.log(err);
@@ -112,24 +129,24 @@ export const useStoryStore = defineStore(
         });
     };
 
-
-  //조회수 순 게시글 가져오기 (인기글)
-  const popularList = ref([])
-  const popular10List = ref([]) //인기글 6개
-  const getPopularList = function(){
-    popularList.value = []
-    popular10List.value = []
-    axios.get(REST_STORY_API + "/story/popular")
-    .then((res)=>{
-      popularList.value = res.data
-    })
-    .then((res)=>{
-      popular10List.value = popularList.value.slice(0,10);
-    })
-    .catch((err)=>{
-      console.log(err)
-    })
-  }
+    //조회수 순 게시글 가져오기 (인기글)
+    const popularList = ref([]);
+    const popular10List = ref([]); //인기글 6개
+    const getPopularList = function () {
+      popularList.value = [];
+      popular10List.value = [];
+      axios
+        .get(REST_STORY_API + "/story/popular")
+        .then((res) => {
+          popularList.value = res.data;
+        })
+        .then((res) => {
+          popular10List.value = popularList.value.slice(0, 10);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
 
     //지금 조회하는 게시글 가져오기
     const story = ref({});
@@ -158,72 +175,73 @@ export const useStoryStore = defineStore(
     };
 
     //스크랩수배열은 같이 사용
-    const scrapCntList = ref([])
+    const scrapCntList = ref([]);
     //인기 리스트의 스크랩수 배열 가져오기
-    const getPopularScrapCntList = function(){
-      scrapCntList.value=[]
+    const getPopularScrapCntList = function () {
+      scrapCntList.value = [];
       axios
-      .get(REST_STORY_API + "/story/latest")
-      .then((res) => {
-        popularList.value = res.data;
-      })
-      .then((res) => {
-        popularList.value.forEach((story, index) =>{
-          axios
-          .get(REST_STORY_API + "/scrap/" + story.storyId)
-          .then((res) => {
-            scrapCntList.value[index] = res.data;
-          })
-          .catch((err) => {
-            console.log(err);
+        .get(REST_STORY_API + "/story/latest")
+        .then((res) => {
+          popularList.value = res.data;
+        })
+        .then((res) => {
+          popularList.value.forEach((story, index) => {
+            axios
+              .get(REST_STORY_API + "/scrap/" + story.storyId)
+              .then((res) => {
+                scrapCntList.value[index] = res.data;
+              })
+              .catch((err) => {
+                console.log(err);
+              });
           });
         })
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    }
+        .catch((err) => {
+          console.log(err);
+        });
+    };
     //카테고리별 스토리의 스크랩 개수 배열 가져오기
-    const getCategoryScrapCntList = function(categoryId){
-      scrapCntList.value=[]
+    const getCategoryScrapCntList = function (categoryId) {
+      scrapCntList.value = [];
       axios({
-        url:REST_STORY_API + "/search", 
-        params : {key:"category", word: categoryId}})
-      .then((res) => {
-        categoryStoryList.value = res.data;
+        url: REST_STORY_API + "/search",
+        params: { key: "category", word: categoryId },
       })
-      .then((res) => {
-        categoryStoryList.value.forEach((story, index) =>{
-          axios
-          .get(REST_STORY_API + "/scrap/" + story.storyId)
-          .then((res) => {
-            scrapCntList.value[index] = res.data;
-          })
-          .catch((err) => {
-            console.log(err);
+        .then((res) => {
+          categoryStoryList.value = res.data;
+        })
+        .then((res) => {
+          categoryStoryList.value.forEach((story, index) => {
+            axios
+              .get(REST_STORY_API + "/scrap/" + story.storyId)
+              .then((res) => {
+                scrapCntList.value[index] = res.data;
+              })
+              .catch((err) => {
+                console.log(err);
+              });
           });
         })
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    }
+        .catch((err) => {
+          console.log(err);
+        });
+    };
     //검색결과 스토리의 스크랩 개수 배열 가져오기
-    const getSearchScrapCntList = function(){
-      scrapCntList.value=[]
-      if(searchList){
-        searchList.value.forEach((story, index) =>{
+    const getSearchScrapCntList = function () {
+      scrapCntList.value = [];
+      if (searchList) {
+        searchList.value.forEach((story, index) => {
           axios
-          .get(REST_STORY_API + "/scrap/" + story.storyId)
-          .then((res) => {
-            scrapCntList.value[index] = res.data;
-          })
-          .catch((err) => {
-            console.log(err);
-          });
-        })
+            .get(REST_STORY_API + "/scrap/" + story.storyId)
+            .then((res) => {
+              scrapCntList.value[index] = res.data;
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        });
       }
-    }
+    };
 
     //최신글 가져오기
     const recentList = ref([]);
@@ -270,92 +288,83 @@ export const useStoryStore = defineStore(
     };
 
     //카테고리별 게시글 가져오기
-    const categoryStoryList = ref([])
-    const getCategoryList = function(categoryId){
+    const categoryStoryList = ref([]);
+    const getCategoryList = function (categoryId) {
       axios({
-        url:REST_STORY_API + "/search", 
-        params : {key:"category", word: categoryId}})
-      .then((res) => {
-        categoryStoryList.value = res.data;
+        url: REST_STORY_API + "/search",
+        params: { key: "category", word: categoryId },
       })
-      .catch((err) => {
-        console.log(err);
-      });
+        .then((res) => {
+          categoryStoryList.value = res.data;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    };
+
+    //게시글 검색 리스트 가져오기 -> 제목, 내용
+    const searchList = ref([]);
+    const getSearchList = function (word) {
+      searchList.value = [];
+      axios({
+        url: REST_STORY_API + "/search",
+        method: "GET",
+        params: {
+          key: "title",
+          word: word,
+        },
+      })
+      .then((res) => {
+        searchList.value = res.data;
+        return axios({ url: REST_STORY_API + "/search", method: "GET", params: {key: "content",word: word}})
+      })
+      .then((res) => {
+        for(let i=0; i<res.data.length; i++){
+          for(let j=0; j<searchList.value.length; j++){
+            if(res.data[i].storyId == searchList.value[j].storyId){
+              continue
+            }
+            searchList.value.push(res.data[i])
+          }
+        }
+      })
     }
 
-      //게시글 검색 리스트 가져오기 -> 제목, 내용
-  const searchList = ref([])
-  const getSearchList = function(word){
-    searchList.value = []
-    axios({
-      url:REST_STORY_API + "/search",
-      method:"GET",
-      params:{
-        key: "title",
-        word:word
-      }
-    })
-    .then((res) =>{
-      searchList.value = res.data
-    })
-    .then((res)=>{
-      axios({
-        url:REST_STORY_API + "/search",
-        method:"GET",
-        params:{
-          key: "content",
-          word:word
-        }
-    })
-    .then((res)=>{
-      searchList.value.push(...res.data);
-    })
-    .catch((err)=>{
-      console.log(err)
-    })
-  })
-    .catch((err)=>{
-      console.log(err)
-    })
-  }
+    const searchWord = ref("");
 
-  const searchWord = ref('')
-
-  return {
-    registStory,
-    userStoryList,
-    getUserStory,
-    recent6List,
-    story,
-    getStory,
-    storyScrapCnt,
-    getStoryScrapCount,
-    popularList,
-    popular10List,
-    getPopularList,
-    recentList,
-    recent4List,
-    getRecentList,
-    randomStory,
-    totalStoryList,
-    getRandom,
-    getTags,
-    tags,
-    YesBook,
-    getStoryScrap,
-    storyScrap,
-    NoBook,
-    scrapCntList,
-    categoryStoryList,
-    getCategoryList,
-    getCategoryScrapCntList,
-    getPopularScrapCntList,
-    searchList,
-    getSearchList,
-    getSearchScrapCntList,
-    searchWord,
-
-
+    return {
+      registStory,
+      userStoryList,
+      getUserStory,
+      recent6List,
+      story,
+      getStory,
+      storyScrapCnt,
+      getStoryScrapCount,
+      popularList,
+      popular10List,
+      getPopularList,
+      recentList,
+      recent4List,
+      getRecentList,
+      randomStory,
+      totalStoryList,
+      getRandom,
+      getTags,
+      tags,
+      YesBook,
+      getStoryScrap,
+      storyScrap,
+      NoBook,
+      scrapCntList,
+      categoryStoryList,
+      getCategoryList,
+      getCategoryScrapCntList,
+      getPopularScrapCntList,
+      searchList,
+      getSearchList,
+      getSearchScrapCntList,
+      searchWord,
     };
   },
   { persist: true }

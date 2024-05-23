@@ -17,10 +17,9 @@
                         <img class="subimg" :src="`src/assets/image/story/${story.image}`" alt=""
                             @click="goDetail(story.storyId)">
                         <div class="main-img-info3">
-                            <i id="book" :class="{ setBlue: isScrap(story.storyId) }" class="bi bi-bookmark-fill"
-                                @click="YesBook(story.storyId, story)"></i>
-                            <i id="book2" :class="{ setBlue: isScrap(story.storyId) }" class="bi bi-bookmark"
-                                @click="YesBook(story.storyId, story)"></i>
+                            <i id="book" v-if="isScrap(story.storyId)" @click="YesBook(story.storyId, story)"
+                                class="bi bi-bookmark-fill setBlue"></i>
+                            <i id="book2" v-else @click="YesBook(story.storyId, story)" class="bi bi-bookmark"></i>
                         </div>
                     </div>
                     <div class="infoo">
@@ -36,7 +35,7 @@
                         <div class="story-info-box">
                             <span class="story-info">스크랩</span>
                             <span class="story-info" v-if="scrapCntList">{{
-                                scrapCntList[index].toLocaleString('ko-KR')}}</span>
+                                scrapCntList[index].toLocaleString('ko-KR') }}</span>
                             •
                             <span class="story-info">조회</span>
                             <span class="story-info">{{ story.viewCnt.toLocaleString('ko-KR') }}</span>
@@ -124,9 +123,12 @@ const goDetail = function (storyId) {
 </script>
 
 <style scoped>
+.setBlue {
+  color: #34C5F0;
+}
+
 #book {
     position: absolute;
-    opacity: 0.5;
 }
 
 .container {
@@ -196,6 +198,14 @@ const goDetail = function (storyId) {
     height: 100%;
     border-radius: 5px;
     transition: all 0.1s linear;
+}
+
+.sub-img:hover>.subimg {
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  transform : scale(1.1);
+  cursor : pointer;
 }
 
 .main-img-info3 {

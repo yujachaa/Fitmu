@@ -57,7 +57,7 @@ public class OrderController {
 	public ResponseEntity<?> getOrderListByUserId(@PathVariable("userId") int userId) {
 		List<Order> orderList = orderService.getOrderListByUserId(userId);
 
-		if (orderList == null || orderList.size() == 0) {
+		if (orderList == null) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		}
 		return new ResponseEntity<List<Order>>(orderList, HttpStatus.OK);
