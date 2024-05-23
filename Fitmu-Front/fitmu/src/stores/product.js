@@ -301,31 +301,23 @@ export const useProductStore = defineStore('product', () => {
       url:"http://localhost:8080/product-api/search",
       method:"GET",
       params:{
-        key: "brand",
-        word:word
+        key : "brand",
+        word : word
       }
     })
     .then((res) =>{
       searchList.value = res.data
+      return axios({ url:"http://localhost:8080/product-api/search", method:"GET", params:{ key: "name", word:word}})
     })
     .then((res)=>{
-      axios({
-        url:"http://localhost:8080/product-api/search",
-        method:"GET",
-        params:{
-          key: "name",
-          word:word
+      A : for(let i=0; i<res.data.length; i++){
+        for(let j=0; j<searchList.value.length; j++){
+          if(res.data[i].productId == searchList.value[j].productId){
+            continue A
+          }
         }
-    })
-    .then((res)=>{
-      searchList.value.push(...res.data);
-    })
-    .catch((err)=>{
-      console.log(err)
-    })
-  })
-    .catch((err)=>{
-      console.log(err)
+        searchList.value.push(res.data[i])
+      }
     })
   }
 

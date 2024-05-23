@@ -29,4 +29,8 @@ public interface ReviewDao {
 	
 	public List<Review> selectByUser(int userId);
 	
+	public int upReviewCnt(int productId);
+	
+	public int downReviewCnt(int productId);
+	
 }

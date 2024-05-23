@@ -28,8 +28,16 @@
         <div class="commu" v-if="(category == '통합' && totalStoryLength > 0) || category == '커뮤니티'">
           <div class="what-story">
             <div class="small-title">
-              <h4>커뮤니티</h4>
-              <h4 v-if="totalStoryLength" class="commu-cnt">{{ totalStoryLength.toLocaleString('ko-KR') }}</h4>
+              <div class="garo">
+                <h4>커뮤니티</h4>
+                <h4 v-if="totalStoryLength" class="commu-cnt">{{ totalStoryLength.toLocaleString('ko-KR') }}</h4>
+              </div>
+              <select name="sort" id="sort" v-model="sort">
+                <option value="" selected>정렬</option>
+                <option value="recent">최신순</option>
+                <option value="cntView">조회수</option>
+                <option value="scrap">스크랩순</option>
+              </select>
             </div>
           </div>
           <div class="no-result" v-if="category == '커뮤니티' && totalStoryLength == 0">
@@ -60,8 +68,7 @@
                 </div>
                 <div class="story-info-box">
                   <span class="story-info">스크랩</span>
-                  <span class="story-info" v-if="scrapCntList > 0">{{
-                    scrapCntList[index].toLocaleString('ko-KR') }}</span>
+                  <span class="story-info">{{ story.liked.toLocaleString('ko-KR') }}</span>
                   •
                   <span class="story-info">조회</span>
                   <span class="story-info">{{ story.viewCnt.toLocaleString('ko-KR') }}</span>
@@ -76,8 +83,16 @@
         <div class="section" v-if="(category == '통합' && totalProductLength > 0) || category == '쇼핑'">
           <div class="what-story">
             <div class="small-title">
-              <h4>쇼핑</h4>
-              <h4 v-if="totalProductLength" class="commu-cnt">{{ totalProductLength.toLocaleString('ko-KR') }}</h4>
+              <div class="garo">
+                <h4>쇼핑</h4>
+                <h4 v-if="totalProductLength" class="commu-cnt">{{ totalProductLength.toLocaleString('ko-KR') }}</h4>
+              </div>
+              <select name="productSort" id="productSort" v-model="productSort">
+                <option value="" selected>정렬</option>
+                <option value="review">리뷰순</option>
+                <option value="lowPrice">가격낮은순</option>
+                <option value="highPrice">가격높은순</option>
+              </select>
             </div>
           </div>
           <div class="no-result" v-if="category == '쇼핑' && totalProductLength == 0">
@@ -144,13 +159,37 @@ productStore.getProductALLImages()
 userStore.getUserList()
 storyStore.getStoryScrap()
 storyStore.getSearchScrapCntList()
+storyStore.getSearchList(storyStore.searchWord)
+productStore.getSearchList(storyStore.searchWord)
 
 const category = ref('통합')
 
 //게시글 관련
+const sort = ref("")
 const storyResult = computed(() => {
+  if (sort.value == "recent") {
+    return storyStore.searchList.sort((a, b) => b.storyId - a.storyId )
+  } else if (sort.value == "cntView") {
+    return storyStore.searchList.sort((a, b) =>  b.viewCnt - a.viewCnt )
+  } else if (sort.value == "scrap") {
+    return storyStore.searchList.sort((a, b) =>  b.liked - a.liked )
+  }
   return storyStore.searchList
 })
+
+// const sortedResult = ref(storyResult)
+// const sorting = function () {
+//   if (sort.value == "recent") {
+//     storyResult.value = storyResult.value.sort((a, b) => b.storyId - a.storyId )
+//   } else if (sort.value == "cntView") {
+//     storyResult.value = storyResult.value.sort((a, b) =>  b.viewCnt - a.viewCnt )
+
+//   } else if (sort.value == "scrap") {
+//     storyResult.value = storyResult.value.sort((a, b) =>  b.liked - a.liked )
+//   }
+//   console.log(sortedResult.value)
+// }
+
 
 const scrapCntList = computed(() => {
   return storyStore.scrapCntList
@@ -205,9 +244,32 @@ const goDetail = function (storyId) {
 
 
 //상품 관련
+const productSort = ref('review')
 const productResult = computed(() => {
+  if(productSort.value == "review") {
+    return productStore.searchList.sort((a, b) => b.ratingCnt - a.ratingCnt )
+  }else if(productSort.value == "lowPrice"){
+    return productStore.searchList.sort((a, b) => a.specialPrice - b.specialPrice )
+  } else if(productSort.value == "highPrice"){
+    return productStore.searchList.sort((a, b)=> b.specialPrice - a.specialPrice )
+  }
   return productStore.searchList
 })
+
+
+// const productSortedResult = ref(productResult)
+// const productSorting = function () {
+//   if(productSort.value == "review") {
+//     productSortedResult.value = productSortedResult.value.sort((a, b) => b.ratingCnt - a.ratingCnt )
+//     console.log(productSortedResult.value)
+//   }else if(productSort.value == "lowPrice"){
+//     productSortedResult.value = productSortedResult.value.sort((a, b) => a.specialPrice - b.specialPrice )
+//     console.log(productSortedResult.value)
+//   } else if(productSort.value == "highPrice"){
+//     productSortedResult.value = productSortedResult.value.sort((a, b) => b.specialPrice - a.specialPrice )
+//     console.log(productSortedResult.value)
+//   }
+// }
 
 const totalProductLength = computed(() => {
   return productStore.searchList ? productStore.searchList.length : 0
@@ -259,6 +321,10 @@ router.beforeEach((to, from, next) => {
 </script>
 
 <style scoped>
+.garo {
+  display: flex;
+}
+
 .setBlue {
   color: #34C5F0;
 }
@@ -306,9 +372,11 @@ router.beforeEach((to, from, next) => {
 .small-title {
   display: flex;
   margin-bottom: 10px;
+  width: 100%;
+  justify-content: space-between
 }
 
-.small-title>h4 {
+.garo>h4 {
   font-weight: bold;
 }
 
