@@ -168,11 +168,11 @@ const category = ref('통합')
 const sort = ref("")
 const storyResult = computed(() => {
   if (sort.value == "recent") {
-    return storyStore.searchList.sort((a, b) => b.storyId - a.storyId )
+    return storyStore.searchList.sort((a, b) => b.storyId - a.storyId)
   } else if (sort.value == "cntView") {
-    return storyStore.searchList.sort((a, b) =>  b.viewCnt - a.viewCnt )
+    return storyStore.searchList.sort((a, b) => b.viewCnt - a.viewCnt)
   } else if (sort.value == "scrap") {
-    return storyStore.searchList.sort((a, b) =>  b.liked - a.liked )
+    return storyStore.searchList.sort((a, b) => b.liked - a.liked)
   }
   return storyStore.searchList
 })
@@ -246,12 +246,12 @@ const goDetail = function (storyId) {
 //상품 관련
 const productSort = ref('review')
 const productResult = computed(() => {
-  if(productSort.value == "review") {
-    return productStore.searchList.sort((a, b) => b.ratingCnt - a.ratingCnt )
-  }else if(productSort.value == "lowPrice"){
-    return productStore.searchList.sort((a, b) => a.specialPrice - b.specialPrice )
-  } else if(productSort.value == "highPrice"){
-    return productStore.searchList.sort((a, b)=> b.specialPrice - a.specialPrice )
+  if (productSort.value == "review") {
+    return productStore.searchList.sort((a, b) => b.ratingCnt - a.ratingCnt)
+  } else if (productSort.value == "lowPrice") {
+    return productStore.searchList.sort((a, b) => a.specialPrice - b.specialPrice)
+  } else if (productSort.value == "highPrice") {
+    return productStore.searchList.sort((a, b) => b.specialPrice - a.specialPrice)
   }
   return productStore.searchList
 })
@@ -429,7 +429,7 @@ router.beforeEach((to, from, next) => {
 .font-bold {
   font-weight: bold;
   white-space: nowrap;
-  text-overflow : ellipsis;
+  text-overflow: ellipsis;
   overflow: hidden;
   width: 350px;
 }

@@ -41,11 +41,11 @@ export default {
             participants: [
                 {
                     id: 'user1',
-                    name: '고객센터',
-                    imageUrl: 'https://avatars3.githubusercontent.com/u/1915989?s=230&v=4'
+                    name: 'FITMU고객센터',
+                    imageUrl: "https://cdn-icons-png.flaticon.com/512/6819/6819113.png"
                 }
             ], // the list of all the participant of the conversation. `name` is the user name, `id` is used to establish the author of a message, `imageUrl` is supposed to be the user avatar.
-            titleImageUrl: 'https://a.slack-edge.com/66f9/img/avatars-teams/ava_0001-34.png',
+            titleImageUrl: "",
             messageList: [
                 { type: 'text', author: `user1`, data: { text: `안녕하세요. 핏뮤봇이에요.` } }
             ], // the list of the messages to show, can be paginated and adjusted dynamically
@@ -126,7 +126,7 @@ export default {
 
                 const response = await openai.chat.completions.create({
                     messages: [
-                        { role: 'system', content: '당신은 이제 운동을 주제로 한 커뮤니티와 쇼핑몰을 하나로 만든 핏뮤의 챗봇입니다. 당신은 이제 핏뮤에 대해 자세히 알고있어야 합니다. 고객센터 번호는 01079394420입니다. 누가 물어보면 알려주세요' },
+                        { role: 'system', content: '당신은 이제 운동을 주제로 한 커뮤니티와 쇼핑몰을 하나로 만든 핏뮤의 챗봇입니다. 당신은 이제 핏뮤에 대해 자세히 알고있어야 합니다. 고객센터 번호는 01079394420입니다. 누가 물어보면 알려주세요. 배송은 평균적으로 2~3일 걸리고 교환 및 환불은 30일 이내에 가능합니다.' },
                         { role: 'user', content: text }
                     ],
                     model: 'gpt-3.5-turbo',

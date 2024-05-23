@@ -5,7 +5,7 @@
             <div class="main-img-info">
                 <p class="title">{{ randomStory.title }}</p>
                 <div class="user-info">
-                    <img class="mini-img" src="@/assets/image/kakao.png" alt="랜덤게시글작성자프로필사진">
+                    <img class="mini-img" src="@/assets/image/profile.png" alt="랜덤게시글작성자프로필사진">
                     <p v-if="randomNick">{{ randomNick }}</p>
                     <p></p>
                 </div>
@@ -44,7 +44,7 @@
                             @click="goDetail(story.storyId)">
                         <div class="main-img-info2">
                             <div class="user-info2">
-                                <img class="mini-img2" src="" alt="하이루">
+                                <img class="mini-img2" src="@/assets/image/profile.png" alt="하이루">
                                 <p class="ninckname" v-if="popularNick(index)">{{ popularNick(index) }}</p>
                                 <div class="bookmark">
                                     <i id="book" v-if="isScrap(story.storyId)" @click="YesBook(story.storyId, story)"
