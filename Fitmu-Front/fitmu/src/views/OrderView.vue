@@ -148,7 +148,7 @@
                             <span class="productname">{{ productStore.product.name }}</span>
                         </div>
                         <div>
-                            <span class="specialPrice">{{ productStore.product.specialPrice.toLocaleString('ko-KR') }}원</span>
+                            <span class="specialPrice">{{ (productStore.product.specialPrice * route.params.quantity).toLocaleString('ko-KR') }}원</span>
                             <span>배송비</span>
                             <span class="deliveryFee">{{ productStore.product.deliveryFee.toLocaleString('ko-KR') }}원</span>
                         </div>
@@ -163,7 +163,7 @@
                         <div class="garogaro">
                             <span>총 상품 금액</span>
                             <div>
-                                <span>{{ productStore.product.specialPrice.toLocaleString('ko-KR') }}</span>
+                                <span>{{ (productStore.product.specialPrice * route.params.quantity).toLocaleString('ko-KR') }}</span>
                                 <span>원</span>
                             </div>
                         </div>
@@ -191,11 +191,11 @@
                         <hr>
                         <div class="garogaro2">
                             <p class="last">최종 결제 금액</p>
-                            <p class="lastprice">{{ (productStore.product.specialPrice + productStore.product.deliveryFee).toLocaleString('ko-KR')
+                            <p class="lastprice">{{ (productStore.product.specialPrice * route.params.quantity + productStore.product.deliveryFee).toLocaleString('ko-KR')
                                 }}원</p>
                         </div>
                     </div>
-                    <button @click = "finish" class="buybtn">{{ (productStore.product.specialPrice + productStore.product.deliveryFee).toLocaleString('ko-KR') }}원
+                    <button @click = "finish" class="buybtn">{{ (productStore.product.specialPrice * route.params.quantity + productStore.product.deliveryFee).toLocaleString('ko-KR') }}원
                         결제하기</button>
                 </div>
             </div>
