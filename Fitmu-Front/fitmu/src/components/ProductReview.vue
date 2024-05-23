@@ -5,7 +5,7 @@
                 <p>리뷰</p>
                 <p class="numColor">{{ productStore.reviews.length }}</p>
             </div>
-            <button class="reviewbtn" data-bs-toggle="modal" data-bs-target="#exampleModal"
+            <button @click = "aaaa" class="reviewbtn" data-bs-toggle="modal" data-bs-target="#exampleModal"
                 data-bs-whatever="@mdo">리뷰쓰기</button>
         </div>
         <div class="stardiv">
@@ -52,12 +52,12 @@
         </div>
     </div>
 
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div @click = "outCheck2" class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="exampleModalLabel">리뷰 쓰기</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button @click = "outCheck" type="button" class="btn-close" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form>
@@ -89,7 +89,6 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
                     <button type="button" class="btn btn-primary" @click = "registReview">등록</button>
                 </div>
             </div>
@@ -130,6 +129,13 @@ const registReview = function(){
         createdAt : ""
     }
     productStore.registReview(review)
+}
+
+const outCheck = function(){
+    const confirm = window.confirm("작성한 내용이 모두 사라져요. 나갈까요?")
+    if(confirm){
+        window.location.reload()
+    }
 }
 
 const getUser = function (userId) {

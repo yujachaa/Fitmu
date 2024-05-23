@@ -1,50 +1,48 @@
 <template>
   <div class="container">
-      <div class="test">
-          <div class="what-story">
-              <div class="small-title">
-                  <h3>3대몇🏋️</h3>
-                  <span>최고기록 경신를 모두에게 자랑해보세요!</span>
-              </div>
-              <div class="total-number">
-                  <span class="total-number">전체 </span> <span v-if="totalStoryLength">{{
-                      totalStoryLength.toLocaleString('ko-KR') }}</span>
-              </div>
-          </div>
-          <div class="test2">
-              <div class="one-pic" v-for="(story, index) in categoryStoryList.slice(0, 18)" :key="story">
-                  <div class="sub-img">
-                      <img class="subimg" :src="`src/assets/image/story/${story.image}`" alt=""
-                          @click="goDetail(story.storyId)">
-                      <div class="main-img-info3">
-                          <i id="book" :class="{ setBlue: isScrap(story.storyId) }" class="bi bi-bookmark-fill"
-                              @click="YesBook(story.storyId, story)"></i>
-                          <i id="book2" :class="{ setBlue: isScrap(story.storyId) }" class="bi bi-bookmark"
-                              @click="YesBook(story.storyId, story)"></i>
-                      </div>
-                  </div>
-                  <div class="infoo">
-                      <div class="font-bold">{{ story.title }}</div>
-                      <div class="profile-info">
-                          <div class="profile-image">
-                              <img class="story-profile-img" src="@/assets/image/profile.png" alt="댓글프로필이미지">
-                          </div>
-                          <div class="user-nickname">
-                              <div v-if="nick(index)">{{ nick(index) }}</div>
-                          </div>
-                      </div>
-                      <div class="story-info-box">
-                          <span class="story-info">스크랩</span>
-                          <span class="story-info" v-if="scrapCntList">{{
-                              scrapCntList[index].toLocaleString('ko-KR')}}</span>
-                          •
-                          <span class="story-info">조회</span>
-                          <span class="story-info">{{ story.viewCnt.toLocaleString('ko-KR') }}</span>
-                      </div>
-                  </div>
-              </div>
-          </div>
+    <div class="test">
+      <div class="what-story">
+        <div class="small-title">
+          <h3>3대몇🏋️</h3>
+          <span>최고기록 경신를 모두에게 자랑해보세요!</span>
+        </div>
+        <div class="total-number">
+          <span class="total-number">전체 </span> <span v-if="totalStoryLength">{{
+            totalStoryLength.toLocaleString('ko-KR') }}</span>
+        </div>
       </div>
+      <div class="test2">
+        <div class="one-pic" v-for="(story, index) in categoryStoryList.slice(0, 18)" :key="story">
+          <div class="sub-img">
+            <img class="subimg" :src="`src/assets/image/story/${story.image}`" alt="" @click="goDetail(story.storyId)">
+            <div class="main-img-info3">
+              <i id="book" v-if="isScrap(story.storyId)" @click="YesBook(story.storyId, story)"
+                class="bi bi-bookmark-fill setBlue"></i>
+              <i id="book2" v-else @click="YesBook(story.storyId, story)" class="bi bi-bookmark"></i>
+            </div>
+          </div>
+          <div class="infoo">
+            <div class="font-bold">{{ story.title }}</div>
+            <div class="profile-info">
+              <div class="profile-image">
+                <img class="story-profile-img" src="@/assets/image/profile.png" alt="댓글프로필이미지">
+              </div>
+              <div class="user-nickname">
+                <div v-if="nick(index)">{{ nick(index) }}</div>
+              </div>
+            </div>
+            <div class="story-info-box">
+              <span class="story-info">스크랩</span>
+              <span class="story-info" v-if="scrapCntList">{{
+                scrapCntList[index].toLocaleString('ko-KR') }}</span>
+              •
+              <span class="story-info">조회</span>
+              <span class="story-info">{{ story.viewCnt.toLocaleString('ko-KR') }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -81,21 +79,21 @@ const storyScrap = computed(() => {
 
 const YesBook = function (id, story) {
   if (isScrap(id)) {
-      let index = storyScrap.value.findIndex((scrap) => scrap.storyId == id)
-      storyScrap.value.splice(index, 1)
-      storyStore.NoBook(id)
+    let index = storyScrap.value.findIndex((scrap) => scrap.storyId == id)
+    storyScrap.value.splice(index, 1)
+    storyStore.NoBook(id)
   } else {
-      console.log(storyScrap.value)
-      storyScrap.value.push(story)
-      storyStore.YesBook(id)
+    console.log(storyScrap.value)
+    storyScrap.value.push(story)
+    storyStore.YesBook(id)
   }
 }
 
 const isScrap = function (id) {
   for (let i = 0; i < storyScrap.value.length; i++) {
-      if (storyScrap.value[i].storyId == id) {
-          return true
-      }
+    if (storyScrap.value[i].storyId == id) {
+      return true
+    }
   }
   return false
 }
@@ -112,7 +110,7 @@ const getUserNick = (userId) => {
 
 const nick = function (idx) {
   if (userStore.userList.length > 0) {
-      return getUserNick(storyStore.categoryStoryList[idx].userId);
+    return getUserNick(storyStore.categoryStoryList[idx].userId);
   }
   return '';
 }
@@ -124,9 +122,12 @@ const goDetail = function (storyId) {
 </script>
 
 <style scoped>
+.setBlue {
+  color: #34C5F0;
+}
+
 #book {
   position: absolute;
-  opacity: 0.5;
 }
 
 .container {
@@ -196,6 +197,14 @@ const goDetail = function (storyId) {
   height: 100%;
   border-radius: 5px;
   transition: all 0.1s linear;
+}
+
+.sub-img:hover>.subimg {
+  width: 100%;
+  height: 100%;
+  border-radius: 5px;
+  transform : scale(1.1);
+  cursor : pointer;
 }
 
 .main-img-info3 {

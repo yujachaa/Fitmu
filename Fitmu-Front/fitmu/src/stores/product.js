@@ -24,6 +24,13 @@ export const useProductStore = defineStore('product', () => {
   const userReviews = ref([])
   const userInquiry = ref([])
 
+  const registAnswer = function(id, answer){
+    axios.put("http://localhost:8080/seller-api/answer/" + id + "/" + answer)
+    .then((response)=>{
+      router.go()
+    })
+  }
+
   const deleteInquiry = function(id){
     axios.delete("http://localhost:8080/inquiry-api/" + id)
    .then((response)=>{
@@ -375,6 +382,7 @@ export const useProductStore = defineStore('product', () => {
     category,
     searchList,
     getSearchList,
+    registAnswer,
 
 
   }

@@ -225,20 +225,29 @@ const router = createRouter({
       name: "order",
       component: OrderView
     },
-
-
   ],
   scrollBehavior(to, from, savedPosition) {
-    const noResetRoutes = ['productinfo', 'productinquiry', 'productreview', 'storyDetail'];
+    const noResetRoutes = ['productinquiry', 'productreview'];
     if (noResetRoutes.includes(to.name)) {
       if (savedPosition) {
         return savedPosition;
       }
+      console.log(to.name)
       return false; // 기본 스크롤 위치 유지
     }
-
+    if((from.name == 'productreview' || from.name == 'productinquiry' || from.name == 'productDetail') && to.name == 'productDetail'){
+      return savedPosition
+    }
     // 다른 라우트로 이동할 때는 스크롤을 최상단으로
     return { top: 0 }
+  }
+})
+router.beforeEach((to, from)=>{
+  if(sessionStorage.getItem("loginUser") != null || to.fullPath == "/" || to.fullPath == "/login" || to.fullPath == "/regist" || to.name == "kakaoLogin"){
+    return true
+  }else{
+    window.alert("로그인 후 이용해주세요.")
+    return {name : "login"}
   }
 })
 

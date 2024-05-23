@@ -148,6 +148,9 @@ const goReview = function(id){
 }
 
 const getImage = function(productId){
+    if(productAllImages.value.filter(image => image.productId == productId).length == 0){
+        return "noimage.png"
+    }
     return productAllImages.value.filter(image => image.productId == productId)[0].fileName
 }
 
@@ -160,6 +163,9 @@ const products = computed(()=>{
 })
 
 const getProduct = function(productId){
+    if(products.value.filter(product => product.productId == productId).length == 0){
+        return {name : "오류", specialPrice : "오류"}
+    }
     return products.value.filter(product => product.productId == productId)[0]
 }
 

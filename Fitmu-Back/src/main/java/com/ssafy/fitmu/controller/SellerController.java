@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.ssafy.fitmu.dto.Inquiry;
 import com.ssafy.fitmu.dto.Product;
 import com.ssafy.fitmu.dto.Seller;
 import com.ssafy.fitmu.service.SellerService;
@@ -82,10 +83,11 @@ public class SellerController {
 	}	
 	
 	//문의 답변 등록 + 수정
-	@PutMapping("/answer/{inquiryId}")
+	@PutMapping("/answer/{inquiryId}/{answer}")
 	@Operation(summary = "문의 답변 등록 및 수정")
-	public ResponseEntity<?> registAnswer(@RequestBody String answer, @PathVariable("inquiryId") int inquiryId){
+	public ResponseEntity<?> registAnswer(@PathVariable("answer") String answer, @PathVariable("inquiryId") int inquiryId){
 		int result = sellerService.insertAnswer(inquiryId, answer);
+		
 		
 		if (result == 0) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);

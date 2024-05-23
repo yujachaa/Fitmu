@@ -185,6 +185,9 @@ const goReview = function(id){
 }
 
 const getImage = function(productId){
+    if(productAllImages.value.filter(image => image.productId == productId).length == 0){
+        return "noImage.png"
+    }
     return productAllImages.value.filter(image => image.productId == productId)[0].fileName
 }
 

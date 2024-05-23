@@ -242,8 +242,16 @@
 import TheHeaderNav from '../components/common/TheHeaderNav.vue'
 
 import { onMounted, ref, computed, onUpdated, } from 'vue';
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute, useRouter, onBeforeRouteLeave } from 'vue-router'
 import { useProductStore } from '@/stores/product'
+
+onBeforeRouteLeave((to, from) => {
+    if(to.name == 'my-order'){
+        return true
+    }
+    const answer = window.confirm('작성한 내용이 모두 사라져요. 나갈까요?.')
+    return answer
+})
 
 const route = useRoute()
 const router = useRouter()

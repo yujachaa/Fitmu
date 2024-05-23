@@ -92,12 +92,20 @@
 </template>
 
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterLink, RouterView, onBeforeRouteLeave } from 'vue-router'
 import { ref, computed, onUpdated, nextTick, watch, onBeforeUnmount, onBeforeMount } from 'vue'
 import axios from 'axios'
 import { useMouseInElement, watchDebounced } from '@vueuse/core'
 import { useStoryStore } from "@/stores/story"
 import { useProductStore } from "@/stores/product"
+
+onBeforeRouteLeave((to, from) => {
+    if(to.name == 'storyDetail'){
+        return true
+    }
+    const answer = window.confirm('작성한 내용이 모두 사라져요. 나갈까요?')
+    return answer
+})
 
 
 // 파일 업로드 관련

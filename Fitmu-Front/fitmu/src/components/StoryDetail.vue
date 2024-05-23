@@ -19,7 +19,8 @@
         </div>
         <!-- 현재 사용자의 글이 아닐때만 팔로우 버튼 활성화 -->
         <div class="follow-button-box flex-grow-1" v-if="!isSameUser">
-          <button class="follow-btn" :class="{ followed: isFollowed(story.userId) }" @click="followToggle(story)">{{ followMsg}}</button>
+          <button class="follow-btn" :class="{ followed: isFollowed(story.userId) }" @click="followToggle(story)">{{
+            followMsg}}</button>
         </div>
       </div>
       <hr>
@@ -58,7 +59,7 @@
             <img class="comment-profile-img" src="@/assets/image/profile.png" alt="댓글작성자프로필">
           </div>
           <div class="flex-fill">
-            <input type="text" id="comment" class="input" placeholder="칭찬과 격려의 댓글은 작성자에게 큰 힘이 됩니다 :)"
+            <input ref="input" type="text" id="comment" class="input" placeholder="칭찬과 격려의 댓글은 작성자에게 큰 힘이 됩니다 :)"
               v-model="comment.content" @keyup.enter="registComment()">
           </div>
         </div>
@@ -90,13 +91,10 @@
     </div>
     <div class="sticky-container">
       <div class="sidebar">
-        <div class="circle">
-          <!-- <i class="bi bi-bookmark"></i> -->
+        <div class="circle" @click="YesBook(story.storyId, story)">
           <div class="bookmark">
-            <i id="book" v-if="isScrap(story.storyId)" @click="YesBook(story.storyId, story)"
-              class="bi bi-bookmark-fill blue"></i>
-            <i id="book2" v-else @click="YesBook(story.storyId, story)"
-              class="bi bi-bookmark"></i>
+            <i id="book" v-if="isScrap(story.storyId)" class="bi bi-bookmark-fill blue"></i>
+            <i id="book2" v-else class="bi bi-bookmark"></i>
           </div>
         </div>
         <div class="circle" @click="goComment">
@@ -139,6 +137,7 @@ import { useUserStore } from '@/stores/user'
 import { useProductStore } from '@/stores/product'
 import { useCommentStore } from '@/stores/comment'
 import { useWindowScroll, useScroll } from '@vueuse/core'
+
 const el = ref < HTMLElement | null > (null)
 const { x, y } = useScroll(el, { behavior: "smooth" })
 
@@ -148,12 +147,15 @@ const goTop = function () {
     behavior: 'smooth' // Smooth scroll animation
   });
 }
+const input = ref(null)
 
 const goComment = function () {
-  window.scrollTo({
-    top: 1000,
-    behavior: 'smooth' // Smooth scroll animation
-  });
+  input.value.focus()
+  input.value.scrollIntoView({ behavior: 'smooth', block: 'start' })
+
+  setTimeout(function () {
+    window.scrollBy(0, -100); // 입력창을 중간에서 위로 100px 이동
+  }, 700)
 }
 
 const img = ref(null)
@@ -180,7 +182,7 @@ storyStore.getStoryScrap()
 userStore.getFollowing(sessionStorage.getItem("loginUser"));
 
 
-const followingList = computed(()=>{
+const followingList = computed(() => {
   return userStore.followingList
 })
 
@@ -259,8 +261,8 @@ const getUserNick = function (userId) {
   return userStore.userList.filter((user) => user.userId == userId)[0].nickname
 }
 
-const isFollowed = function(followingId){
-  if(followingList.value.length > 0){
+const isFollowed = function (followingId) {
+  if (followingList.value.length > 0) {
     return followingList.value.some((user) => user.userId == followingId)
   }
   return false;
@@ -325,7 +327,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-
 .comment {
   overflow-y: auto;
   height: 500px;
