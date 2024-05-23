@@ -49,7 +49,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">리뷰 쓰기</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">문의 쓰기</h1>
                     <button ref="modal" @click.prevent="outCheck" type="button" class="btn-close"
                         aria-label="Close"></button>
                 </div>
