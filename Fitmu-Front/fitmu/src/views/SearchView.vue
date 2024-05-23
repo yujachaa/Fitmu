@@ -428,6 +428,10 @@ router.beforeEach((to, from, next) => {
 
 .font-bold {
   font-weight: bold;
+  white-space: nowrap;
+  text-overflow : ellipsis;
+  overflow: hidden;
+  width: 350px;
 }
 
 .total-number {

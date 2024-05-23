@@ -23,7 +23,7 @@
                 <p class="xmrrk">특가</p>
             </div>
             <div class="delivery">
-                <span class="delivery2">배송</span>
+                <span class="delivery2">배송비</span>
                 <span class="deliveryFee" v-if="product.deliveryFee != 0">{{productStore.product.deliveryFee.toLocaleString('ko-KR') }}원</span>
                 <span class="deliveryFee" v-else>무료배송</span>
             </div>

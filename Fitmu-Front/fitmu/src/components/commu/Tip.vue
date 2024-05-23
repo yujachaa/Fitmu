@@ -32,7 +32,7 @@
             </div>
             <div class="story-info-box">
               <span class="story-info">스크랩</span>
-              <span class="story-info" v-if="scrapCntList">{{ scrapCntList[index].toLocaleString('ko-KR') }}</span>
+              <span class="story-info">{{ story.liked }}</span>
               •
               <span class="story-info">조회</span>
               <span class="story-info">{{ story.viewCnt.toLocaleString('ko-KR') }}</span>
@@ -217,6 +217,10 @@ const goDetail = function (storyId) {
 
 .font-bold {
   font-weight: bold;
+  white-space: nowrap;
+  text-overflow : ellipsis;
+  overflow: hidden;
+  width: 350px;
 }
 
 .total-number {

@@ -5,7 +5,7 @@
             <div class="main-img-info">
                 <p class="title">{{ randomStory.title }}</p>
                 <div class="user-info">
-                    <img class="mini-img" src="@/assets/2.jpg" alt="랜덤게시글작성자프로필사진">
+                    <img class="mini-img" src="@/assets/image/kakao.png" alt="랜덤게시글작성자프로필사진">
                     <p v-if="randomNick">{{ randomNick }}</p>
                     <p></p>
                 </div>
@@ -14,7 +14,7 @@
         <div class="promo">
             <carousel class="carousel" :items-to-show="1" :autoplay=4000 :wrapAround=true>
                 <slide class="slide" v-for="slide in 4" :key="slide">
-                    <img class="slide-img" :src="`src/assets/${slide}.jpg`" alt="">
+                    <img class="slide-img" :src="`src/assets/image/ad/ad${slide}.jpg`" alt="우선광고 이미지들">
                 </slide>
 
                 <!-- <template #addons>
@@ -44,7 +44,7 @@
                             @click="goDetail(story.storyId)">
                         <div class="main-img-info2">
                             <div class="user-info2">
-                                <img class="mini-img2" src="@/assets/2.jpg" alt="하이루">
+                                <img class="mini-img2" src="" alt="하이루">
                                 <p class="ninckname" v-if="popularNick(index)">{{ popularNick(index) }}</p>
                                 <div class="bookmark">
                                     <i id="book" v-if="isScrap(story.storyId)" @click="YesBook(story.storyId, story)"
@@ -121,7 +121,7 @@ const YesBook = function (id, story) {
         let index = storyScrap.value.findIndex((scrap) => scrap.storyId == id)
         storyScrap.value.splice(index, 1)
         storyStore.NoBook(id)
-    }else{
+    } else {
         storyScrap.value.push(story)
         storyStore.YesBook(id)
     }
@@ -157,8 +157,8 @@ const randomNick = computed(() => {
     if (userStore.userList.length > 0) {
         return getUserNick(storyStore.randomStory.userId);
     }
-    return '';
-});
+    return ''
+})
 
 const popularNick = function (idx) {
     if (userStore.userList.length > 0) {
@@ -326,6 +326,10 @@ export default defineComponent({
 .title {
     font-size: 30px;
     font-weight: bold;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    width : 720px;
 }
 
 .user-info {
