@@ -1,6 +1,10 @@
 # Fitmu
 Fitness + Community 쇼핑과 커뮤니티를 합친 Fitmu입니다~
 
+# 매우 중요중요중요중요중요 합니다.
+npm install 을 해도 carousel은 설치가 안됩니다!!
+그래서 install 하시고 npm install vue3-carousel 이것도 진행해주시면 됩니다.
+
 # 로그인!!
 로그인을 안하면 메인, 로그인, 회원가입 화면만 들어갈 수 있습니다.
 로그인 꼭 해주세요!
@@ -26,3 +30,4 @@ PW : adminadmin
 
 # 상품 생성
 상품의 사진은 총 20MB이내 입니다.
+
