@@ -66,4 +66,16 @@
 		SELECT * FROM review
 		WHERE user_id = #{userId}
 	</select>
+	
+	<update id="upReviewCnt" parameterType = "int">
+		UPDATE product
+		SET rating_cnt = rating_cnt+1
+		WHERE product_id = #{productId}
+	</update>
+	
+	<update id="downReviewCnt" parameterType = "int">
+		UPDATE product
+		SET rating_cnt = rating_cnt-1
+		WHERE product_id = #{productId}
+	</update>
 </mapper>

@@ -39,16 +39,22 @@ export const useStoryStore = defineStore(
           id +
           "/user/" +
           sessionStorage.getItem("loginUser")
-      );
-    };
+      )
+      .then((response)=>{
+        return axios.put("http://localhost:8080/story-api/like/" + id)
+      })
+    }
     const NoBook = function (id) {
       axios.delete(
         "http://localhost:8080/story-api/story/" +
           id +
           "/user/" +
           sessionStorage.getItem("loginUser")
-      );
-    };
+      )
+      .then((response)=>{
+        return axios.put("http://localhost:8080/story-api/dislike/" + id)
+      })
+    }
 
     const getTags = function () {
       axios
@@ -319,13 +325,13 @@ export const useStoryStore = defineStore(
         return axios({ url: REST_STORY_API + "/search", method: "GET", params: {key: "content",word: word}})
       })
       .then((res) => {
-        for(let i=0; i<res.data.length; i++){
+        A : for(let i=0; i<res.data.length; i++){
           for(let j=0; j<searchList.value.length; j++){
             if(res.data[i].storyId == searchList.value[j].storyId){
-              continue
+              continue A
             }
-            searchList.value.push(res.data[i])
           }
+          searchList.value.push(res.data[i])
         }
       })
     }

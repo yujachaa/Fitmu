@@ -27,4 +27,8 @@ public interface ReviewService {
 	public int cancelProductRating(int productId, int rating);
 	
 	public List<Review> selectByUser(int userId);
+	
+	public int upReviewCnt(int productId);
+	
+	public int downReviewCnt(int productId);
 }

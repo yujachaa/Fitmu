@@ -49,10 +49,10 @@ public class ReviewController {
 	@Operation(summary = "리뷰 등록")
 	public ResponseEntity<?> reviewRegist(@RequestBody Review review) {
 		int result = reviewService.registReview(review);
-
 		if (result == 0) {
 			return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
 		} else {
+			int result3 = reviewService.addProductRating(review.getProductId(), review.getRating());
 			//리뷰 등록 완료했으면 상품에 별점 업데이트
 			return new ResponseEntity<Void>(HttpStatus.OK);
 		}

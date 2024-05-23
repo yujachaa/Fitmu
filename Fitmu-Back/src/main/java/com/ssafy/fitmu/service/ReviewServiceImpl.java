@@ -79,4 +79,14 @@ public class ReviewServiceImpl implements ReviewService {
 		return reviewDao.selectByUser(userId);
 	}
 
+	@Override
+	public int upReviewCnt(int productId) {
+		return reviewDao.upReviewCnt(productId);
+	}
+
+	@Override
+	public int downReviewCnt(int productId) {
+		return reviewDao.downReviewCnt(productId);
+	}
+
 }
